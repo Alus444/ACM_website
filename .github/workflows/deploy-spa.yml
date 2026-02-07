@@ -3,7 +3,7 @@ name: Deploy Vue SPA to deploy
 on:
   push:
     branches:
-      - feature/spa
+      - develop/spa
 
 jobs:
   build-and-deploy:
