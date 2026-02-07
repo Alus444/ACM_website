@@ -21,11 +21,11 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        working-directory: SI-HP
+        working-directory: acm_website
         run: npm install
 
       - name: Build Vue app
-        working-directory: SI-HP
+        working-directory: acm_website
         run: npm run build
 
       - name: Deploy dist to deploy branch
@@ -35,7 +35,7 @@ jobs:
 
           git checkout deploy || git checkout -b deploy
           git rm -rf .
-          cp -r SI-HP/dist/* .
+          cp -r acm_website/dist/* .
           echo "ac-md.com" > CNAME
 
           git add .
