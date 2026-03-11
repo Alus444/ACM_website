@@ -15,9 +15,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   <header :class="['site-header', { scrolled }]">
     <div class="header-inner">
       <RouterLink to="/" class="logo">
-        <span class="logo-bracket">[</span>
-        ACM
-        <span class="logo-bracket">]</span>
+        <img src="/images/ACMLogo.svg" alt="ACM" class="logo-img" />
       </RouterLink>
 
       <nav class="nav">
@@ -58,15 +56,15 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 }
 
 .logo {
-  font-size: 1.2rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: var(--text-primary);
+  display: flex;
+  align-items: center;
   text-decoration: none;
 }
 
-.logo-bracket {
-  color: var(--accent);
+.logo-img {
+  height: 2rem;
+  width: auto;
+  display: block;
 }
 
 .nav {

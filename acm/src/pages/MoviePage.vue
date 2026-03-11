@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { movies } from '../data/movies'
+import PageHeader from '../components/layout/PageHeader.vue'
 
 const sorted = computed(() =>
   [...movies].sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
@@ -10,10 +11,7 @@ const sorted = computed(() =>
 <template>
   <main class="movie-page">
     <div class="page-inner">
-      <div class="page-header">
-        <p class="page-label">Movie</p>
-        <h1 class="page-title">制作した動画</h1>
-      </div>
+      <PageHeader label="Movie" title="制作した動画" />
 
       <div class="movie-grid">
         <a
@@ -59,26 +57,6 @@ const sorted = computed(() =>
 .page-inner {
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.page-header {
-  margin-bottom: 3rem;
-}
-
-.page-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin: 0 0 0.5rem;
-}
-
-.page-title {
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
 }
 
 /* --- Grid --- */
