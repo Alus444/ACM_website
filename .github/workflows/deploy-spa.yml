@@ -25,6 +25,10 @@ jobs:
         working-directory: acm
         run: npm install
 
+      - name: Fetch BOOTH items
+        working-directory: acm
+        run: node scripts/fetch-booth.mjs
+
       - name: Build Vue app
         working-directory: acm
         run: npm run build
