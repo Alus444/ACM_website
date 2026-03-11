@@ -24,15 +24,15 @@ function formatPrice(price: number): string {
           class="booth-card"
         >
           <div class="booth-image">
+            <div class="booth-image-placeholder">
+              <span class="placeholder-icon">&#9635;</span>
+            </div>
             <img
               :src="item.imageUrl"
               :alt="item.title"
               loading="lazy"
               @error="($event.target as HTMLImageElement).style.display = 'none'"
             />
-            <div class="booth-image-placeholder">
-              <span class="placeholder-icon">&#9635;</span>
-            </div>
             <span class="booth-category">{{ item.category }}</span>
           </div>
 
