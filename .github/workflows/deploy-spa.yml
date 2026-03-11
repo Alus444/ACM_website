@@ -1,9 +1,9 @@
-name: Deploy Vue SPA to deploy
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      - develop/spa
+      - main
 
 jobs:
   build-and-deploy:
@@ -12,32 +12,25 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
+          cache-dependency-path: acm/package-lock.json
 
       - name: Install dependencies
-        working-directory: ACM_website
-        run: npm install
+        working-directory: acm
+        run: npm ci
 
       - name: Build Vue app
-        working-directory: ACM_website
+        working-directory: acm
         run: npm run build
 
-      - name: Deploy dist to deploy branch
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-
-          git checkout deploy || git checkout -b deploy
-          git rm -rf .
-          cp -r ACM_website/dist/* .
-          echo "ac-md.com" > CNAME
-
-          git add .
-          git commit -m "Deploy SPA"
-          git push origin deploy --force
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: acm/dist
+          cname: ac-md.com
