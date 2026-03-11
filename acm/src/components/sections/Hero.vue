@@ -163,7 +163,7 @@ import { profile } from '../../data/profile'
 }
 
 .hero-name {
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-size: clamp(2rem, 34vw, 2.5rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-primary);
