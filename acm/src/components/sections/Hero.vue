@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
 import { profile } from '../../data/profile'
 </script>
 
@@ -51,7 +52,7 @@ import { profile } from '../../data/profile'
           >
             X (Twitter)
           </a>
-          <a href="#pricing" class="btn btn--outline">依頼・料金</a>
+          <RouterLink to="/pricing" class="btn btn--outline">依頼・料金</RouterLink>
         </div>
       </div>
     </div>
@@ -163,7 +164,7 @@ import { profile } from '../../data/profile'
 }
 
 .hero-name {
-  font-size: clamp(2rem, 34vw, 2.5rem);
+  font-size: clamp(2rem, 3vw, 2.5rem);
   font-weight: 800;
   letter-spacing: -0.02em;
   color: var(--text-primary);

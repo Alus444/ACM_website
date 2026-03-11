@@ -14,16 +14,18 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 <template>
   <header :class="['site-header', { scrolled }]">
     <div class="header-inner">
-      <a href="#hero" class="logo">
+      <RouterLink to="/" class="logo">
         <span class="logo-bracket">[</span>
         ACM
         <span class="logo-bracket">]</span>
-      </a>
+      </RouterLink>
 
       <nav class="nav">
-        <a href="#gallery" class="nav-link">Works</a>
-        <a href="#booth" class="nav-link">BOOTH</a>
-        <a href="#pricing" class="nav-link nav-link--accent">Commission</a>
+        <RouterLink to="/" class="nav-link">Top</RouterLink>
+        <RouterLink to="/movie" class="nav-link">MOVIE</RouterLink>
+        <RouterLink to="/booth" class="nav-link">BOOTH</RouterLink>
+        <RouterLink to="/pricing" class="nav-link">Commission</RouterLink>
+        <RouterLink to="/contact" class="nav-link">Contact</RouterLink>
       </nav>
     </div>
   </header>
@@ -79,23 +81,18 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   letter-spacing: 0.05em;
   color: var(--text-secondary);
   text-decoration: none;
-  transition: color 0.2s;
+  padding: 0.4rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: color 0.2s, border-color 0.2s;
 }
 
 .nav-link:hover {
   color: var(--text-primary);
 }
 
-.nav-link--accent {
+.nav-link.router-link-exact-active {
   color: var(--accent);
-  border: 1px solid var(--accent);
-  padding: 0.4rem 1rem;
-  border-radius: 4px;
-  transition: background 0.2s, color 0.2s;
-}
-
-.nav-link--accent:hover {
-  background: var(--accent);
-  color: #080b12;
+  border-color: var(--accent);
 }
 </style>

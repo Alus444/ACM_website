@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { boothItems } from '../../data/booth'
+
+const preview = computed(() => boothItems.slice(0, 3))
 
 function formatPrice(price: number): string {
   return `¥${price.toLocaleString('ja-JP')}`
@@ -11,12 +14,13 @@ function formatPrice(price: number): string {
     <div class="section-inner">
       <div class="section-header">
         <p class="section-label">BOOTH</p>
-        <h2 class="section-title">販売中の作品</h2>
+        <h2 class="section-title">販売中の商品</h2>
+        <RouterLink to="/booth" class="more-link">すべて見る &rarr;</RouterLink>
       </div>
 
       <div class="booth-grid">
         <a
-          v-for="item in boothItems"
+          v-for="item in preview"
           :key="item.id"
           :href="item.boothUrl"
           target="_blank"
@@ -75,6 +79,24 @@ function formatPrice(price: number): string {
 
 .section-header {
   margin-bottom: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem 1.5rem;
+}
+
+.more-link {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: var(--accent);
+  text-decoration: none;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  align-self: flex-end;
+}
+
+.more-link:hover {
+  opacity: 1;
 }
 
 .section-label {
@@ -162,8 +184,8 @@ function formatPrice(price: number): string {
   font-weight: 600;
   letter-spacing: 0.05em;
   padding: 0.25rem 0.6rem;
-  background: rgba(0, 200, 255, 0.15);
-  border: 1px solid rgba(0, 200, 255, 0.3);
+  background: rgba(8, 11, 18, 0.75);
+  border: 1px solid rgba(0, 200, 255, 0.4);
   border-radius: 4px;
   color: var(--accent);
 }

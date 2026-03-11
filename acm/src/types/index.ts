@@ -16,6 +16,7 @@ export interface BoothItem {
   price: number
   boothUrl: string
   category: string
+  tags?: string[]
 }
 
 export interface PriceOption {
@@ -28,6 +29,15 @@ export interface PriceCategory {
   name: string
   options: PriceOption[]
   notes?: string[]
+  contactLink?: boolean
+}
+
+export interface Movie {
+  youtubeId: string
+  title: string
+  description?: string
+  year?: number
+  tags?: string[]
 }
 
 export interface Profile {

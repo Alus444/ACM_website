@@ -1,22 +1,23 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { movies } from '../../data/movies'
+import { movies } from '../data/movies'
 
-const preview = computed(() => movies.slice(0, 3))
+const sorted = computed(() =>
+  [...movies].sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
+)
 </script>
 
 <template>
-  <section id="movie" class="movie-section">
-    <div class="section-inner">
-      <div class="section-header">
-        <p class="section-label">Movie</p>
-        <h2 class="section-title">制作した動画</h2>
-        <RouterLink to="/movie" class="more-link">すべて見る &rarr;</RouterLink>
+  <main class="movie-page">
+    <div class="page-inner">
+      <div class="page-header">
+        <p class="page-label">Movie</p>
+        <h1 class="page-title">制作した動画</h1>
       </div>
 
       <div class="movie-grid">
         <a
-          v-for="movie in preview"
+          v-for="movie in sorted"
           :key="movie.youtubeId"
           :href="`https://www.youtube.com/watch?v=${movie.youtubeId}`"
           target="_blank"
@@ -46,56 +47,38 @@ const preview = computed(() => movies.slice(0, 3))
         </a>
       </div>
     </div>
-  </section>
+  </main>
 </template>
 
 <style scoped>
-.movie-section {
-  padding: 6rem 2rem;
+.movie-page {
+  min-height: 100vh;
+  padding: 8rem 2rem 6rem;
 }
 
-.section-inner {
+.page-inner {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.section-header {
+.page-header {
   margin-bottom: 3rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.75rem 1.5rem;
 }
 
-.section-label {
+.page-label {
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--accent);
   margin: 0 0 0.5rem;
-  width: 100%;
 }
 
-.section-title {
+.page-title {
   font-size: clamp(1.8rem, 3vw, 2.5rem);
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
-}
-
-.more-link {
-  margin-left: auto;
-  font-size: 0.85rem;
-  color: var(--accent);
-  text-decoration: none;
-  opacity: 0.8;
-  transition: opacity 0.2s;
-  align-self: flex-end;
-}
-
-.more-link:hover {
-  opacity: 1;
 }
 
 /* --- Grid --- */
@@ -123,7 +106,6 @@ const preview = computed(() => movies.slice(0, 3))
   box-shadow: 0 8px 32px rgba(0, 200, 255, 0.1);
 }
 
-/* --- Thumbnail --- */
 .movie-thumb {
   position: relative;
   aspect-ratio: 16 / 9;
@@ -165,7 +147,6 @@ const preview = computed(() => movies.slice(0, 3))
   line-height: 1;
 }
 
-/* --- Body --- */
 .movie-body {
   padding: 1.25rem;
 }
