@@ -1,10 +1,24 @@
 [
-  {
-    "url": "https://alushop.booth.pm/items/7215147",
-    "category": "3D装飾品"
-  },
-  {
-    "url": "https://alushop.booth.pm/items/6408172",
-    "category": "衣装"
-  }
+  { "url": "https://alushop.booth.pm/items/7215147", "category": "装飾品" },
+  { "url": "https://alushop.booth.pm/items/6408172", "category": "衣装" },
+  { "url": "https://alushop.booth.pm/items/7635862", "category": "キャラクター" },
+  { "url": "https://alushop.booth.pm/items/6199902", "category": "小道具" },
+  { "url": "https://alushop.booth.pm/items/5981234", "category": "装飾品" },
+  { "url": "https://alushop.booth.pm/items/5970225", "category": "小道具" },
+  { "url": "https://alushop.booth.pm/items/5443259", "category": "小道具" },
+  { "url": "https://alushop.booth.pm/items/5345111", "category": "小道具" },
+  { "url": "https://alushop.booth.pm/items/5191970", "category": "小道具" },
+  { "url": "https://alushop.booth.pm/items/4887704", "category": "衣装" },
+  { "url": "https://alushop.booth.pm/items/4718469", "category": "シェーダー" },
+  { "url": "https://alushop.booth.pm/items/4656735", "category": "小道具" },
+  { "url": "https://alushop.booth.pm/items/4646652", "category": "シェーダー" },
+  { "url": "https://alushop.booth.pm/items/4483431", "category": "小道具" },
+  { "url": "https://alushop.booth.pm/items/4440170", "category": "衣装" },
+  { "url": "https://alushop.booth.pm/items/3998016", "category": "衣装" },
+  { "url": "https://alushop.booth.pm/items/3827449", "category": "小道具" },
+  { "url": "https://alushop.booth.pm/items/3658277", "category": "衣装" },
+  { "url": "https://gen3d.booth.pm/items/8038990", "category": "キャラクター", "tags": ["監修"] },
+  { "url": "https://gen3d.booth.pm/items/7898844", "category": "小道具", "tags": ["監修"] },
+  { "url": "https://gen3d.booth.pm/items/7100741", "category": "キャラクター", "tags": ["監修"] },
+  { "url": "https://gen3d.booth.pm/items/6882702", "category": "衣装", "tags": ["監修"] }
 ]

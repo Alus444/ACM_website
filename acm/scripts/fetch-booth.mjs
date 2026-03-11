@@ -62,7 +62,7 @@ async function downloadImage(imageUrl, itemId) {
 }
 
 async function fetchItem(entry) {
-  const { url, category } = entry
+  const { url, category, tags } = entry
   console.log(`Fetching: ${url}`)
 
   const res = await fetch(url, {
@@ -89,17 +89,52 @@ async function fetchItem(entry) {
   console.log(`  title: ${title}`)
   console.log(`  price: ${price}`)
 
-  return { id: `booth-${id}`, title, description, imageUrl, price, boothUrl: url, category }
+  const item = { id: `booth-${id}`, title, description, imageUrl, price, boothUrl: url, category }
+  if (tags && tags.length) item.tags = tags
+  return item
+}
+
+function loadExisting() {
+  try {
+    const src = readFileSync(join(root, 'src/data/booth.ts'), 'utf-8')
+    const match = src.match(/export const boothItems[^=]+=\s*(\[[\s\S]*\])/)
+    if (match) return JSON.parse(match[1])
+  } catch {}
+  return []
 }
 
 async function main() {
-  const items = []
+  const force = process.argv.includes('--force')
+  if (force) console.log('Force mode: re-fetching all items.\n')
+
+  const existing = loadExisting()
+  const existingIds = new Set(existing.map(i => i.id))
+
+  const items = force ? [] : [...existing]
+  let fetched = 0
 
   for (const entry of urlList) {
+    const id = entry.url.match(/\/items\/(\d+)/)?.[1]
+    if (!force && id && existingIds.has(`booth-${id}`)) {
+      // category/tags だけ上書きして再利用
+      const idx = items.findIndex(i => i.id === `booth-${id}`)
+      items[idx].category = entry.category
+      if (entry.tags) items[idx].tags = entry.tags
+      else delete items[idx].tags
+      continue
+    }
     const item = await fetchItem(entry)
-    if (item) items.push(item)
+    if (item) { items.push(item); fetched++ }
     await new Promise(r => setTimeout(r, 800))
   }
+
+  // booth-urls.json の順番に並べ直す
+  const order = urlList.map(e => e.url.match(/\/items\/(\d+)/)?.[1]).filter(Boolean)
+  items.sort((a, b) => {
+    const ai = order.indexOf(a.id.replace('booth-', ''))
+    const bi = order.indexOf(b.id.replace('booth-', ''))
+    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi)
+  })
 
   const ts = `import type { BoothItem } from '../types'
 
@@ -108,7 +143,7 @@ export const boothItems: BoothItem[] = ${JSON.stringify(items, null, 2)}
 `
 
   writeFileSync(join(root, 'src/data/booth.ts'), ts, 'utf-8')
-  console.log(`\nGenerated booth.ts with ${items.length} items.`)
+  console.log(`\nDone. ${fetched} new item(s) fetched, ${items.length} total.`)
 }
 
 main().catch(e => { console.error(e); process.exit(1) })
