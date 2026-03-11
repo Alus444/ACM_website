@@ -16,8 +16,8 @@ import { priceCategories, commissionNotes } from '../../data/commission'
           <h3 class="price-cat-name">{{ cat.name }}</h3>
           <ul class="price-list">
             <template v-for="(opt, i) in cat.options" :key="opt.label">
-              <li v-if="cat.name === '3DCG' && i === 3 && cat.options[i].note" class="notes-inline">
-                <p class="price-note">{{ cat.options[i].note }}</p>
+              <li v-if="cat.name === '3DCG' && i === 3 && opt.note" class="notes-inline">
+                <p class="price-note">{{ opt.note }}</p>
               </li>
               <li class="price-row">
                 <div class="price-row-main">
