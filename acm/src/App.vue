@@ -5,17 +5,24 @@ import Hero from './components/sections/Hero.vue'
 import Gallery from './components/sections/Gallery.vue'
 import BoothItems from './components/sections/BoothItems.vue'
 import Pricing from './components/sections/Pricing.vue'
+import UnderConstruction from './components/sections/UnderConstruction.vue'
+
+// ★ true = 工事中ページ / false = 通常ページ
+const underConstruction = true
 </script>
 
 <template>
-  <Header />
-  <main>
-    <Hero />
-    <Gallery />
-    <BoothItems />
-    <Pricing />
-  </main>
-  <Footer />
+  <UnderConstruction v-if="underConstruction" />
+  <template v-else>
+    <Header />
+    <main>
+      <Hero />
+      <Gallery />
+      <BoothItems />
+      <Pricing />
+    </main>
+    <Footer />
+  </template>
 </template>
 
 <style scoped>
