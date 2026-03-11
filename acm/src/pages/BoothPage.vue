@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { boothItems } from '../data/booth'
+import PageHeader from '../components/layout/PageHeader.vue'
 
 const activeCategory = ref('すべて')
 
@@ -33,13 +34,11 @@ function formatPrice(price: number): string {
 <template>
   <main class="booth-page">
     <div class="page-inner">
-      <div class="page-header">
-        <p class="page-label">BOOTH</p>
-        <h1 class="page-title">販売中の商品</h1>
+      <PageHeader label="BOOTH" title="販売中の商品">
         <a href="https://alushop.booth.pm/" target="_blank" rel="noopener" class="shop-link">
           ショップを見る &rarr;
         </a>
-      </div>
+      </PageHeader>
 
       <!-- フィルターバー -->
       <div class="filter-area">
@@ -65,7 +64,7 @@ function formatPrice(price: number): string {
             :class="['filter-btn', 'filter-btn--supervised', { active: showSupervised }]"
             @click="activeCategory = '監修'"
           >
-            監修作品
+            監修
             <span class="filter-count">{{ supervisedItems.length }}</span>
           </button>
           <button
@@ -197,31 +196,6 @@ function formatPrice(price: number): string {
 .page-inner {
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.page-header {
-  margin-bottom: 2.5rem;
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.page-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin: 0;
-  width: 100%;
-}
-
-.page-title {
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
 }
 
 .shop-link {

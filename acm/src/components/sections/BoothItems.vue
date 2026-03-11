@@ -106,6 +106,7 @@ function formatPrice(price: number): string {
   text-transform: uppercase;
   color: var(--accent);
   margin: 0 0 0.5rem;
+  width: 100%;
 }
 
 .section-title {

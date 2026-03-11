@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import PageHeader from '../components/layout/PageHeader.vue'
+
 const links = [
   {
     label: 'X (Twitter)',
@@ -24,11 +26,7 @@ const links = [
 <template>
   <main class="contact-page">
     <div class="page-inner">
-      <div class="page-header">
-        <p class="page-label">Contact</p>
-        <h1 class="page-title">連絡先</h1>
-      </div>
-
+      <PageHeader label="Contact" title="連絡先" />
       <div class="contact-grid">
         <a
           v-for="link in links"
@@ -61,26 +59,6 @@ const links = [
 .page-inner {
   max-width: 640px;
   margin: 0 auto;
-}
-
-.page-header {
-  margin-bottom: 3rem;
-}
-
-.page-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin: 0 0 0.5rem;
-}
-
-.page-title {
-  font-size: clamp(1.8rem, 3vw, 2.5rem);
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
 }
 
 .contact-grid {

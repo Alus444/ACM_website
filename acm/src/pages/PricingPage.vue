@@ -16,7 +16,7 @@ import Pricing from '../components/sections/Pricing.vue'
 <style scoped>
 .pricing-page {
   min-height: 100vh;
-  padding-top: 6rem;
+  padding-top: 2rem;
 }
 
 .contact-cta {
