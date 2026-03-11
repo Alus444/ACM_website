@@ -8,7 +8,7 @@ import Pricing from './components/sections/Pricing.vue'
 import UnderConstruction from './components/sections/UnderConstruction.vue'
 
 // ★ true = 工事中ページ / false = 通常ページ
-const underConstruction = true
+const underConstruction = false
 </script>
 
 <template>
