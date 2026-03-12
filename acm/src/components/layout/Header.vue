@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useMode } from '../../composables/useMode'
 
+const { isPro } = useMode()
 const scrolled = ref(false)
 
 function onScroll() {
@@ -20,9 +22,10 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
       <nav class="nav">
         <RouterLink to="/" class="nav-link">Top</RouterLink>
-        <RouterLink to="/movie" class="nav-link">MOVIE</RouterLink>
         <RouterLink to="/booth" class="nav-link">BOOTH</RouterLink>
-        <RouterLink to="/pricing" class="nav-link">Commission</RouterLink>
+        <RouterLink to="/movie" class="nav-link">MOVIE</RouterLink>
+        <RouterLink v-if="isPro" to="/works" class="nav-link">Works</RouterLink>
+        <RouterLink v-else to="/pricing" class="nav-link">Commission</RouterLink>
         <RouterLink to="/contact" class="nav-link">Contact</RouterLink>
       </nav>
     </div>
@@ -36,7 +39,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 1.2rem 2rem;
+  padding: 1.6rem 2rem;
   transition: background 0.3s, backdrop-filter 0.3s, border-color 0.3s;
   border-bottom: 1px solid transparent;
 }

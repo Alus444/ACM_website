@@ -59,6 +59,7 @@ import { priceCategories, commissionNotes } from '../../data/commission'
 }
 
 .section-header {
+  padding-top: 1.25rem;
   margin-bottom: 3rem;
 }
 

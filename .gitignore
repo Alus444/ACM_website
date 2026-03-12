@@ -1,0 +1,5 @@
+# 機密情報・ローカル専用ファイル
+ARCHITECTURE.md
+COMMANDS.md
+acm/src/data/profile-pro.ts
+acm/.env.rapro
