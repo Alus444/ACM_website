@@ -41,7 +41,9 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   z-index: 100;
   padding: 1.6rem 2rem;
   transition: background 0.3s, backdrop-filter 0.3s, border-color 0.3s;
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8, 11, 18, 0.85);
+  backdrop-filter: blur(12px);
 }
 
 .site-header.scrolled {
