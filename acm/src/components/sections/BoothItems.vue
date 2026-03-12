@@ -181,6 +181,7 @@ function formatPrice(price: number): string {
   position: absolute;
   top: 0.75rem;
   left: 0.75rem;
+  z-index: 1;
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.05em;
