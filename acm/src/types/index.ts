@@ -38,6 +38,7 @@ export interface Movie {
   description?: string
   year?: number
   tags?: string[]
+  proOnly?: boolean
 }
 
 export interface Profile {

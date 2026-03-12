@@ -2,9 +2,14 @@
 import { computed } from 'vue'
 import { movies } from '../data/movies'
 import PageHeader from '../components/layout/PageHeader.vue'
+import { useMode } from '../composables/useMode'
+
+const { isPro } = useMode()
 
 const sorted = computed(() =>
-  [...movies].sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
+  [...movies]
+    .filter(m => isPro || !m.proOnly)
+    .sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
 )
 </script>
 

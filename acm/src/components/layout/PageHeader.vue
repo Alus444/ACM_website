@@ -74,7 +74,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 /* --- ミニバー (fixed, 全幅) --- */
 .page-mini-bar {
   position: fixed;
-  top: 4.5rem;
+  top: 5.2rem;
   left: 0;
   right: 0;
   z-index: 90;

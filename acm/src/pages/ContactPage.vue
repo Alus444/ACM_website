@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import PageHeader from '../components/layout/PageHeader.vue'
+import { useMode } from '../composables/useMode'
 
-const links = [
+const { isPro } = useMode()
+
+const linksDefault = [
   {
     label: 'X (Twitter)',
     handle: '@Alus_ND',
@@ -21,6 +24,17 @@ const links = [
     url: 'mailto:alus@ac-md.com',
   },
 ]
+
+const linksPro = [
+  {
+    label: 'Email',
+    handle: 'azc@ac-md.com',
+    desc: 'メールでのお問い合わせ',
+    url: 'mailto:azc@ac-md.com',
+  },
+]
+
+const links = isPro ? linksPro : linksDefault
 </script>
 
 <template>
@@ -45,7 +59,10 @@ const links = [
         </a>
       </div>
 
-      <p class="note">お仕事の依頼は Twitter の DM が一番確認しやすいです。</p>
+      <p class="note">
+        <template v-if="isPro">ご依頼・ご相談はメールにてお気軽にお問い合わせください。</template>
+        <template v-else>お仕事の依頼は Twitter の DM が一番確認しやすいです。</template>
+      </p>
     </div>
   </main>
 </template>

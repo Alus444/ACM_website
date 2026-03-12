@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { profile } from '../../data/profile'
+import { profilePro } from '../../data/profile-pro'
+import { useMode } from '../../composables/useMode'
+
+const { isPro } = useMode()
+const activeProfile = isPro ? profilePro : profile
 </script>
 
 <template>
@@ -29,30 +34,31 @@ import { profile } from '../../data/profile'
 
       <!-- 右：テキスト -->
       <div class="hero-content">
-        <p class="hero-handle">{{ profile.handle }}</p>
-        <h1 class="hero-name">{{ profile.name }}</h1>
+        <p class="hero-handle">{{ activeProfile.handle }}</p>
+        <h1 class="hero-name" :class="{ 'hero-name--pro': isPro }">{{ activeProfile.name }}</h1>
 
         <p class="hero-bio">
-          <span v-for="(line, i) in profile.bio.split('\n')" :key="i">
-            {{ line }}<br v-if="i < profile.bio.split('\n').length - 1" />
+          <span v-for="(line, i) in activeProfile.bio.split('\n')" :key="i">
+            {{ line }}<br v-if="i < activeProfile.bio.split('\n').length - 1" />
           </span>
         </p>
 
         <div class="hero-skills">
-          <span v-for="skill in profile.skills" :key="skill" class="skill-tag">{{ skill }}</span>
+          <span v-for="skill in activeProfile.skills" :key="skill" class="skill-tag">{{ skill }}</span>
         </div>
 
         <div class="hero-actions">
           <a
-            v-if="profile.social.twitter"
-            :href="profile.social.twitter"
+            v-if="!isPro && activeProfile.social.twitter"
+            :href="activeProfile.social.twitter"
             target="_blank"
             rel="noopener"
             class="btn btn--primary"
           >
             X (Twitter)
           </a>
-          <RouterLink to="/pricing" class="btn btn--outline">依頼・料金</RouterLink>
+          <RouterLink v-if="isPro" to="/contact" class="btn btn--primary">お問い合わせ</RouterLink>
+          <RouterLink v-else to="/pricing" class="btn btn--outline">依頼・料金</RouterLink>
         </div>
       </div>
     </div>
@@ -170,6 +176,10 @@ import { profile } from '../../data/profile'
   color: var(--text-primary);
   margin: 0 0 1.5rem;
   line-height: 1.1;
+}
+
+.hero-name--pro {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
 }
 
 .hero-bio {
