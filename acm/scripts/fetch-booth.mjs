@@ -33,8 +33,11 @@ function cleanDescription(raw) {
 }
 
 function extractPrice(html) {
-  const ldMatch = html.match(/"price"\s*:\s*"?([\d.]+)"?/)
-  if (ldMatch) return Math.round(parseFloat(ldMatch[1]))
+  // 複数価格がある場合は最安値を返す
+  const allPrices = [...html.matchAll(/"price"\s*:\s*"?([\d.]+)"?/g)]
+    .map(m => Math.round(parseFloat(m[1])))
+    .filter(p => p > 0)
+  if (allPrices.length > 0) return Math.min(...allPrices)
   const spanMatch = html.match(/class="[^"]*price[^"]*"[^>]*>\s*[\¥￥]?([\d,]+)/)
   if (spanMatch) return parseInt(spanMatch[1].replace(/,/g, ''), 10)
   return 0
@@ -124,7 +127,18 @@ async function main() {
       continue
     }
     const item = await fetchItem(entry)
-    if (item) { items.push(item); fetched++ }
+    if (item) {
+      // 価格が0のとき、既存データに価格があれば引き継ぐ
+      if (item.price === 0) {
+        const prev = existing.find(i => i.id === item.id)
+        if (prev && prev.price > 0) {
+          item.price = prev.price
+          console.log(`  price: inherited ${item.price} (fetch returned 0)`)
+        }
+      }
+      items.push(item)
+      fetched++
+    }
     await new Promise(r => setTimeout(r, 800))
   }
 

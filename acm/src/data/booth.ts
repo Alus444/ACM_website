@@ -115,7 +115,7 @@ export const boothItems: BoothItem[] = [
     "title": "ドットスクロールシェーダー SG-327sh",
     "description": "機能増やしすぎてよく分からなくなってきました ◇概要 - 画像をドット化してスクロールさせるだけのシェーダーです。 - 格子と丸形のドットが選べます。無し...",
     "imageUrl": "/images/booth/booth-4646652.jpg",
-    "price": 0,
+    "price": 500,
     "boothUrl": "https://alushop.booth.pm/items/4646652",
     "category": "シェーダー"
   },
