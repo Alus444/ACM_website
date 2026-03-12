@@ -16,8 +16,10 @@ if (existsSync(outPath)) {
 
 const json = process.env.PROFILE_PRO_JSON
 if (!json) {
-  console.error('Error: PROFILE_PRO_JSON environment variable is not set.')
-  process.exit(1)
+  // alus ビルド用プレースホルダー（ビルドエラー回避のみ。実際には使われない）
+  writeFileSync(outPath, `import type { Profile } from '../types'\nexport const profilePro: Profile = {} as Profile\n`, 'utf8')
+  console.log('profile-pro.ts placeholder generated (no PROFILE_PRO_JSON set).')
+  process.exit(0)
 }
 
 const p = JSON.parse(json)

@@ -29,9 +29,13 @@ jobs:
         working-directory: acm
         run: node scripts/fetch-booth.mjs
 
+      - name: Generate profile placeholder
+        working-directory: acm
+        run: node scripts/gen-profile-pro.mjs
+
       - name: Build Vue app
         working-directory: acm
-        run: npm run build
+        run: npm run build:alus
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
