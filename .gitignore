@@ -1,5 +1,6 @@
 # ローカル専用ファイル
 ARCHITECTURE.md
 COMMANDS.md
+CLAUDE.md
 acm/src/data/profile-pro.ts
 acm/.env.rapro
