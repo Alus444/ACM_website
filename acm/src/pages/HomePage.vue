@@ -11,8 +11,8 @@ const { isPro } = useMode()
 <template>
   <main>
     <Hero />
-    <Gallery />
     <BoothItems />
+    <Gallery />
     <Pricing v-if="!isPro" />
   </main>
 </template>

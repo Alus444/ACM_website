@@ -14,8 +14,10 @@ export interface BoothItem {
   description: string
   imageUrl: string
   price: number
+  isStartingPrice?: boolean
   boothUrl: string
   category: string
+  categories?: string[]
   tags?: string[]
 }
 
