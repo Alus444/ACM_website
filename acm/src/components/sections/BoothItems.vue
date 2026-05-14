@@ -4,8 +4,12 @@ import { boothItems } from '../../data/booth'
 
 const preview = computed(() => boothItems.slice(0, 3))
 
-function formatPrice(price: number): string {
-  return `¥${price.toLocaleString('ja-JP')}`
+function itemCategories(item: { category: string; categories?: string[] }): string[] {
+  return item.categories ?? [item.category]
+}
+
+function formatPrice(price: number, isStartingPrice = false): string {
+  return `¥${price.toLocaleString('ja-JP')}${isStartingPrice ? '〜' : ''}`
 }
 </script>
 
@@ -37,14 +41,16 @@ function formatPrice(price: number): string {
               loading="lazy"
               @error="($event.target as HTMLImageElement).style.display = 'none'"
             />
-            <span class="booth-category">{{ item.category }}</span>
+            <div class="booth-categories">
+              <span v-for="cat in itemCategories(item)" :key="cat" class="booth-category">{{ cat }}</span>
+            </div>
           </div>
 
           <div class="booth-body">
             <h3 class="booth-title">{{ item.title }}</h3>
             <p class="booth-desc">{{ item.description }}</p>
             <div class="booth-footer">
-              <span class="booth-price">{{ formatPrice(item.price) }}</span>
+              <span class="booth-price">{{ formatPrice(item.price, item.isStartingPrice) }}</span>
               <span class="booth-cta">BOOTH で見る &rarr;</span>
             </div>
           </div>
@@ -177,11 +183,18 @@ function formatPrice(price: number): string {
   color: var(--border);
 }
 
-.booth-category {
+.booth-categories {
   position: absolute;
   top: 0.75rem;
   left: 0.75rem;
   z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  max-width: calc(100% - 1.5rem);
+}
+
+.booth-category {
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.05em;

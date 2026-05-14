@@ -33,14 +33,43 @@ function cleanDescription(raw) {
 }
 
 function extractPrice(html) {
+  const prices = []
+  let isStartingPrice = false
+
+  const addPrice = (value, starting = false) => {
+    const price = Math.round(parseFloat(String(value).replace(/,/g, '')))
+    if (price > 0) {
+      prices.push(price)
+      if (starting) isStartingPrice = true
+    }
+  }
+
+  const addOfferPrices = offers => {
+    for (const offer of Array.isArray(offers) ? offers : [offers]) {
+      if (!offer || typeof offer !== 'object') continue
+      if (offer.lowPrice) addPrice(offer.lowPrice, true)
+      else addPrice(offer.price)
+    }
+  }
+
+  for (const match of html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
+    try {
+      const data = JSON.parse(match[1])
+      for (const entry of Array.isArray(data) ? data : [data]) {
+        addOfferPrices(entry?.offers)
+      }
+    } catch {}
+  }
+
   // 複数価格がある場合は最安値を返す
   const allPrices = [...html.matchAll(/"price"\s*:\s*"?([\d.]+)"?/g)]
     .map(m => Math.round(parseFloat(m[1])))
     .filter(p => p > 0)
-  if (allPrices.length > 0) return Math.min(...allPrices)
+  prices.push(...allPrices)
+  if (prices.length > 0) return { price: Math.min(...prices), isStartingPrice }
   const spanMatch = html.match(/class="[^"]*price[^"]*"[^>]*>\s*[\¥￥]?([\d,]+)/)
-  if (spanMatch) return parseInt(spanMatch[1].replace(/,/g, ''), 10)
-  return 0
+  if (spanMatch) return { price: parseInt(spanMatch[1].replace(/,/g, ''), 10), isStartingPrice: false }
+  return { price: 0, isStartingPrice: false }
 }
 
 async function downloadImage(imageUrl, itemId) {
@@ -65,7 +94,9 @@ async function downloadImage(imageUrl, itemId) {
 }
 
 async function fetchItem(entry) {
-  const { url, category, tags } = entry
+  const { url, category, categories, tags } = entry
+  const itemCategories = categories ?? (category ? [category] : [])
+  const primaryCategory = itemCategories[0] ?? ''
   console.log(`Fetching: ${url}`)
 
   const res = await fetch(url, {
@@ -86,13 +117,15 @@ async function fetchItem(entry) {
   const title = cleanTitle(extractMeta(html, 'og:title'))
   const remoteImage = extractMeta(html, 'og:image') || extractMeta(html, 'twitter:image')
   const description = cleanDescription(extractMeta(html, 'og:description'))
-  const price = extractPrice(html)
+  const { price, isStartingPrice } = extractPrice(html)
   const imageUrl = await downloadImage(remoteImage, id)
 
   console.log(`  title: ${title}`)
   console.log(`  price: ${price}`)
 
-  const item = { id: `booth-${id}`, title, description, imageUrl, price, boothUrl: url, category }
+  const item = { id: `booth-${id}`, title, description, imageUrl, price, boothUrl: url, category: primaryCategory }
+  if (itemCategories.length > 1) item.categories = itemCategories
+  if (isStartingPrice) item.isStartingPrice = true
   if (tags && tags.length) item.tags = tags
   return item
 }
@@ -121,7 +154,10 @@ async function main() {
     if (!force && id && existingIds.has(`booth-${id}`)) {
       // category/tags だけ上書きして再利用
       const idx = items.findIndex(i => i.id === `booth-${id}`)
-      items[idx].category = entry.category
+      const itemCategories = entry.categories ?? (entry.category ? [entry.category] : [])
+      items[idx].category = itemCategories[0] ?? ''
+      if (itemCategories.length > 1) items[idx].categories = itemCategories
+      else delete items[idx].categories
       if (entry.tags) items[idx].tags = entry.tags
       else delete items[idx].tags
       continue

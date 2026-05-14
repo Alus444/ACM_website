@@ -11,8 +11,12 @@ const ownItems = computed(() => boothItems.filter(item => !SPECIAL_TAGS.some(t =
 const supervisedItems = computed(() => boothItems.filter(item => item.tags?.includes('監修')))
 const collaboItems = computed(() => boothItems.filter(item => item.tags?.includes('コラボ')))
 
+function itemCategories(item: { category: string; categories?: string[] }): string[] {
+  return item.categories ?? [item.category]
+}
+
 const ownCategories = computed(() => {
-  const cats = [...new Set(ownItems.value.map(item => item.category))]
+  const cats = [...new Set(ownItems.value.flatMap(itemCategories))]
   return ['すべて', ...cats]
 })
 
@@ -23,11 +27,11 @@ const showOwn = computed(() => !showSupervised.value && !showCollab.value)
 const filtered = computed(() =>
   activeCategory.value === 'すべて'
     ? ownItems.value
-    : ownItems.value.filter(item => item.category === activeCategory.value)
+    : ownItems.value.filter(item => itemCategories(item).includes(activeCategory.value))
 )
 
-function formatPrice(price: number): string {
-  return `¥${price.toLocaleString('ja-JP')}`
+function formatPrice(price: number, isStartingPrice = false): string {
+  return `¥${price.toLocaleString('ja-JP')}${isStartingPrice ? '〜' : ''}`
 }
 </script>
 
@@ -52,7 +56,7 @@ function formatPrice(price: number): string {
           >
             {{ cat }}
             <span class="filter-count">
-              {{ cat === 'すべて' ? ownItems.length : ownItems.filter(i => i.category === cat).length }}
+              {{ cat === 'すべて' ? ownItems.length : ownItems.filter(i => itemCategories(i).includes(cat)).length }}
             </span>
           </button>
         </div>
@@ -99,13 +103,15 @@ function formatPrice(price: number): string {
                 loading="lazy"
                 @error="($event.target as HTMLImageElement).style.display = 'none'"
               />
-              <span class="booth-category">{{ item.category }}</span>
+              <div class="booth-categories">
+                <span v-for="cat in itemCategories(item)" :key="cat" class="booth-category">{{ cat }}</span>
+              </div>
             </div>
             <div class="booth-body">
               <h3 class="booth-title">{{ item.title }}</h3>
               <p class="booth-desc">{{ item.description }}</p>
               <div class="booth-footer">
-                <span class="booth-price">{{ formatPrice(item.price) }}</span>
+                <span class="booth-price">{{ formatPrice(item.price, item.isStartingPrice) }}</span>
                 <span class="booth-cta">BOOTH で見る &rarr;</span>
               </div>
             </div>
@@ -135,13 +141,15 @@ function formatPrice(price: number): string {
                 loading="lazy"
                 @error="($event.target as HTMLImageElement).style.display = 'none'"
               />
-              <span class="booth-category">{{ item.category }}</span>
+              <div class="booth-categories">
+                <span v-for="cat in itemCategories(item)" :key="cat" class="booth-category">{{ cat }}</span>
+              </div>
             </div>
             <div class="booth-body">
               <h3 class="booth-title">{{ item.title }}</h3>
               <p class="booth-desc">{{ item.description }}</p>
               <div class="booth-footer">
-                <span class="booth-price">{{ formatPrice(item.price) }}</span>
+                <span class="booth-price">{{ formatPrice(item.price, item.isStartingPrice) }}</span>
                 <span class="booth-cta">BOOTH で見る &rarr;</span>
               </div>
             </div>
@@ -170,13 +178,15 @@ function formatPrice(price: number): string {
                 loading="lazy"
                 @error="($event.target as HTMLImageElement).style.display = 'none'"
               />
-              <span class="booth-category">{{ item.category }}</span>
+              <div class="booth-categories">
+                <span v-for="cat in itemCategories(item)" :key="cat" class="booth-category">{{ cat }}</span>
+              </div>
             </div>
             <div class="booth-body">
               <h3 class="booth-title">{{ item.title }}</h3>
               <p class="booth-desc">{{ item.description }}</p>
               <div class="booth-footer">
-                <span class="booth-price">{{ formatPrice(item.price) }}</span>
+                <span class="booth-price">{{ formatPrice(item.price, item.isStartingPrice) }}</span>
                 <span class="booth-cta">BOOTH で見る &rarr;</span>
               </div>
             </div>
@@ -337,10 +347,17 @@ function formatPrice(price: number): string {
   color: var(--border);
 }
 
-.booth-category {
+.booth-categories {
   position: absolute;
   top: 0.75rem;
   left: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  max-width: calc(100% - 1.5rem);
+}
+
+.booth-category {
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.05em;

@@ -3,6 +3,39 @@ import type { BoothItem } from '../types'
 // このファイルは scripts/fetch-booth.mjs で自動生成されます
 export const boothItems: BoothItem[] = [
   {
+    "id": "booth-8353878",
+    "title": "Aether",
+    "description": "ワールドの空をこれ一つで！！！ 日の出、青空、夕焼け、星空に流れ星や天の川。 Aether(エーテル)は一つで全ての時間の表現が可能なシェーダーです。 S...",
+    "imageUrl": "/images/booth/booth-8353878.jpg",
+    "price": 2500,
+    "isStartingPrice": true,
+    "boothUrl": "https://alushop.booth.pm/items/8353878",
+    "category": "シェーダー"
+  },
+  {
+    "id": "booth-8171206",
+    "title": "時間連動虹彩色変更ギミック Vesper EC-415",
+    "description": "NDMFを使用し、非破壊的に目に時間経過で色が変わる機能を入れられるツールです。 発光やラメ、星などを追加できたり、既に所有している目のテクスチャを直接指...",
+    "imageUrl": "/images/booth/booth-8171206.jpg",
+    "price": 1200,
+    "boothUrl": "https://alushop.booth.pm/items/8171206",
+    "category": "ギミック"
+  },
+  {
+    "id": "booth-8171205",
+    "title": "ガラケー撮影ギミック FeaturePhone Filter GF-408",
+    "description": "ガラケー風の写真が撮れるギミックです。 ブロックノイズや荒い画質など、リアルタイムであの頃の雰囲気を再現します。 動作イメージは動画を参考にしてください。...",
+    "imageUrl": "/images/booth/booth-8171205.jpg",
+    "price": 1200,
+    "isStartingPrice": true,
+    "boothUrl": "https://alushop.booth.pm/items/8171205",
+    "category": "ギミック",
+    "categories": [
+      "ギミック",
+      "小道具"
+    ]
+  },
+  {
     "id": "booth-7215147",
     "title": "IRON RING_HEAD/NECK AT-723",
     "description": "数字が動くニキシー管内蔵のバンドです。 首輪やヘッドギアにどうぞ。 ニキシー管はランダム数字切り替えとカウントアップができます(0~9)。 エミッションの...",
@@ -85,19 +118,19 @@ export const boothItems: BoothItem[] = [
   },
   {
     "id": "booth-4887704",
-    "title": "Guideline DA-627",
-    "description": "OSCに対応できる余地は作りました。 正式に対応はしていませんが、OSCの時計を入れられるような人はなんとかできると思います。 対応シェーダーは三種類です...",
+    "title": "【リアルタイム対応】Guideline DA-627",
+    "description": "【2026/03/25 アップデート】 リアルタイムの時刻を取得できるようになりました！ 併せて、文字盤の各設定(アナログ針への変更や文字盤に使用する時間...",
     "imageUrl": "/images/booth/booth-4887704.jpg",
-    "price": 480,
+    "price": 580,
     "boothUrl": "https://alushop.booth.pm/items/4887704",
     "category": "衣装"
   },
   {
     "id": "booth-4718469",
     "title": "星空シェーダー SS-515",
-    "description": "テクスチャ不使用です。解像度の心配なし！ｽｺﾞｲ！ これ作るために逆三角関数勉強させられました。 よくわかりませんでした。 ◇概要 - 星空のシェーダーで...",
+    "description": "上位互換となる星空シェーダーを販売開始しました。金額はかなり異なるので、一度ご確認ください。 新商品にもこのシェーダーと同じものが内部に組み込まれており、...",
     "imageUrl": "/images/booth/booth-4718469.jpg",
-    "price": 580,
+    "price": 680,
     "boothUrl": "https://alushop.booth.pm/items/4718469",
     "category": "シェーダー"
   },
