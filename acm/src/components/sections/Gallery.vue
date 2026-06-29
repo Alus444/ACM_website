@@ -1,8 +1,17 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { movies } from '../../data/movies'
+import { movies, sortMoviesByDateDesc } from '../../data/movies'
+import type { Movie } from '../../types'
 
-const preview = computed(() => movies.slice(0, 3))
+const topMovieIds = ['Kq8p2Q2kHfg', 'mCjloHCSG9I', '2UixFWiWShc']
+
+const preview = computed(() => {
+  const topMovies = topMovieIds
+    .map(id => movies.find(movie => movie.youtubeId === id))
+    .filter((movie): movie is Movie => Boolean(movie))
+
+  return sortMoviesByDateDesc(topMovies)
+})
 </script>
 
 <template>
