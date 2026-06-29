@@ -38,6 +38,7 @@ export interface Movie {
   youtubeId: string
   title: string
   description?: string
+  date?: string
   year?: number
   tags?: string[]
   proOnly?: boolean

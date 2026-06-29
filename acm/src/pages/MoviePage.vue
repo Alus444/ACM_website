@@ -3,13 +3,17 @@ import { computed } from 'vue'
 import { movies } from '../data/movies'
 import PageHeader from '../components/layout/PageHeader.vue'
 import { useMode } from '../composables/useMode'
+import type { Movie } from '../types'
 
 const { isPro } = useMode()
+
+const getMovieSortKey = (movie: Movie) =>
+  movie.date ?? (movie.year ? `${movie.year.toString().padStart(4, '0')}-00-00` : '')
 
 const sorted = computed(() =>
   [...movies]
     .filter(m => isPro || !m.proOnly)
-    .sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
+    .sort((a, b) => getMovieSortKey(b).localeCompare(getMovieSortKey(a)))
 )
 </script>
 
