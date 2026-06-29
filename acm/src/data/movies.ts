@@ -28,3 +28,9 @@ export const movies: Movie[] = [
   { youtubeId: 'ESQoefo3Vrw', title: 'MusicVket3「Show you!」/クロスフェード', tags: ['MV'], year: 2021, date: '2021-11-03' },
   { youtubeId: 'K_4jydZH-S0', title: 'MusicVket2「ISSUE」/クロスフェード', tags: ['MV'], year: 2021, date: '2021-02-26' },
 ]
+
+const getMovieSortKey = (movie: Movie) =>
+  movie.date ?? (movie.year ? `${movie.year.toString().padStart(4, '0')}-00-00` : '')
+
+export const sortMoviesByDateDesc = (items: readonly Movie[]) =>
+  [...items].sort((a, b) => getMovieSortKey(b).localeCompare(getMovieSortKey(a)))
