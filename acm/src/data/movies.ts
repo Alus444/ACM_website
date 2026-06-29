@@ -24,6 +24,7 @@ export const movies: Movie[] = [
   { youtubeId: 'PxlnkFPGukA', title: "【活動5周年】アクアテラリウム／covered by 水縹アオ【TVアニメ『凪のあすから』EDテーマ】", tags: ['MV'], year: 2025 },
   { youtubeId: 'hRTMYEKU2OE', title: 'ずうっといっしょ！／covered by 水縹アオ', tags: ['MV'], year: 2024 },
   { youtubeId: 'bzU_y84QVag', title: '再会 -はるまきごはん／covered by 水縹アオ', tags: ['MV'], year: 2026 },
+  { youtubeId: '2UixFWiWShc', title: '【歌ってみた】GURU　-cover-すずやっこ', tags: ['MV'], year: 2026 },
   { youtubeId: 'ESQoefo3Vrw', title: 'MusicVket3「Show you!」/クロスフェード', tags: ['MV'], year: 2021 },
   { youtubeId: 'K_4jydZH-S0', title: 'MusicVket2「ISSUE」/クロスフェード', tags: ['MV'], year: 2021 },
 ]
