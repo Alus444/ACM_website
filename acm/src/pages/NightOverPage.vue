@@ -148,7 +148,7 @@ const searchIndex: SearchEntry[] = [
     page: 'intro',
     headingId: 'runtime',
     title: '動作形式',
-    text: '対応環境 Windows デスクトップアプリ NIGHTOVER.exe 作品フォルダ ダーク ライト テーマ',
+    text: '対応環境 Windows デスクトップアプリ NIGHTOVER_v1.0.0.exe Ver.1.0.0 作品フォルダ ダーク ライト テーマ',
   },
   {
     page: 'terms',
@@ -1130,7 +1130,7 @@ watch(
               <div class="table-head">項目</div><div class="table-head">内容</div>
               <div>対応環境</div><div>Windows</div>
               <div>アプリ形式</div><div>デスクトップアプリ</div>
-              <div>実行ファイル</div><div><code>NIGHTOVER.exe</code></div>
+              <div>実行ファイル</div><div><code>NIGHTOVER_v1.0.0.exe</code></div>
               <div>作品データ</div><div>作品ごとのフォルダに保存</div>
               <div>表示テーマ</div><div>ダーク / ライト</div>
             </div>
@@ -1191,6 +1191,7 @@ watch(
               <div><strong>保存先から開く</strong></div><div>デフォルト保存場所にある有効なNIGHTOVER作品を一覧から開きます。</div>
               <div><strong>他の場所から開く</strong></div><div>任意の場所にある作品フォルダを選択して開きます。</div>
               <div><strong>最近のプロジェクト</strong></div><div>最近開いた作品を最大5件表示し、キーボード選択と<kbd>Enter</kbd>でも開けます。</div>
+              <div><strong>バージョン</strong></div><div>画面下部に<code>NIGHTOVER Ver.1.0.0</code>を表示します。</div>
               <div><strong>テーマ</strong></div><div>右下のトグルからダーク / ライトを切り替えます。</div>
             </div>
             <p>
