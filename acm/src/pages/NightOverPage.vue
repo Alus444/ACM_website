@@ -1032,7 +1032,7 @@ watch(
   <div class="docs-site">
     <header class="docs-header">
       <button class="header-brand" type="button" aria-label="NIGHTOVER ドキュメントトップへ" @click="navigateTo('intro')">
-        <img src="/images/nightover/nightover.ico" alt="" class="app-icon" />
+        <img src="/images/nightover/nightover.png" alt="" class="app-icon" />
         <img src="/images/nightover/NIGHTOVER_title.svg" alt="NIGHTOVER" class="title-logo" />
         <span class="docs-label">Documentation</span>
       </button>
@@ -1790,7 +1790,7 @@ watch(
             </p>
             <p>
               設定を有効にしても、すでに保存されている本文は書き換えません。
-              以前の本文もそろえたい場合は、検索・置換または本文整形を使用します。
+              すでに保存されている本文もそろえたい場合は、検索・置換または本文整形を使用します。
             </p>
 
             <h3 id="punctuation-combination">設定を組み合わせた場合</h3>
@@ -1839,7 +1839,7 @@ watch(
               縦書き表示中またはプレビュー中でも、対象文字を編集・確認できることを優先し、横書き編集へ戻してから移動します。
             </p>
             <p>
-              この移動は通常の表示モード切り替えと異なり、以前の縦書き / プレビュー状態より検索対象の選択を優先します。
+              この移動は通常の表示モード切り替えと異なり、切り替え前の縦書き / プレビュー状態より検索対象の選択を優先します。
             </p>
 
             <h3 id="replace-tab">置換</h3>
@@ -2055,7 +2055,7 @@ watch(
               </article>
             </div>
             <p>
-              「概要」は解析結果が新しいかを確認する入口です。生成時刻、未保存下書き / 保存本文のどちらを使ったか、
+              「概要」では、解析結果が新しいかを確認することができます。生成時刻、未保存下書き / 保存本文のどちらを使ったか、
               エンジン・データ・各スキーマのバージョン、互換性、要確認件数、現在の文書キーを表示します。
             </p>
 
@@ -2107,7 +2107,7 @@ watch(
               <div><strong>動詞</strong></div><div>動作や状態変化を表す語の現れ方。文章の動き方を比較します。</div>
               <div><strong>描写</strong></div><div>情景、状態、感覚などを描く表現の傾向をまとめます。</div>
               <div><strong>接続</strong></div><div>文や節をつなぐ表現の使われ方を確認します。</div>
-              <div><strong>作品語</strong></div><div>作品専用辞書や記憶に登録された固有の語が文章へ現れる傾向です。</div>
+              <div><strong>作品語</strong></div><div>作品専用辞書や記憶に登録された固有の語が文章へ現れる傾向を確認できます。</div>
               <div><strong>文末</strong></div><div>語尾や文末表現の偏り、常体・敬体を含む終わり方の特徴を確認します。</div>
               <div><strong>反復</strong></div><div>語尾、近い語、語句、比喩、段落リズムなどの繰り返し傾向です。</div>
             </div>
@@ -2140,9 +2140,6 @@ watch(
               <li>複数の話や章で繰り返し現れる要確認傾向</li>
               <li>現在章が作品全体の中でどのように見えるか</li>
             </ul>
-            <p>
-              以前の設計で「声」と「推敲」に分かれていた内容は、現在の画面では「傾向」へまとめて表示します。
-            </p>
           </section>
 
           <section v-if="activePage === 'kakuriyo-review'" id="kakuriyo-review" class="doc-section">
@@ -2164,7 +2161,6 @@ watch(
             </div>
             <p>
               採用・見送り・辞書登録は作品ごとに保存されます。
-              現行画面では警告種類全体をミュートするボタンとfeedback corpusの書き出しは通常表示しません。
             </p>
 
             <h3 id="project-memory">記憶と作品語</h3>
@@ -2208,7 +2204,7 @@ watch(
 
             <h3 id="learning-state">学習状態</h3>
             <p>
-              これまでの採用・見送り、作品ごとの警告傾向、信頼度調整、文体記憶、学習ログの概要を表示します。
+              保存されている採用・見送り、作品ごとの警告傾向、信頼度調整、文体記憶、学習ログの概要を表示します。
               NIGHTOVERの作品間で判断を自動的に混ぜるのではなく、現在作品の状態として保持します。
             </p>
             <figure class="app-screenshot app-screenshot--wide">
@@ -2347,7 +2343,7 @@ watch(
               <li><strong>差分要約</strong> — 話・章など、選択した範囲同士の数値差を要約します。</li>
             </ul>
             <p>
-              挿絵数は統計対象に含めません。また、単一EXEでの配布を優先するため、現行仕様では外部形態素解析器を必要とする品詞分析を表示しません。
+              挿絵数と品詞分析は統計対象に含めません。
             </p>
 
             <h3 id="statistics-cache">再分析と統計キャッシュ</h3>
@@ -2483,7 +2479,7 @@ watch(
             </p>
             <p>
               間隔は1〜60秒の範囲で変更できます。
-              設定を確定すると待ち時間を新しい値で数え直し、以前の周期は引き継ぎません。
+              設定を確定すると待ち時間を新しい値で数え直し、変更前の周期は引き継ぎません。
             </p>
             <p>
               自動保存を無効にしても、<kbd>Ctrl</kbd> + <kbd>S</kbd>、話の切り替え、ホームへ戻る操作、
@@ -3226,6 +3222,8 @@ button {
 }
 
 .app-icon {
+  display: block;
+  flex: 0 0 auto;
   width: 30px;
   height: 30px;
   object-fit: contain;
@@ -4222,7 +4220,7 @@ button {
   }
 
   .kakuriyo-grid {
-    grid-template-columns: minmax(130px, 0.8fr) minmax(200px, 1.2fr);
+    grid-template-columns: 1fr;
   }
 
   .setting-options-table {
