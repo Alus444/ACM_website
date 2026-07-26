@@ -202,7 +202,7 @@ const searchIndex: SearchEntry[] = [
     page: 'workspace-left',
     headingId: 'left-outline',
     title: '左ペイン',
-    text: '作品切り替え 設定 締切 目標文字数 章 話 アウトライン 文字数 進捗 ステータス 保存状態',
+    text: '作品切り替え 設定 締切 目標文字数 章 話 アウトライン ツリー表示 並び 見やすい 折りたたみなし 文字数 進捗 ステータス 保存状態',
   },
   {
     page: 'workspace-center',
@@ -1243,7 +1243,8 @@ watch(
 
             <h3 id="left-outline">章・話の一覧</h3>
             <ul>
-              <li>章を開閉し、読みたい話を選択します。</li>
+              <li>一覧から読みたい話を選択します。</li>
+              <li>ツリー表示にすると、章と話の並びが見やすくなります。章を折りたたむ機能ではありません。</li>
               <li>章や話をドラッグして並べ替えます。</li>
               <li>各話の右側に現在の文字数と、設定済みステータスの色を表示します。</li>
               <li>章を選ぶと、その章に付けたメモを右ペインへ表示します。</li>
@@ -1450,7 +1451,7 @@ watch(
             </ul>
             <p>
               使用中のステータスを削除した場合、そのステータスだった話は「不明なステータス」へ変更されます。
-              「不明なステータス」は表示解決用の予約値で、通常の管理一覧には表示されません。
+              「不明なステータス」は、通常のステータス一覧には表示されません。
             </p>
           </section>
 
@@ -1587,7 +1588,7 @@ watch(
             <h3 id="vertical-preview">縦書きプレビュー</h3>
             <p>ルビや縦組み字形を展開した、読み取り専用の縦組み確認モードです。</p>
             <ul>
-              <li>ルビは親文字が始まる列側に表示し、列をまたいだ先で繰り返しません。</li>
+              <li>ルビは、親文字が始まる列に表示します。</li>
               <li>半角英数字や対象記号は連続単位として90度回転表示します。文字数による縦中横は行いません。</li>
               <li>句読点、括弧、波線、ダッシュ類は、保存本文を変えず描画時だけ縦組み互換字形を優先します。</li>
               <li>互換字形がない場合は元字形または回転表示で代替し、表示状態インジケータへ注意を出します。</li>
@@ -3725,8 +3726,7 @@ button {
 .spec-table {
   display: grid;
   margin: 18px 0 28px;
-  border-top: 1px solid var(--doc-line);
-  border-left: 1px solid var(--doc-line);
+  border: 1px solid var(--doc-line);
   border-radius: 5px;
   overflow: hidden;
 }
@@ -3759,6 +3759,42 @@ button {
   border-bottom: 1px solid var(--doc-line);
   color: var(--doc-muted);
   font-size: 0.73rem;
+}
+
+.spec-table.two-cols > div:nth-child(2n),
+.shortcut-table > div:nth-child(2n),
+.file-map-table > div:nth-child(2n),
+.radar-axis-table > div:nth-child(2n) {
+  border-right: 0;
+}
+
+.workspace-table > div:nth-child(3n),
+.editor-modes > div:nth-child(3n),
+.edition-table > div:nth-child(3n),
+.setting-options-table > div:nth-child(3n) {
+  border-right: 0;
+}
+
+.punctuation-settings-table > div:nth-child(4n) {
+  border-right: 0;
+}
+
+.spec-table.two-cols > div:nth-last-child(-n+2),
+.shortcut-table > div:nth-last-child(-n+2),
+.file-map-table > div:nth-last-child(-n+2),
+.radar-axis-table > div:nth-last-child(-n+2) {
+  border-bottom: 0;
+}
+
+.workspace-table > div:nth-last-child(-n+3),
+.editor-modes > div:nth-last-child(-n+3),
+.edition-table > div:nth-last-child(-n+3),
+.setting-options-table > div:nth-last-child(-n+3) {
+  border-bottom: 0;
+}
+
+.punctuation-settings-table > div:nth-last-child(-n+4) {
+  border-bottom: 0;
 }
 
 .spec-table .table-head {
@@ -4123,16 +4159,25 @@ button {
 
   .spec-table {
     overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;
   }
 
-  .workspace-table,
-  .editor-modes {
+  .workspace-table {
     grid-template-columns: minmax(120px, 0.55fr) minmax(250px, 1.2fr) minmax(100px, 0.45fr);
+  }
+
+  .editor-modes {
+    grid-template-columns: minmax(126px, 0.72fr) minmax(58px, 0.34fr) minmax(168px, 1fr);
+  }
+
+  .editor-modes > div {
+    padding-inline: 10px;
   }
 
   .edition-table {
     grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(88px, 0.72fr));
-    overflow-x: hidden;
   }
 
   .edition-table .yes,
