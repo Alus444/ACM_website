@@ -3553,7 +3553,9 @@ button {
   display: block;
   box-sizing: border-box;
   width: 100%;
+  min-width: 0;
   max-width: 100%;
+  overflow: hidden;
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: break-all;
@@ -4267,6 +4269,15 @@ button {
 
   .setting-options-table {
     grid-template-columns: minmax(160px, 0.8fr) minmax(105px, 0.55fr) minmax(250px, 1.35fr);
+  }
+
+  .save-path-settings-table {
+    grid-template-columns: minmax(100px, 0.85fr) minmax(105px, 1fr) minmax(130px, 1.15fr);
+    overflow: hidden;
+  }
+
+  .save-path-settings-table > div {
+    padding-inline: 9px;
   }
 
   .punctuation-settings-table {
