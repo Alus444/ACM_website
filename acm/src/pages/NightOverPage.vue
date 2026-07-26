@@ -2667,9 +2667,9 @@ watch(
             </p>
 
             <h3 id="setting-default-save-path">デフォルト保存場所</h3>
-            <div class="spec-table setting-options-table">
+            <div class="spec-table setting-options-table save-path-settings-table">
               <div class="table-head">項目</div><div class="table-head">初期値</div><div class="table-head">設定の作用</div>
-              <div><strong>デフォルト保存場所</strong></div><div><code>%USERPROFILE%\Documents\NIGHTOVER</code></div><div>変更後に新しく作る作品の保存先を指定します。</div>
+              <div><strong>デフォルト保存場所</strong></div><div><code class="save-path-code">%USERPROFILE%<wbr>\Documents<wbr>\NIGHTOVER</code></div><div>変更後に新しく作る作品の保存先を指定します。</div>
             </div>
             <p>
               空欄では確定できません。既存作品は移動せず、体験版では変更できません。
@@ -3547,6 +3547,16 @@ button {
   background: #f2bc6c;
   color: #251b0d;
   font-weight: 700;
+}
+
+.docs-content code.save-path-code {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-all;
 }
 
 .docs-content pre {
