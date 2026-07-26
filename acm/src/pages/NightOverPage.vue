@@ -2258,7 +2258,7 @@ watch(
             </p>
 
             <h3 id="support-cache-files">KAKURIYOの保存データ</h3>
-            <div class="spec-table two-cols">
+            <div class="spec-table two-cols kakuriyo-storage-table">
               <div class="table-head">保存先</div><div class="table-head">内容</div>
               <div><code>manifest/kakuriyo-state.json</code></div><div>採用・見送りなどのfeedback、文体記憶、調整状態</div>
               <div><code>manifest/kakuriyo/project-lexicon.tsv</code></div><div>作品専用の語彙</div>
@@ -3910,6 +3910,16 @@ button {
   line-height: 1.65;
 }
 
+.kakuriyo-storage-table > div {
+  min-width: 0;
+}
+
+.kakuriyo-storage-table code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .term-list {
   display: flex;
   flex-wrap: wrap;
@@ -4242,6 +4252,11 @@ button {
 
   .kakuriyo-grid p {
     grid-column: 2;
+  }
+
+  .kakuriyo-storage-table {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    overflow-x: visible;
   }
 
   .doc-footer-nav {
