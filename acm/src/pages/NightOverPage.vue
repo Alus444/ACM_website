@@ -268,7 +268,7 @@ const searchIndex: SearchEntry[] = [
     page: 'data-files',
     headingId: 'project-lock',
     title: '同じ作品の多重起動防止',
-    text: '同時に開けない Windows セッション named mutex .nightover.lock PID 端末名 残骸 起動拒否しない',
+    text: '同じ作品 同時に開けない 別の作品 同時に開ける 複数起動 Windows セッション named mutex .nightover.lock PID 端末名 残骸 起動拒否しない',
   },
   {
     page: 'data-files',
@@ -1507,7 +1507,8 @@ watch(
             <h3 id="project-lock">同じ作品の多重起動防止</h3>
             <p>
               同じWindowsセッション内で、同じ作品フォルダを複数のNIGHTOVERから同時に開くことはできません。
-              作品パスをもとにした実ロックで、同時編集による上書きを防ぎます。
+              同じ本文を別々の画面で編集し、あとから保存した内容で上書きするのを防ぐためです。
+              別の作品であれば、NIGHTOVERを複数起動して同時に開くことができます。
             </p>
             <p>
               作品ルートの<code>.nightover.lock</code>にはPIDや端末名などの補助情報を保存します。
