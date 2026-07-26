@@ -1237,13 +1237,36 @@ watch(
             </p>
 
             <h3 id="status">ステータス</h3>
-            <p>中央ヘッダーの「ステータス ▾」から、現在話へ任意のステータスを割り当てます。</p>
+            <p>
+              中央ヘッダーのステータス欄から、現在話へ任意のステータスを割り当てます。
+              割り当てた色は、左ペインにある各話の右端にも表示されます。
+            </p>
+            <figure class="app-screenshot app-screenshot--wide">
+              <a href="/images/nightover/screenshots/status-location.png" target="_blank" rel="noopener" aria-label="ステータス欄とステータス一覧を原寸で開く">
+                <img
+                  src="/images/nightover/screenshots/status-location.png"
+                  alt="中央ヘッダーで開いたステータス一覧と、各話の右端に色付きの印が表示された左ペイン"
+                  loading="lazy"
+                />
+              </a>
+              <figcaption>実機画面 — 中央ヘッダーのステータス欄と、左ペインへの表示位置</figcaption>
+            </figure>
             <div class="status-row">
               <span class="status draft">下書き</span>
               <span class="status revision">改稿中</span>
               <span class="status done">改稿完了</span>
               <span class="status custom">ユーザー追加</span>
             </div>
+            <figure class="app-screenshot app-screenshot--dialog">
+              <a href="/images/nightover/screenshots/status-outline-indicator.png" target="_blank" rel="noopener" aria-label="左ペインのステータス表示を原寸で開く">
+                <img
+                  src="/images/nightover/screenshots/status-outline-indicator.png"
+                  alt="左ペインの話一覧で、文字数の右側にステータスの色が表示されている状態"
+                  loading="lazy"
+                />
+              </a>
+              <figcaption>実機画面 — 左ペインでは各話の右端にステータスの色を表示</figcaption>
+            </figure>
             <p>
               全作品共通のステータスと、現在の作品だけで使うステータスを分けて管理できます。
               管理画面では追加、色変更、削除に対応しますが、既存ステータス名の直接変更は行いません。
