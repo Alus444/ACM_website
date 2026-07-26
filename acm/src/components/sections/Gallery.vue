@@ -215,4 +215,14 @@ const preview = computed(() => {
   margin: 0;
   line-height: 1.4;
 }
+
+@media (max-width: 640px) {
+  .movie-section {
+    padding-inline: 1rem;
+  }
+
+  .movie-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 </style>

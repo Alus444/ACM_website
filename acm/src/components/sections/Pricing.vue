@@ -219,4 +219,19 @@ import { priceCategories, commissionNotes } from '../../data/commission'
   min-width: 1.2rem;
   margin-top: 0.1rem;
 }
+
+@media (max-width: 640px) {
+  .pricing-section {
+    padding-inline: 1rem;
+  }
+
+  .price-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .price-card,
+  .notes-block {
+    padding: 1.25rem;
+  }
+}
 </style>

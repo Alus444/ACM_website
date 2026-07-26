@@ -67,6 +67,10 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   margin: 0;
 }
 
+.page-header-main {
+  min-width: 0;
+}
+
 .page-header-extra {
   padding-bottom: 0.25rem;
 }
@@ -114,5 +118,35 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   font-size: 1rem;
   font-weight: 700;
   color: var(--text-primary);
+}
+
+@media (max-width: 640px) {
+  .page-header {
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .page-header-extra {
+    padding-bottom: 0;
+  }
+
+  .page-mini-bar {
+    padding-inline: 1rem;
+  }
+
+  .page-mini-inner {
+    min-width: 0;
+  }
+
+  .page-mini-label {
+    flex-shrink: 0;
+  }
+
+  .page-mini-title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 </style>

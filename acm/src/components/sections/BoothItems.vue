@@ -252,4 +252,14 @@ function formatPrice(price: number, isStartingPrice = false): string {
 .booth-card:hover .booth-cta {
   color: var(--accent);
 }
+
+@media (max-width: 640px) {
+  .booth-section {
+    padding-inline: 1rem;
+  }
+
+  .booth-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 </style>

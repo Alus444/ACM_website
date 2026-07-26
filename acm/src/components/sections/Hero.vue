@@ -245,6 +245,10 @@ const activeProfile = isPro ? profilePro : profile
 
 /* --- レスポンシブ --- */
 @media (max-width: 768px) {
+  .hero {
+    padding-inline: 1rem;
+  }
+
   .hero-inner {
     flex-direction: column;
     text-align: center;
