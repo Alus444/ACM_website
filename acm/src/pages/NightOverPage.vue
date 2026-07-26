@@ -580,7 +580,7 @@ const searchIndex: SearchEntry[] = [
     page: 'import-export',
     headingId: 'plain-text-import',
     title: '作品の取り込み',
-    text: '見出し付き TXT 単一話 txt 章 話 本文 import 製品版',
+    text: '通常のTXT ホーム 書き出しを取り込む カクヨム ZIP カクヨム本文 txt 予備 見出し付き 単一話 章 話 本文 import 製品版',
   },
   {
     page: 'settings',
@@ -2590,10 +2590,29 @@ watch(
 
             <h3 id="plain-text-import">通常のTXTを取り込む</h3>
             <p>
-              外部サービス形式ではないTXTは、見出しを含む本文として章・話へ分割するか、
-              1つの話として取り込めます。取り込み時に新しい安全なプロジェクトIDを作り、
-              <code>project.json</code>、<code>manifest/outline.json</code>、各話の本文ファイルを生成します。
+              通常のTXTは、ホーム画面にある書き出しデータの取り込み機能から選択します。
             </p>
+            <ol>
+              <li>ホーム画面で「書き出しを取り込む」を押します。</li>
+              <li>表示されたメニューから「カクヨム（ZIP）」を選びます。</li>
+              <li>
+                ファイル選択画面右下のファイルの種類を
+                「カクヨム本文 txt（予備）（*.txt）」へ変更し、取り込みたいTXTを選びます。
+              </li>
+              <li>「取り込む」を押すと、TXTから新しい作品が作成され、その作品が開きます。</li>
+            </ol>
+            <p>
+              作品名にはTXTのファイル名を使用します。TXT内に「第1章」「第1話」のような行がある場合は、
+              その行を章名・話名として分けて取り込みます。話名として認識できる行がない場合は、
+              TXT全体を1つの話として取り込みます。
+            </p>
+            <div class="admonition note">
+              <strong>TXTの形式</strong>
+              <p>
+                UTF-8のTXTを使用してください。章名は「第」で始まり「章」を含む行、
+                話名は「第」で始まり「話」を含む行として認識します。
+              </p>
+            </div>
             <div class="admonition info">
               <strong>体験版での取り込み</strong>
               <p>
