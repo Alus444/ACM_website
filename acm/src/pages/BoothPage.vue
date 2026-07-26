@@ -419,4 +419,14 @@ function formatPrice(price: number, isStartingPrice = false): string {
   color: var(--text-secondary);
   padding: 4rem 0;
 }
+
+@media (max-width: 640px) {
+  .booth-page {
+    padding: 7rem 1rem 4rem;
+  }
+
+  .booth-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 </style>

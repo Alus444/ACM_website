@@ -161,4 +161,29 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   font-weight: 700;
   color: var(--text-primary);
 }
+
+@media (max-width: 640px) {
+  .form-section {
+    padding: 6.5rem 1rem 4rem;
+  }
+
+  .page-mini-bar {
+    padding-inline: 1rem;
+  }
+
+  .page-mini-inner {
+    min-width: 0;
+  }
+
+  .page-mini-label {
+    flex-shrink: 0;
+  }
+
+  .page-mini-title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
 </style>

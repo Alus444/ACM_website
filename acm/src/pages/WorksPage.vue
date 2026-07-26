@@ -219,6 +219,10 @@ const projects = [
 }
 
 @media (max-width: 640px) {
+  .works-page {
+    padding: 7rem 1rem 4rem;
+  }
+
   .project-row {
     grid-template-columns: 3rem 1fr;
     grid-template-rows: auto auto;

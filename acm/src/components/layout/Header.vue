@@ -20,7 +20,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
         <img src="/images/ACMLogo.svg" alt="ACM" class="logo-img" />
       </RouterLink>
 
-      <nav class="nav">
+      <nav class="nav" aria-label="メインナビゲーション">
         <RouterLink to="/" class="nav-link">Top</RouterLink>
         <RouterLink to="/booth" class="nav-link">BOOTH</RouterLink>
         <RouterLink to="/movie" class="nav-link">MOVIE</RouterLink>
@@ -97,5 +97,56 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 .nav-link.router-link-exact-active {
   color: var(--accent);
   border-color: var(--accent);
+}
+
+@media (max-width: 768px) {
+  .site-header {
+    padding: 0.75rem 1rem 0.65rem;
+  }
+
+  .header-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.45rem;
+  }
+
+  .logo {
+    align-self: flex-start;
+  }
+
+  .logo-img {
+    height: 1.5rem;
+  }
+
+  .nav {
+    width: 100%;
+    min-width: 0;
+    justify-content: space-between;
+    gap: 0.35rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    overscroll-behavior-inline: contain;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-link {
+    flex: 0 0 auto;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.74rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .nav {
+    gap: 0.2rem;
+  }
+
+  .nav-link {
+    padding-inline: 0.25rem;
+    font-size: 0.67rem;
+  }
 }
 </style>

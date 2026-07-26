@@ -168,4 +168,14 @@ const sorted = computed(() =>
   margin: 0;
   line-height: 1.4;
 }
+
+@media (max-width: 640px) {
+  .movie-page {
+    padding: 7rem 1rem 4rem;
+  }
+
+  .movie-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 </style>

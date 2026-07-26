@@ -146,4 +146,22 @@ const links = isPro ? linksPro : linksDefault
   padding-top: 1rem;
   border-top: 1px solid var(--border);
 }
+
+@media (max-width: 640px) {
+  .contact-page {
+    padding: 7rem 1rem 4rem;
+  }
+
+  .contact-card {
+    padding: 1.25rem;
+  }
+
+  .card-body {
+    min-width: 0;
+  }
+
+  .card-handle {
+    overflow-wrap: anywhere;
+  }
+}
 </style>
