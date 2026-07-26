@@ -37,62 +37,87 @@ const navGroups: NavGroup[] = [
     label: 'はじめに',
     items: [
       { id: 'intro', label: 'NIGHTOVER', keywords: '概要 はじめに windows 小説 執筆' },
-      { id: 'workspace', label: '画面構成', keywords: '3ペイン 左 中央 右 ホーム' },
-      { id: 'appearance', label: 'テーマと本文表示', keywords: 'テーマ ダーク ライト フォント アクセント 色' },
+      { id: 'editions', label: '体験版と製品版', keywords: 'trial full 制限 比較' },
+    ],
+  },
+  {
+    label: '画面構成',
+    items: [
+      { id: 'workspace', label: '全体構成', keywords: 'エディタ 3ペイン 全体 集中モード' },
+      { id: 'home', label: 'ホーム画面', keywords: '新規プロジェクト 保存先 最近の作品 開く' },
+      { id: 'workspace-left', label: '左ペイン', keywords: '作品 締切 アウトライン 章 話 文字数 ステータス' },
+      { id: 'workspace-center', label: '中央ペイン', keywords: 'ヘッダー 本文 エディタ Git 記録 履歴' },
+      { id: 'workspace-right', label: '右ペイン', keywords: 'メモ 資料 KAKURIYO 開閉' },
     ],
   },
   {
     label: '作品管理',
     items: [
-      { id: 'project', label: '章・話と進行管理', keywords: 'アウトライン 章 話 締切 目標 ステータス' },
-      { id: 'data-files', label: '作品データと保存先', keywords: 'project json manifest manuscripts notes appdata lock backup' },
+      { id: 'project', label: '章と話', keywords: '作品名 アウトライン 章 話 並び替え 右クリック' },
+      { id: 'project-deadline', label: '締切と目標文字数', keywords: '締切 目標 文字数 進捗' },
+      { id: 'project-status', label: 'ステータス', keywords: '下書き 改稿中 改稿完了 色 共通 プロジェクト' },
     ],
   },
   {
     label: '執筆機能',
     items: [
-      { id: 'editor', label: '本文エディタ', keywords: '横書き 縦書き プレビュー ime 禁則' },
+      { id: 'editor-display', label: '横書き・縦書き・プレビュー', keywords: '横書き 縦書き プレビュー 禁則 表示状態' },
+      { id: 'editor-input', label: '入力と操作', keywords: '入力 ime 選択 コピー スクロール' },
       { id: 'ruby', label: 'ルビと傍点', keywords: 'ルビ 傍点 ruby emphasis' },
       { id: 'input-assist', label: '記号の入力補助', keywords: 'ダッシュ 三点リーダ 自動変換 二連化 記号' },
       { id: 'search', label: '検索・置換・整形', keywords: '検索 置換 整形 空白 改行' },
     ],
   },
   {
-    label: 'メモと解析支援',
+    label: 'メモと資料',
     items: [
       { id: 'notes', label: 'メモ', keywords: '話 章 作品 共通 メモ 一覧' },
       { id: 'references', label: '資料', keywords: '資料 登場人物 展開 用語 ページ' },
       { id: 'linking', label: '本文リンクと初出', keywords: '本文 資料 ハイライト ジャンプ 初出 登場人物 用語' },
-      { id: 'kakuriyo', label: 'KAKURIYO 概要', keywords: '解析 支援 概要 セクション window' },
-      { id: 'kakuriyo-radar', label: '文体レーダーと傾向', keywords: '文体 レーダー 会話 名詞 動詞 描写 接続 作品語 文末 反復 傾向' },
-      { id: 'kakuriyo-review', label: '要確認・記憶・学習', keywords: '要確認 記憶 作品語 一般語 採用 見送り 反復 学習' },
-      { id: 'kakuriyo-update', label: '更新・キャッシュ', keywords: '更新 現在話 クリーン キャッシュ stale 失敗 バージョン' },
     ],
   },
   {
-    label: '分析と記録',
+    label: 'KAKURIYO',
+    items: [
+      { id: 'kakuriyo', label: 'KAKURIYO 概要', keywords: '解析 支援 概要 セクション window' },
+      { id: 'kakuriyo-radar', label: '文体レーダーと傾向', keywords: '文体 レーダー 会話 名詞 動詞 描写 接続 作品語 文末 反復 傾向' },
+      { id: 'kakuriyo-review', label: '要確認・記憶・反復・学習', keywords: '要確認 記憶 作品語 一般語 採用 見送り 反復 学習' },
+      { id: 'kakuriyo-update', label: '解析の更新', keywords: '更新 現在話 クリーン 再解析 保存データ 失敗 バージョン' },
+    ],
+  },
+  {
+    label: '統計と履歴',
     items: [
       { id: 'statistics', label: '統計', keywords: '統計 会話率 文長 段落 記号 人物 用語' },
       { id: 'git', label: 'Git 記録と復元', keywords: 'git 初期化 dirty 記録 履歴 差分 復元' },
     ],
   },
   {
-    label: '保存と仕様',
+    label: '保存とデータ',
     items: [
-      { id: 'saving', label: '保存と下書き', keywords: '自動保存 下書き 手動保存 dirty backup' },
+      { id: 'saving', label: '保存と自動保存', keywords: '自動保存 下書き 手動保存 dirty backup' },
+      { id: 'data-files', label: '作品フォルダとバックアップ', keywords: 'project json manifest manuscripts notes appdata lock backup' },
       { id: 'import-export', label: '取り込み・書き出し', keywords: 'txt zip import export なろう カクヨム コピー' },
+    ],
+  },
+  {
+    label: '設定と操作',
+    items: [
       { id: 'settings', label: '設定の使い方', keywords: '設定 保存 初期化 OK キャンセル' },
       { id: 'settings-saving', label: '保存の設定', keywords: '保存場所 自動保存 間隔 全体保存' },
       { id: 'settings-writing', label: '本文・入力の設定', keywords: 'ルビ 文字数 記号 改行 コピー' },
-      { id: 'settings-appearance', label: '表示の設定', keywords: 'フォント アクセント テーマ ダーク ライト' },
+      { id: 'settings-appearance', label: 'テーマ・フォント・色', keywords: 'フォント アクセント テーマ ダーク ライト' },
       { id: 'settings-support', label: '連携・支援の設定', keywords: 'Git リンク 初出 有効 無効' },
       { id: 'shortcuts', label: 'ショートカット', keywords: 'ctrl alt f6 f11 keyboard' },
-      { id: 'editions', label: '体験版と製品版', keywords: 'trial full 制限 比較' },
     ],
   },
 ]
 
 const allItems = navGroups.flatMap((group) => group.items)
+const legacyPageAliases: Record<string, string> = {
+  appearance: 'settings-appearance',
+  editor: 'editor-display',
+}
 const fallbackPage: NavItem = {
   id: 'intro',
   label: 'NIGHTOVER',
@@ -100,7 +125,8 @@ const fallbackPage: NavItem = {
 }
 const activePage = computed(() => {
   const requested = typeof route.params.page === 'string' ? route.params.page : 'intro'
-  return allItems.some((item) => item.id === requested) ? requested : 'intro'
+  const resolved = legacyPageAliases[requested] ?? requested
+  return allItems.some((item) => item.id === resolved) ? resolved : 'intro'
 })
 
 const currentPage = computed<NavItem>(
@@ -124,7 +150,7 @@ const searchIndex: SearchEntry[] = [
     text: '対応環境 Windows デスクトップアプリ NIGHTOVER.exe 作品フォルダ ダーク ライト テーマ',
   },
   {
-    page: 'workspace',
+    page: 'home',
     headingId: 'home-screen',
     title: 'ホーム画面',
     text: '新規プロジェクト 既定保存先 任意の場所 最近使った作品 最大5件 ごみ箱 テーマ切り替え',
@@ -136,16 +162,28 @@ const searchIndex: SearchEntry[] = [
     text: '左ペイン 320px プロジェクト 締切 アウトライン 総文字数 ステータス 中央ペイン 本文エディタ Git記録 右ペイン メモ 資料 KAKURIYO',
   },
   {
-    page: 'workspace',
+    page: 'workspace-center',
     headingId: 'center-header',
     title: '中央ヘッダー',
     text: 'EPISODE 話タイトル ステータス 現在文字数 目標 選択文字数 プレビュー 集中 表示設定 戻る 直前1件',
   },
   {
-    page: 'workspace',
-    headingId: 'right-pane',
+    page: 'workspace-left',
+    headingId: 'left-outline',
+    title: '左ペイン',
+    text: '作品切り替え 設定 締切 目標文字数 章 話 アウトライン 文字数 進捗 ステータス 保存状態',
+  },
+  {
+    page: 'workspace-center',
+    headingId: 'center-body',
+    title: '本文エリア',
+    text: '本文 編集 横書き 縦書き プレビュー 検索ジャンプ スクロール 表示状態 Git 記録 履歴',
+  },
+  {
+    page: 'workspace-right',
+    headingId: 'right-overview',
     title: '右ペイン',
-    text: 'メモ 資料 KAKURIYO解析 別ウィンドウ modeless 開閉',
+    text: 'メモ 話ごと 章ごと 全体 共通 メモ一覧 資料 登場人物 展開 用語 KAKURIYO解析 開閉',
   },
   {
     page: 'workspace',
@@ -172,13 +210,13 @@ const searchIndex: SearchEntry[] = [
     text: '行頭空白 挿入 章 話 作品全体 本文コピー txt 書き出し 名前変更 削除 複数選択',
   },
   {
-    page: 'project',
+    page: 'project-deadline',
     headingId: 'deadline',
     title: '締切と目標文字数',
     text: '締切日 残り日数 作品全体 目標文字数 全話共通 話ごと 進捗 左ペイン 中央ヘッダー',
   },
   {
-    page: 'project',
+    page: 'project-status',
     headingId: 'status',
     title: '話ごとのステータス',
     text: '下書き 改稿中 改稿完了 ユーザー追加 全作品共通 作品専用 色変更 削除',
@@ -208,55 +246,55 @@ const searchIndex: SearchEntry[] = [
     text: 'バックアップ 作品フォルダ 全体 project.json manifest manuscripts notes Git 閉じる コピー 復元',
   },
   {
-    page: 'editor',
+    page: 'editor-display',
     headingId: 'display-modes',
     title: '4つの表示モード',
     text: '横書き編集 横書きプレビュー 縦書き編集 縦書きプレビュー 編集可能 読み取り専用 ルビ 縦組み',
   },
   {
-    page: 'editor',
+    page: 'editor-display',
     headingId: 'display-controls',
     title: '本文表示の設定',
     text: '文字サイズ 8 16 10.5 字行 10 120 縦書き 統計 ... 即時反映 アプリ設定',
   },
   {
-    page: 'editor',
+    page: 'editor-display',
     headingId: 'horizontal-writing',
     title: '横書き',
     text: '実測文字幅 折り返し 句読点 閉じ括弧 ぶら下がり ルビ記法 展開 プレビュー 読み取り専用',
   },
   {
-    page: 'editor',
+    page: 'editor-display',
     headingId: 'vertical-writing',
     title: '縦書き編集',
     text: '右から左 入力 選択 貼り付け undo redo ルビ記法 展開しない 列移動 Home End PageUp PageDown',
   },
   {
-    page: 'editor',
+    page: 'editor-display',
     headingId: 'vertical-preview',
     title: '縦書きプレビュー',
     text: '読み取り専用 ルビ 開始列 半角英数字 90度回転 縦組み互換字形 代替表示 Esc 横書き編集',
   },
   {
-    page: 'editor',
+    page: 'editor-input',
     headingId: 'text-input',
     title: '入力とIME',
     text: 'IME 変換範囲 下線 候補窓 キャレット Windows標準 確定 重複入力 抑制',
   },
   {
-    page: 'editor',
+    page: 'editor-input',
     headingId: 'selection-copy',
     title: '選択・コピー・貼り付け',
     text: 'ドラッグ Shiftクリック ダブルクリック 単語 Ctrl 文選択 本文をコピー 選択範囲 プレビュー 編集不可',
   },
   {
-    page: 'editor',
+    page: 'editor-input',
     headingId: 'editor-scroll',
     title: '本文のスクロール',
     text: 'ホイール Shift 3行 3列 中クリック オートスクロール 横書き 縦書き スクロールバー',
   },
   {
-    page: 'editor',
+    page: 'editor-display',
     headingId: 'display-indicator',
     title: '本文表示状態インジケータ',
     text: '緑 赤 横書き 縦書き 互換字形 fallback 指定字数 早い折り返し 注意 集中モード',
@@ -528,8 +566,8 @@ const searchIndex: SearchEntry[] = [
   {
     page: 'settings-appearance',
     headingId: 'setting-font-accent',
-    title: '表示の設定',
-    text: '本文フォント Meiryo ダークモード アクセント #F2BC6C テーマ ライト',
+    title: '本文フォントとダークモードのアクセント',
+    text: '本文フォント Meiryo インストール フォント プレビュー 初期値 再レイアウト ダークモード アクセント #F2BC6C カラーピッカー 資料タブ 選択色 ライトモード 影響なし',
   },
   {
     page: 'settings-support',
@@ -538,7 +576,7 @@ const searchIndex: SearchEntry[] = [
     text: 'Git 連携 記録 履歴 リンクジャンプ 初出チェック 有効 無効',
   },
   {
-    page: 'workspace',
+    page: 'home',
     headingId: 'default-save-path',
     title: 'デフォルト保存場所',
     text: '新規プロジェクト 作成先 フォルダ Documents NIGHTOVER 参照 既存作品 移動しない 空欄不可 体験版 変更不可',
@@ -554,12 +592,6 @@ const searchIndex: SearchEntry[] = [
     headingId: 'git-start',
     title: 'Git 連携',
     text: '有効 初期値 オン 記録 履歴 ボタン 表示 非表示 プロジェクト 初期化 無効 削除しない リポジトリ 記録済み履歴',
-  },
-  {
-    page: 'appearance',
-    headingId: 'font-accent',
-    title: '本文フォントとダークモードのアクセント',
-    text: '本文フォント Meiryo インストール フォント プレビュー 初期値 再レイアウト ダークモード アクセント #F2BC6C カラーピッカー 資料タブ 選択色 ライトモード 影響なし',
   },
   {
     page: 'linking',
@@ -586,8 +618,8 @@ const searchIndex: SearchEntry[] = [
     text: '本文をコピー 章 話 先頭 末尾 改行 0行 20行 追加 既存の改行 指定数にそろえる 選択範囲 コピー 切り取り txt 書き出し 対象外',
   },
   {
-    page: 'appearance',
-    headingId: 'theme',
+    page: 'settings-appearance',
+    headingId: 'setting-theme',
     title: 'テーマ',
     text: 'ホーム プロジェクト 右下 ダーク ライト テーマ 切り替え アプリ全体 保存 設定ダイアログ外',
   },
@@ -674,22 +706,39 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
     { id: 'runtime', label: '動作形式' },
   ],
   workspace: [
-    { id: 'home-screen', label: 'ホーム画面' },
-    { id: 'default-save-path', label: '新規作品の保存先' },
     { id: 'editor-screen', label: 'エディタ画面' },
-    { id: 'center-header', label: '中央ヘッダー' },
-    { id: 'right-pane', label: '右ペイン' },
     { id: 'focus-mode', label: '集中モード' },
   ],
-  appearance: [
-    { id: 'theme', label: 'テーマ' },
-    { id: 'font-accent', label: 'フォントと色' },
+  home: [
+    { id: 'home-screen', label: '作品を開く' },
+    { id: 'default-save-path', label: '新規作品の保存先' },
+  ],
+  'workspace-left': [
+    { id: 'left-overview', label: '左ペインの構成' },
+    { id: 'left-deadline', label: '締切と目標' },
+    { id: 'left-outline', label: '章・話の一覧' },
+    { id: 'left-footer', label: '下部の表示' },
+  ],
+  'workspace-center': [
+    { id: 'center-header', label: '上部' },
+    { id: 'center-body', label: '本文エリア' },
+    { id: 'center-footer', label: '下部' },
+  ],
+  'workspace-right': [
+    { id: 'right-overview', label: '右ペインの構成' },
+    { id: 'right-memo', label: 'メモ' },
+    { id: 'right-reference', label: '資料' },
+    { id: 'right-kakuriyo', label: 'KAKURIYO' },
   ],
   project: [
     { id: 'project-title', label: '作品の切り替えと名前' },
     { id: 'outline', label: 'アウトライン' },
     { id: 'outline-menu', label: '右クリック操作' },
+  ],
+  'project-deadline': [
     { id: 'deadline', label: '締切と目標文字数' },
+  ],
+  'project-status': [
     { id: 'status', label: 'ステータス' },
   ],
   'data-files': [
@@ -698,16 +747,18 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
     { id: 'project-lock', label: '多重起動防止' },
     { id: 'backup-guide', label: 'バックアップ' },
   ],
-  editor: [
+  'editor-display': [
     { id: 'display-controls', label: '表示設定' },
     { id: 'display-modes', label: '4つの表示モード' },
     { id: 'horizontal-writing', label: '横書き' },
     { id: 'vertical-writing', label: '縦書き編集' },
     { id: 'vertical-preview', label: '縦書きプレビュー' },
+    { id: 'display-indicator', label: '表示状態' },
+  ],
+  'editor-input': [
     { id: 'text-input', label: '入力とIME' },
     { id: 'selection-copy', label: '選択とコピー' },
     { id: 'editor-scroll', label: 'スクロール' },
-    { id: 'display-indicator', label: '表示状態' },
   ],
   ruby: [
     { id: 'ruby-syntax', label: 'ルビ' },
@@ -912,6 +963,10 @@ onBeforeUnmount(() => {
 watch(
   () => route.params.page,
   (page) => {
+    if (typeof page === 'string' && legacyPageAliases[page]) {
+      router.replace(`/nightover/${legacyPageAliases[page]}`)
+      return
+    }
     if (typeof page === 'string' && !allItems.some((item) => item.id === page)) {
       router.replace('/nightover')
       return
@@ -1032,10 +1087,54 @@ watch(
           </section>
 
           <section v-if="activePage === 'workspace'" id="workspace" class="doc-section">
-            <p>メインウィンドウ内で、ホーム画面とエディタ画面を切り替えます。</p>
+            <h3 id="editor-screen">エディタ画面</h3>
+            <p>
+              作品を開くと、左・中央・右の3つに分かれたエディタ画面を表示します。
+              左右には作品を整理するための情報を置き、中央の本文を最も広く使う構成です。
+            </p>
+            <div class="spec-table workspace-table">
+              <div class="table-head">ペイン</div><div class="table-head">内容</div><div class="table-head">基準幅</div>
+              <div><strong>左</strong></div><div>プロジェクト、締切、アウトライン、総文字数、ステータス表示</div><div>320px</div>
+              <div><strong>中央</strong></div><div>話ヘッダー、本文エディタ、Git記録、操作案内</div><div>可変</div>
+              <div><strong>右</strong></div><div>メモ、資料、KAKURIYO支援</div><div>320px</div>
+            </div>
+            <figure class="app-screenshot app-screenshot--wide">
+              <a href="/images/nightover/screenshots/editor-overview.png" target="_blank" rel="noopener" aria-label="編集画面を原寸で開く">
+                <img
+                  src="/images/nightover/screenshots/editor-overview.png"
+                  alt="NIGHTOVERの編集画面。左に章と話、中央に本文、右にメモを表示している"
+                  loading="lazy"
+                />
+              </a>
+              <figcaption>実機画面 — 左に章・話、中央に本文、右にメモを表示した3ペイン構成</figcaption>
+            </figure>
+            <p>
+              各ペインの表示内容と操作は、左メニューの「左ペイン」「中央ペイン」「右ペイン」で個別に説明します。
+            </p>
 
-            <h3 id="home-screen">ホーム画面</h3>
-            <p>作品を新しく作る、または既存の作品フォルダを開くための入口です。</p>
+            <h3 id="focus-mode">集中モード</h3>
+            <p>
+              ヘッダーの「集中」または<kbd>F11</kbd>で切り替えます。
+              左右ペイン、Git操作、本文表示状態インジケータを隠し、中央の本文領域を広げます。
+            </p>
+            <ul>
+              <li>本文、選択範囲、入力位置は変更しません。</li>
+              <li>スクロール位置、縦書き状態、編集 / プレビュー状態を維持します。</li>
+              <li>必要な場合は集中モード用のパネルボタンから右ペインだけを表示できます。</li>
+              <li>本文下部の「ALT長押しでショートカット一覧」は残ります。</li>
+            </ul>
+            <div class="admonition note">
+              <strong>集中モードについて</strong>
+              <p>
+                集中モードへ入っても、メモやGitの状態、本文データが削除・解除されることはありません。
+                通常表示へ戻すと、それまでの作業状態で各領域が再表示されます。
+              </p>
+            </div>
+          </section>
+
+          <section v-if="activePage === 'home'" id="home" class="doc-section">
+            <h3 id="home-screen">作品を作成・選択する</h3>
+            <p>ホーム画面は、作品を新しく作る、または既存の作品フォルダを開くための入口です。</p>
             <div class="spec-table two-cols">
               <div class="table-head">操作</div><div class="table-head">内容</div>
               <div><strong>新規プロジェクト</strong></div><div>作品名を入力し、設定されたデフォルト保存場所へ作品フォルダを作成します。</div>
@@ -1071,106 +1170,131 @@ watch(
                 体験版ではデフォルト保存場所を変更できません。初期の保存場所に作成した作品を使用します。
               </p>
             </div>
+          </section>
 
-            <h3 id="editor-screen">エディタ画面</h3>
-            <p>エディタ画面は3ペイン構成です。</p>
-            <div class="spec-table workspace-table">
-              <div class="table-head">ペイン</div><div class="table-head">内容</div><div class="table-head">基準幅</div>
-              <div><strong>左</strong></div><div>プロジェクト、締切、アウトライン、総文字数、ステータス表示</div><div>320px</div>
-              <div><strong>中央</strong></div><div>話ヘッダー、本文エディタ、Git記録、操作案内</div><div>可変</div>
-              <div><strong>右</strong></div><div>メモ、資料、KAKURIYO支援</div><div>320px</div>
+          <section v-if="activePage === 'workspace-left'" id="workspace-left" class="doc-section">
+            <p>
+              左ペインには、作品全体の進み具合と章・話の一覧をまとめて表示します。
+              本文を開く、話を並べ替える、締切やステータスを確認するときに使います。
+            </p>
+
+            <h3 id="left-overview">左ペインの構成</h3>
+            <div class="spec-table two-cols">
+              <div class="table-head">位置</div><div class="table-head">表示内容</div>
+              <div><strong>上部</strong></div><div>作品名、最近使った作品への切り替え、設定</div>
+              <div><strong>進捗カード</strong></div><div>締切までの日数、作品全体の文字数、目標までの進捗</div>
+              <div><strong>操作列</strong></div><div>章・話の追加、表示の切り替え、検索・置換</div>
+              <div><strong>章・話の一覧</strong></div><div>アウトライン、各話の文字数、目標の進捗、ステータスの色</div>
+              <div><strong>下部</strong></div><div>作品全体の合計文字数と、保存結果などのお知らせ</div>
             </div>
-            <figure class="app-screenshot app-screenshot--wide">
-              <a href="/images/nightover/screenshots/editor-overview.png" target="_blank" rel="noopener" aria-label="編集画面を原寸で開く">
-                <img
-                  src="/images/nightover/screenshots/editor-overview.png"
-                  alt="NIGHTOVERの編集画面。左に章と話、中央に本文、右にメモを表示している"
-                  loading="lazy"
-                />
-              </a>
-              <figcaption>実機画面 — 左に章・話、中央に本文、右にメモを表示した3ペイン構成</figcaption>
-            </figure>
 
-            <h3 id="center-header">中央ヘッダー</h3>
+            <h3 id="left-deadline">締切と目標</h3>
+            <p>
+              進捗カードには、設定した締切までの日数と、作品全体の目標文字数に対する進み具合を表示します。
+              未設定の場合は「目標設定」、設定済みの場合は<code>...</code>から内容を変更できます。
+            </p>
+            <p>
+              話ごとの目標文字数を設定すると、各話の下に細い進捗バーが表示されます。
+              現在の話については、同じ文字数を中央ペイン上部でも確認できます。
+            </p>
+
+            <h3 id="left-outline">章・話の一覧</h3>
+            <ul>
+              <li>章を開閉し、読みたい話を選択します。</li>
+              <li>章や話をドラッグして並べ替えます。</li>
+              <li>各話の右側に現在の文字数と、設定済みステータスの色を表示します。</li>
+              <li>章を選ぶと、その章に付けたメモを右ペインへ表示します。</li>
+              <li>右クリックから名前変更、本文のコピー、txt書き出しなどを行えます。</li>
+            </ul>
+
+            <h3 id="left-footer">下部の表示</h3>
+            <p>
+              一覧の下には作品全体の合計文字数を表示します。
+              その下のお知らせ欄では、「保存しました」「自動保存しました」など直前の処理結果を確認できます。
+            </p>
+          </section>
+
+          <section v-if="activePage === 'workspace-center'" id="workspace-center" class="doc-section">
+            <p>
+              中央ペインは本文を書くための領域です。
+              上部で現在話と表示方法を確認し、中央で本文を編集し、下部から記録や履歴を開きます。
+            </p>
+
+            <h3 id="center-header">上部</h3>
             <p>現在開いている話と、本文に関係する主要操作を表示します。</p>
             <ul>
-              <li><code>EPISODE</code>表示と現在話タイトル</li>
-              <li>現在話のステータスを変更するポップアップ</li>
-              <li>現在文字数と、目標設定時の<code>現在/目標:値</code></li>
-              <li>本文を選択している場合の選択文字数</li>
-              <li>プレビュー、集中モード、表示設定を開く<code>...</code></li>
+              <li>現在話のタイトルとステータス</li>
+              <li>現在文字数、目標文字数、選択中の文字数</li>
+              <li>横書き・縦書きのプレビュー</li>
+              <li>集中モード</li>
+              <li>文字サイズ、「字 / 行」、縦書き、統計を開く<code>...</code></li>
               <li>右ペインの開閉</li>
             </ul>
             <p>
-              別の話を開くと、中央ペイン上部に「← 戻る: 直前の話タイトル」が表示されます。
+              別の話を開くと、本文の上に「← 戻る: 直前の話タイトル」が表示されます。
               クリックすると、前に開いていた話へ戻れます。検索結果から別の話へ移動した場合も同様です。
-              戻り先は直前の1件だけ保持し、対象の話が削除された場合や再読込で無効になった場合は自動的に消えます。
+              戻り先は直前の1件だけ保持します。
             </p>
 
-            <h3 id="right-pane">右ペイン</h3>
+            <h3 id="center-body">本文エリア</h3>
             <p>
-              右ペインはメモと資料の編集領域です。上段の「KAKURIYO解析 ↗」はタブ切り替えではなく、
-              独立した解析ウィンドウを開く操作です。右ペイン自体はヘッダーから開閉できます。
-            </p>
-
-            <h3 id="focus-mode">集中モード</h3>
-            <p>
-              ヘッダーの「集中」または<kbd>F11</kbd>で切り替えます。
-              左右ペイン、Git操作、本文表示状態インジケータを隠し、中央の本文領域を広げます。
+              本文を直接編集する場所です。横書きと縦書きを切り替えられ、プレビューではルビや傍点を展開した状態を確認できます。
+              検索結果や資料のリンクから移動したときは、該当箇所を選択または強調表示します。
             </p>
             <ul>
-              <li>本文、選択範囲、キャレット位置は変更しません。</li>
-              <li>スクロール位置、縦書き状態、編集 / プレビュー状態を維持します。</li>
-              <li>必要な場合は集中モード用のパネルボタンから右ペインだけを表示できます。</li>
-              <li>本文下部の「ALT長押しでショートカット一覧」は残ります。</li>
+              <li>本文の選択、コピー、切り取り、貼り付け</li>
+              <li>ルビ、傍点、ダッシュ、三点リーダなどの入力補助</li>
+              <li>マウスホイール、中クリック、スクロールバーによる移動</li>
+              <li>編集中の表示位置を保ったまま、編集とプレビューを切り替え</li>
             </ul>
-            <div class="admonition note">
-              <strong>表示を隠すだけの機能です</strong>
-              <p>
-                集中モードへ入っても、メモやGitの状態、本文データが削除・解除されることはありません。
-                通常表示へ戻すと、それまでの作業状態で各領域が再表示されます。
-              </p>
+
+            <h3 id="center-footer">下部</h3>
+            <div class="spec-table two-cols">
+              <div class="table-head">表示</div><div class="table-head">内容</div>
+              <div><strong>操作案内</strong></div><div>プレビューや表示切り替え、ショートカット一覧の開き方</div>
+              <div><strong>文字数</strong></div><div>現在話の文字数と、設定済みの場合は目標文字数</div>
+              <div><strong>表示状態</strong></div><div>横書き・縦書きの状態や、表示上の注意を色付きの印で通知</div>
+              <div><strong>記録</strong></div><div>現在の保存内容をGitの履歴として記録</div>
+              <div><strong>履歴</strong></div><div>過去の記録、本文、差分、記録時点の章・話を確認</div>
             </div>
           </section>
 
-          <section v-if="activePage === 'appearance'" id="appearance" class="doc-section">
+          <section v-if="activePage === 'workspace-right'" id="workspace-right" class="doc-section">
             <p>
-              アプリ全体の明暗と、本文の読みやすさに関わる書体・アクセント色を変更できます。
+              右ペインは、本文を見ながらメモや資料を参照・編集する領域です。
+              中央ペイン上部のボタンから開閉できます。
             </p>
 
-            <h3 id="theme">テーマ</h3>
+            <h3 id="right-overview">右ペインの構成</h3>
+            <div class="spec-table two-cols">
+              <div class="table-head">場所</div><div class="table-head">内容</div>
+              <div><strong>上部</strong></div><div>メモと資料の切り替え、KAKURIYO解析を開くボタン</div>
+              <div><strong>一覧</strong></div><div>メモの種類、または資料のページを選択</div>
+              <div><strong>本文</strong></div><div>選択したメモや資料の内容を表示・編集</div>
+            </div>
+
+            <h3 id="right-memo">メモ</h3>
             <p>
-              ホーム画面とプロジェクト画面の右下にあるトグルから、ダークとライトを切り替えます。
-              選択はアプリ全体へ適用され、次回起動時にも引き継がれます。
+              「話ごと」「章ごと」「全体」「共通」から、用途に合うメモを選びます。
+              「メモ一覧」では、作品内のメモを一覧から選び、下側で内容を確認できます。
             </p>
+            <ul>
+              <li>話ごとのメモは、現在開いている話に付属します。</li>
+              <li>章ごとのメモは、現在の話が入っている章に付属します。</li>
+              <li>全体メモは現在の作品、共通メモはすべての作品で共有します。</li>
+            </ul>
+
+            <h3 id="right-reference">資料</h3>
             <p>
-              テーマの切り替えは設定ダイアログを開かずに行えます。
-              ダークモードのアクセント色はテーマそのものではなく、選択中の資料タブなど強調部分の色を変える機能です。
+              「登場人物」「展開」「用語」に分けて資料ページを管理します。
+              上側の一覧からページを選び、下側で本文を編集します。本文中の名前から該当する資料へ移動することもできます。
             </p>
 
-            <h3 id="font-accent">本文フォントとダークモードのアクセント</h3>
+            <h3 id="right-kakuriyo">KAKURIYO</h3>
             <p>
-              本文フォントは、PCにインストールされている書体から選択します。
-              フォントを変えると、本文の描画、折り返し位置、縦書き字形、ルビの配置、IME入力位置を新しい書体に合わせて再計算します。
+              「KAKURIYO解析 ↗」を押すと、現在の本文を見直すための情報を別画面で開きます。
+              右ペイン内の表示切り替えではないため、メモや資料を開いたまま利用できます。
             </p>
-            <p>
-              設定画面では「あいうえお ABC 123」の見本を確認できます。
-              初期値はMeiryoで、設定を確定するまで実際の本文表示は変更されません。
-            </p>
-            <p>
-              ダークモードのアクセントは<code>#RRGGBB</code>形式で指定します。
-              初期値は<code class="accent-color-code">#F2BC6C</code>で、ライトモードの色には影響しません。
-            </p>
-            <figure class="app-screenshot app-screenshot--accent-comparison">
-              <a href="/images/nightover/screenshots/settings-accent-comparison.png" target="_blank" rel="noopener" aria-label="エディタ上でのアクセント色の初期値とシアンの比較を原寸で開く">
-                <img
-                  src="/images/nightover/screenshots/settings-accent-comparison.png"
-                  alt="エディタの資料ペインを並べた比較。左は初期値のF2BC6C、右は変更例の00C8FF"
-                  loading="lazy"
-                />
-              </a>
-              <figcaption>実機画面の資料ペイン — 左: 初期値 #F2BC6C / 右: 変更例 #00C8FF</figcaption>
-            </figure>
           </section>
 
           <section v-if="activePage === 'project'" id="project" class="doc-section">
@@ -1180,7 +1304,7 @@ watch(
               右クリックすると、現在作品の表示タイトルを変更できます。
             </p>
             <div class="admonition note">
-              <strong>表示名だけを変更します</strong>
+              <strong>表示名について</strong>
               <p>
                 作品タイトルの変更は<code>project.json</code>の表示名へ反映されます。
                 作品フォルダ名と内部のプロジェクトIDは変更しません。
@@ -1212,7 +1336,9 @@ watch(
               <div>名前変更</div><div>対象の章または話の表示名</div>
               <div>削除</div><div>対象の章または話（実行前に削除対象を確認）</div>
             </div>
+          </section>
 
+          <section v-if="activePage === 'project-deadline'" id="project-deadline" class="doc-section">
             <h3 id="deadline">締切と目標文字数</h3>
             <p>未設定時は「目標設定」、設定済みの場合は締切カードの<code>...</code>から編集します。</p>
             <div class="spec-table two-cols">
@@ -1235,7 +1361,9 @@ watch(
               話ごとの目標は全話共通値です。設定後に追加した話にも同じ値を引き継ぎます。
               進捗に使う文字数は、設定ページのルビ・スペース除外規則と共通です。
             </p>
+          </section>
 
+          <section v-if="activePage === 'project-status'" id="project-status" class="doc-section">
             <h3 id="status">ステータス</h3>
             <p>
               中央ヘッダーのステータス欄から、現在話へ任意のステータスを割り当てます。
@@ -1349,7 +1477,7 @@ watch(
             </ul>
           </section>
 
-          <section v-if="activePage === 'editor'" id="editor" class="doc-section">
+          <section v-if="activePage === 'editor-display'" id="editor-display" class="doc-section">
             <p>同じ本文データを4種類の表示モードで扱います。</p>
 
             <h3 id="display-controls">本文表示の設定</h3>
@@ -1384,9 +1512,7 @@ watch(
             <ul>
               <li>現在のフォントで実測した文字幅を使い、英数字や和英混在行も考慮して折り返します。</li>
               <li>本文枠が設定字数ぶんの幅より狭い場合は、指定字数より早く折り返すことがあります。</li>
-              <li>句読点や閉じ括弧は、行末で1セル分のぶら下がりを許可します。</li>
-              <li>編集時だけ折り返し位置を示す列ガイドを表示します。</li>
-              <li>上下キーで移動するときは、できるだけ同じ見た目のX位置を保ちます。</li>
+              <li>行末の句読点や閉じ括弧は、次の行へ送らずにぶら下げて表示します。</li>
             </ul>
             <p>
               横書きプレビューではルビ記法を展開し、読み取り専用で表示します。
@@ -1435,6 +1561,31 @@ watch(
               <figcaption>実機画面 — 左: 縦書き編集 / 右: 縦書きプレビュー</figcaption>
             </figure>
 
+            <h3 id="display-indicator">本文表示状態インジケータ</h3>
+            <p>Git操作の左側にある小さな四角で、現在の表示モードと表示上の制約を知らせます。</p>
+            <ul>
+              <li><strong class="yes">緑</strong> — 「横書き表示中」「縦書き表示中」などの情報</li>
+              <li><strong class="indicator-warning">赤</strong> — 互換字形の代替表示や、設定字数より早い折り返しなどの注意</li>
+            </ul>
+            <p>
+              赤表示は本文データの破損を示すエラーではありません。現在の枠やフォントでは表示上の代替が発生していることを知らせます。
+              集中モード中はインジケータ自体を隠しますが、表示モードは維持されます。
+            </p>
+            <figure class="app-screenshot app-screenshot--indicator">
+              <a href="/images/nightover/screenshots/display-indicator.png" target="_blank" rel="noopener" aria-label="本文表示状態インジケータを原寸で開く">
+                <img
+                  src="/images/nightover/screenshots/display-indicator.png"
+                  alt="中央ペイン下部にある本文表示状態インジケータを拡大した画面"
+                  loading="lazy"
+                />
+              </a>
+              <figcaption>実機画面 — 中央ペイン下部の本文表示状態インジケータ</figcaption>
+            </figure>
+          </section>
+
+          <section v-if="activePage === 'editor-input'" id="editor-input" class="doc-section">
+            <p>本文の入力、選択、コピー、移動に関する操作を説明します。</p>
+
             <h3 id="text-input">入力とIME</h3>
             <p>
               編集モードでは通常文字、改行、タブ、貼り付けを本文へ挿入できます。
@@ -1466,27 +1617,6 @@ watch(
               <div>中クリック</div><div>基準点を表示し、横書きでは上下、縦書きでは左右のオートスクロール</div>
               <div>本文専用スクロールバー</div><div>横書きは右側の縦バー、縦書きは下部の横バーを使用</div>
             </div>
-
-            <h3 id="display-indicator">本文表示状態インジケータ</h3>
-            <p>Git操作の左側にある小さな四角で、現在の表示モードと表示上の制約を知らせます。</p>
-            <ul>
-              <li><strong class="yes">緑</strong> — 「横書き表示中」「縦書き表示中」などの情報</li>
-              <li><strong class="indicator-warning">赤</strong> — 互換字形の代替表示や、設定字数より早い折り返しなどの注意</li>
-            </ul>
-            <p>
-              赤表示は本文データの破損を示すエラーではありません。現在の枠やフォントでは表示上の代替が発生していることを知らせます。
-              集中モード中はインジケータ自体を隠しますが、表示モードは維持されます。
-            </p>
-            <figure class="app-screenshot app-screenshot--indicator">
-              <a href="/images/nightover/screenshots/display-indicator.png" target="_blank" rel="noopener" aria-label="本文表示状態インジケータを原寸で開く">
-                <img
-                  src="/images/nightover/screenshots/display-indicator.png"
-                  alt="中央ペイン下部にある本文表示状態インジケータを拡大した画面"
-                  loading="lazy"
-                />
-              </a>
-              <figcaption>実機画面 — 中央ペイン下部の本文表示状態インジケータ</figcaption>
-            </figure>
           </section>
 
           <section v-if="activePage === 'ruby'" id="ruby" class="doc-section">
@@ -1560,9 +1690,9 @@ watch(
               アプリが非アクティブになった場合に閉じます。
             </p>
             <div class="admonition note">
-              <strong>保存本文はプレーンテキストです</strong>
+              <strong>保存本文について</strong>
               <p>
-                プレビュー表示のために保存本文を書き換えることはありません。
+                保存本文はプレーンテキストです。プレビュー表示のために保存本文を書き換えることはありません。
                 ルビは記法のまま保存し、縦組み字形やルビ位置は表示時にだけ解釈します。
               </p>
             </div>
@@ -1679,7 +1809,7 @@ watch(
               整形タブを表示している間は<kbd>Ctrl</kbd> + <kbd>Z</kbd>でも同じ取り消しを実行します。
             </p>
             <div class="admonition warning">
-              <strong>取り消せるのは直前の1回です</strong>
+              <strong>整形の取り消し範囲</strong>
               <p>
                 複数回の整形履歴をさかのぼる機能ではありません。作品を閉じる前に結果を確認してください。
               </p>
@@ -1873,7 +2003,7 @@ watch(
               要確認項目の採用・見送りは解析側の判断状態へ保存され、原稿の修正は本文エディタで利用者が行います。
             </p>
             <div class="admonition info">
-              <strong>本文編集は解析失敗の影響を受けません</strong>
+              <strong>KAKURIYOと本文編集</strong>
               <p>
                 KAKURIYOの更新や読み込みに失敗しても、本文エディタ、メモ、資料などNIGHTOVERの通常機能は継続して利用できます。
               </p>
@@ -1909,7 +2039,7 @@ watch(
               <div><strong>反復</strong></div><div>語尾、近い語、語句、比喩、段落リズムなどの繰り返し傾向です。</div>
             </div>
             <div class="admonition note">
-              <strong>軸は相対的な傾向です</strong>
+              <strong>レーダーの見方</strong>
               <p>
                 軸が高いこと自体を問題とは判定しません。会話中心の場面や意図的な反復など、作品上の狙いと照らして確認してください。
               </p>
@@ -2019,7 +2149,7 @@ watch(
               <figcaption>実機画面 — 現在作品に保存された支援調整の状態</figcaption>
             </figure>
             <div class="admonition note">
-              <strong>本文から勝手に正解を決める機能ではありません</strong>
+              <strong>学習状態について</strong>
               <p>
                 学習状態は利用者の判断を解析へ反映するための記録です。本文を自動修正したり、
                 採用・見送りを自動確定したりするものではありません。
@@ -2081,7 +2211,7 @@ watch(
               <div>作品語・記憶が未設定</div><div>セクションを空白にせず、「未設定」と理由を表示します。</div>
             </div>
             <div class="admonition info">
-              <strong>編集内容には影響しません</strong>
+              <strong>解析に失敗した場合</strong>
               <p>
                 KAKURIYOの解析に失敗しても、本文の編集や保存は続けられます。
                 KAKURIYOはあとから更新し直せます。
@@ -2244,7 +2374,7 @@ watch(
               保存または復元に失敗した場合は途中で中断し、結果を左ペイン下部のステータスメッセージへ通知します。
             </p>
             <div class="admonition warning">
-              <strong>復元範囲を確認してください</strong>
+              <strong>復元範囲について</strong>
               <p>
                 「作品全体」と「本文だけ」では変更される範囲が大きく異なります。
                 迷う場合は復元前に新しい記録を作り、現在状態へ戻れるようにしてから実行してください。
@@ -2287,7 +2417,7 @@ watch(
               Git操作前などの保存は引き続き行います。
             </p>
             <div class="admonition warning">
-              <strong>全体保存は処理範囲が広がります</strong>
+              <strong>全体保存について</strong>
               <p>
                 「自動保存時に全体保存する」を有効にすると、未表示の話・メモ・資料も毎回の対象へ含めます。
                 大きな作品で編集時に重さを感じる場合は、無効のまま使用してください。
@@ -2311,7 +2441,7 @@ watch(
               エラー通知が出た場合は、保存先への書き込み権限、空き容量、作品フォルダの移動・削除を確認してください。
             </p>
             <div class="admonition note">
-              <strong>自動保存をOFFにしても保存機能は残ります</strong>
+              <strong>自動保存をOFFにした場合</strong>
               <p>
                 無効になるのは時間間隔による自動保存です。話切り替え、ホームへ戻る操作、手動保存、
                 Git操作前などの保存導線は引き続き動作します。
@@ -2393,7 +2523,7 @@ watch(
               <code>project.json</code>、<code>manifest/outline.json</code>、各話の本文ファイルを生成します。
             </p>
             <div class="admonition info">
-              <strong>取り込みは製品版の機能です</strong>
+              <strong>体験版での取り込み</strong>
               <p>
                 体験版でも既存作品を開くことや、話・章・選択中の話のtxt書き出しは利用できます。
                 外部書き出しからの作品作成と作品全体txt書き出しが製品版限定です。
@@ -2442,7 +2572,7 @@ watch(
           <section v-if="activePage === 'settings-saving'" id="settings-saving" class="doc-section">
             <p>
               新規作品の保存先と、自動保存の有効状態・間隔を変更します。
-              保存されるタイミングや範囲は<RouterLink to="/nightover/saving">保存と下書き</RouterLink>で確認できます。
+              保存されるタイミングや範囲は<RouterLink to="/nightover/saving">保存と自動保存</RouterLink>で確認できます。
             </p>
 
             <h3 id="setting-default-save-path">デフォルト保存場所</h3>
@@ -2507,7 +2637,7 @@ watch(
 
           <section v-if="activePage === 'settings-appearance'" id="settings-appearance" class="doc-section">
             <p>
-              本文に使う書体と、ダークモードの強調色を変更します。
+              アプリ全体の明暗と、本文に使う書体、ダークモードの強調色を変更します。
             </p>
 
             <h3 id="setting-font-accent">本文フォントとアクセント</h3>
@@ -2516,11 +2646,29 @@ watch(
               <div><strong>本文フォント</strong></div><div>Meiryo</div><div>インストール済みフォントから本文に使う書体を選択します。</div>
               <div><strong>ダークモードのアクセント</strong></div><div><code class="accent-color-code">#F2BC6C</code></div><div>ダークテーマ時の選択色を指定します。</div>
             </div>
-            <p>実際の表示への反映範囲は<RouterLink to="/nightover/appearance">テーマと本文表示</RouterLink>で確認できます。</p>
+            <p>
+              本文フォントを変えると、本文の描画、折り返し位置、縦書き字形、ルビの配置、IME入力位置を新しい書体に合わせて再計算します。
+              設定画面では「あいうえお ABC 123」の見本を確認でき、設定を確定するまで実際の本文表示は変更されません。
+            </p>
+            <p>
+              ダークモードのアクセントは<code>#RRGGBB</code>形式で指定します。
+              選択中の資料タブなど強調部分の色が変わり、ライトモードの色には影響しません。
+            </p>
+            <figure class="app-screenshot app-screenshot--accent-comparison">
+              <a href="/images/nightover/screenshots/settings-accent-comparison.png" target="_blank" rel="noopener" aria-label="エディタ上でのアクセント色の初期値とシアンの比較を原寸で開く">
+                <img
+                  src="/images/nightover/screenshots/settings-accent-comparison.png"
+                  alt="エディタの資料ペインを並べた比較。左は初期値のF2BC6C、右は変更例の00C8FF"
+                  loading="lazy"
+                />
+              </a>
+              <figcaption>実機画面の資料ペイン — 左: 初期値 #F2BC6C / 右: 変更例 #00C8FF</figcaption>
+            </figure>
 
             <h3 id="setting-theme">テーマ</h3>
             <p>
-              ダーク / ライトの切り替えは設定ダイアログ内ではなく、ホーム画面とプロジェクト画面の右下にあるトグルから行います。
+              ダーク / ライトの切り替えは設定画面内ではなく、ホーム画面とエディタ画面の右下にあるトグルから行います。
+              選択はアプリ全体へ適用され、次回起動時にも引き継がれます。
             </p>
           </section>
 
