@@ -1095,8 +1095,8 @@ watch(
         </nav>
 
         <div class="sidebar-version">
-          <span>仕様基準日</span>
-          <strong>2026-06-28</strong>
+          <span>対応バージョン</span>
+          <strong>Ver.1.0.0</strong>
         </div>
       </aside>
 
@@ -3112,7 +3112,7 @@ watch(
 
           <footer class="docs-footer">
             <p>NIGHTOVER 機能リファレンス</p>
-            <p>仕様基準日: 2026-06-28</p>
+            <p>NIGHTOVER Ver.1.0.0 対応</p>
           </footer>
         </article>
       </main>
