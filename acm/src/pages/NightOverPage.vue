@@ -304,7 +304,7 @@ const searchIndex: SearchEntry[] = [
     page: 'editor-display',
     headingId: 'vertical-preview',
     title: '縦書きプレビュー',
-    text: '読み取り専用 ルビ 開始列 半角英数字 90度回転 縦組み互換字形 代替表示 Esc 横書き編集',
+    text: '読み取り専用 ルビ 開始列 半角英数字 90度回転 縦組み互換字形 代替表示 フォント 対応 文字の向き 位置 Esc 縦書き編集',
   },
   {
     page: 'editor-input',
@@ -1592,8 +1592,15 @@ watch(
               <li>半角英数字や対象記号は連続単位として90度回転表示します。文字数による縦中横は行いません。</li>
               <li>句読点、括弧、波線、ダッシュ類は、保存本文を変えず描画時だけ縦組み互換字形を優先します。</li>
               <li>互換字形がない場合は元字形または回転表示で代替し、表示状態インジケータへ注意を出します。</li>
-              <li><kbd>Esc</kbd>では縦書きも解除して横書き編集へ戻ります。「プレビュー」ボタンで戻る場合は縦書き編集を維持します。</li>
+              <li><kbd>Esc</kbd>または「プレビュー」ボタンで、縦書き編集へ戻ります。</li>
             </ul>
+            <div class="admonition note">
+              <strong>縦書きのフォントについて</strong>
+              <p>
+                縦書き編集と縦書きプレビューは、すべてのフォントに対応しているわけではありません。
+                フォントによっては、文字の向きや位置が正しく表示されない場合があります。
+              </p>
+            </div>
             <figure class="app-screenshot app-screenshot--wide">
               <a href="/images/nightover/screenshots/vertical-preview.png" target="_blank" rel="noopener" aria-label="縦書き編集と縦書きプレビューの比較を原寸で開く">
                 <img
@@ -2767,7 +2774,7 @@ watch(
             <h3 id="preview-shortcuts">プレビューモード</h3>
             <div class="spec-table shortcut-table">
               <div class="table-head">キー</div><div class="table-head">操作</div>
-              <div><kbd>Esc</kbd></div><div>本文編集へ戻る。縦書きプレビューでは横書き編集へ戻ります。</div>
+              <div><kbd>Esc</kbd></div><div>本文編集へ戻る。縦書きプレビューでは縦書き編集へ戻ります。</div>
               <div><kbd>↑ / ↓ / ← / →</kbd></div><div>プレビューを行または列単位で移動</div>
               <div><kbd>PageUp / PageDown</kbd></div><div>表示範囲単位で移動</div>
               <div><kbd>Home / End</kbd></div><div>プレビューの先頭 / 末尾へ移動</div>
