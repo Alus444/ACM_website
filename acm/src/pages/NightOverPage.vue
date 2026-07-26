@@ -2871,17 +2871,17 @@ watch(
 
           <section v-if="activePage === 'terms'" id="terms" class="doc-section">
             <p>
-              この利用規約は、ACMのAlusが提供するNIGHTOVERの利用条件を定めるものです。
+              この利用規約は、ACMが提供するNIGHTOVERの利用条件を定めるものです。
               BOOTH、イベント会場、そのほか提供者が認めた方法で取得した体験版・製品版に適用されます。
             </p>
             <p>
               <strong>制定日:</strong> 2026年7月26日<br />
-              <strong>提供者:</strong> ACMのAlus
+              <strong>提供者:</strong> ACM
             </p>
 
             <h3 id="terms-scope">第1条　適用</h3>
             <p>
-              本規約は、ACMのAlus（以下「提供者」）が提供するWindows向け執筆ソフト「NIGHTOVER」
+              本規約は、ACM（以下「提供者」）が提供するWindows向け執筆ソフト「NIGHTOVER」
               （体験版、製品版および付属データを含み、以下「本ソフト」）の利用条件を定めるものです。
             </p>
             <p>
@@ -3044,7 +3044,7 @@ watch(
 
             <h3 id="terms-contact">第17条　提供者・お問い合わせ</h3>
             <ul>
-              <li>提供者: ACMのAlus</li>
+              <li>提供者: ACM</li>
               <li>販売場所: BOOTHおよびイベント会場など</li>
               <li>お問い合わせ: BOOTHのメッセージ機能または提供者が別途案内する連絡先</li>
             </ul>
