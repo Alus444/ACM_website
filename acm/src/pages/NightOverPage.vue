@@ -148,7 +148,7 @@ const searchIndex: SearchEntry[] = [
     page: 'intro',
     headingId: 'runtime',
     title: '動作形式',
-    text: '対応環境 Windows デスクトップアプリ NIGHTOVER_v1.0.0.exe Ver.1.0.0 作品フォルダ ダーク ライト テーマ',
+    text: '対応環境 Windows デスクトップアプリ NIGHTOVER_v1_0_0.exe Ver.1.0.0 作品フォルダ ダーク ライト テーマ',
   },
   {
     page: 'terms',
@@ -1130,7 +1130,7 @@ watch(
               <div class="table-head">項目</div><div class="table-head">内容</div>
               <div>対応環境</div><div>Windows</div>
               <div>アプリ形式</div><div>デスクトップアプリ</div>
-              <div>実行ファイル</div><div><code>NIGHTOVER_v1.0.0.exe</code></div>
+              <div>実行ファイル</div><div><code>NIGHTOVER_v1_0_0.exe</code></div>
               <div>作品データ</div><div>作品ごとのフォルダに保存</div>
               <div>表示テーマ</div><div>ダーク / ライト</div>
             </div>
