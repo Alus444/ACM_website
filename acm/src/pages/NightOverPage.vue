@@ -334,7 +334,13 @@ const searchIndex: SearchEntry[] = [
     page: 'ruby',
     headingId: 'ruby-syntax',
     title: 'ルビ',
-    text: '親文字 ルビ記法 |親文字《ルビ》 ｜親文字《ルビ》 漢字《かな》 入力ダイアログ 文字数上限',
+    text: '親文字 ルビ記法 |親文字《ルビ》 ｜親文字《ルビ》 漢字《かな》 入力ダイアログ 文字数上限 エスケープ',
+  },
+  {
+    page: 'ruby',
+    headingId: 'ruby-escape',
+    title: 'ルビにしない書き方',
+    text: '漢字｜《ルビ》 漢字|《ルビ》 縦線 《 二重山括弧 通常文字 エスケープ プレビュー',
   },
   {
     page: 'ruby',
@@ -805,6 +811,7 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
   ],
   ruby: [
     { id: 'ruby-syntax', label: 'ルビ' },
+    { id: 'ruby-escape', label: 'ルビにしない書き方' },
     { id: 'ruby-validation', label: '入力条件' },
     { id: 'ruby-count', label: '上限と文字数' },
     { id: 'emphasis', label: '傍点' },
@@ -1686,6 +1693,18 @@ watch(
               編集中は記法を保存本文どおりに表示し、プレビュー時だけ親文字と読みへ展開します。
             </p>
 
+            <h3 id="ruby-escape">ルビにしない書き方</h3>
+            <p>
+              <code>漢字《ルビ》</code>の形をルビにせず、そのまま文字として表示したい場合は、
+              <code>《</code>の直前へ全角または半角の縦線を入力します。
+            </p>
+            <pre><code>漢字｜《ルビ》
+漢字|《ルビ》</code></pre>
+            <p>
+              編集中と保存本文には縦線を含む記法が残り、プレビューでは縦線だけが消えて
+              <code>漢字《ルビ》</code>と表示されます。ルビとしては扱われず、下部のルビ記法の注意も表示されません。
+            </p>
+
             <h3 id="ruby-validation">ルビを挿入できる条件</h3>
             <ul>
               <li>親文字とルビの両方が空ではないこと</li>
@@ -1717,6 +1736,9 @@ watch(
               <p>
                 <code>|東京《とうきょう》 へ</code>は、除外設定がONなら親文字の「東京」と「へ」だけを数えて3字です。
                 OFFならルビ記号、読み、スペースも保存本文どおりに数えて12字です。
+              </p>
+              <p>
+                <code>漢字｜《ルビ》</code>の縦線は、除外設定がONなら数えず、OFFなら保存本文の1字として数えます。
               </p>
             </div>
             <p>
