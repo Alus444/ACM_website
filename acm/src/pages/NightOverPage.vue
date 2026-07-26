@@ -4256,9 +4256,16 @@ button {
     grid-column: 2;
   }
 
-  .kakuriyo-storage-table {
+  .spec-table.two-cols.kakuriyo-storage-table {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    overflow-x: visible;
+    overflow: hidden;
+  }
+
+  .spec-table.two-cols.kakuriyo-storage-table code {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
   }
 
   .doc-footer-nav {
