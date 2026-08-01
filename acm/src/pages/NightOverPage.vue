@@ -153,6 +153,12 @@ const searchIndex: SearchEntry[] = [
     title: '動作形式',
     text: `対応環境 Windows デスクトップアプリ ${nightOverExecutableName} Ver.${nightOverCurrentVersion} 作品フォルダ ダーク ライト テーマ BOOTH 商品ページ`,
   },
+  {
+    page: 'intro',
+    headingId: 'sample-text',
+    title: 'スクリーンショットのサンプル本文',
+    text: '掲載画像 実機画面 サンプル本文 夏目漱石 こころ',
+  },
   ...nightOverReleases.map((release) => ({
     page: 'releases',
     headingId: `release-${release.version}`,
@@ -1157,6 +1163,9 @@ watch(
               <div>作品データ</div><div>作品ごとのフォルダに保存</div>
               <div>表示テーマ</div><div>ダーク / ライト</div>
             </div>
+            <p id="sample-text" class="sample-text-note">
+              掲載している実機画面のサンプル本文には、夏目漱石『こころ』を使用しています。
+            </p>
           </section>
 
           <section v-if="activePage === 'releases'" id="releases" class="doc-section">
@@ -3621,6 +3630,12 @@ button {
   flex-wrap: wrap;
   gap: 6px 18px;
   margin-left: auto;
+}
+
+.sample-text-note {
+  margin-top: -10px !important;
+  color: var(--doc-subtle) !important;
+  font-size: 0.72rem;
 }
 
 .release-list {
