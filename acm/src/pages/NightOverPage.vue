@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { nightOverCurrentVersion, nightOverReleases } from '../data/nightover-releases'
+import { nightOverCurrentVersion, nightOverProductUrl, nightOverReleases } from '../data/nightover-releases'
 
 type NavItem = {
   id: string
@@ -151,7 +151,7 @@ const searchIndex: SearchEntry[] = [
     page: 'intro',
     headingId: 'runtime',
     title: '動作形式',
-    text: `対応環境 Windows デスクトップアプリ ${nightOverExecutableName} Ver.${nightOverCurrentVersion} 作品フォルダ ダーク ライト テーマ`,
+    text: `対応環境 Windows デスクトップアプリ ${nightOverExecutableName} Ver.${nightOverCurrentVersion} 作品フォルダ ダーク ライト テーマ BOOTH 商品ページ`,
   },
   ...nightOverReleases.map((release) => ({
     page: 'releases',
@@ -159,8 +159,8 @@ const searchIndex: SearchEntry[] = [
     title: `Ver.${release.version} ${release.title}`,
     text: [
       'リリース情報 アップデート バージョン 公開日 新機能 追加 変更 修正 注意事項',
-      release.summary,
-      ...release.sections.flatMap((section) => [section.title, ...section.items]),
+      release.summary ?? '',
+      ...(release.sections ?? []).flatMap((section) => [section.title, ...section.items]),
     ].join(' '),
   })),
   {
@@ -215,7 +215,7 @@ const searchIndex: SearchEntry[] = [
     page: 'workspace-left',
     headingId: 'left-outline',
     title: '左ペイン',
-    text: '作品切り替え 設定 締切 目標文字数 章 話 アウトライン ツリー表示 並び 見やすい 折りたたみなし 文字数 進捗 ステータス 保存状態',
+    text: '作品切り替え 設定 締切 目標文字数 章 話 アウトライン ツリー表示 並び 見やすい 折りたたみなし 文字数 原稿用紙 400字詰め 概算 枚数 進捗 ステータス 保存状態',
   },
   {
     page: 'workspace-center',
@@ -756,7 +756,6 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
     { id: 'runtime', label: '動作形式' },
   ],
   releases: [
-    { id: 'release-guide', label: '掲載内容' },
     { id: 'release-history', label: '更新履歴' },
   ],
   terms: [
@@ -1133,7 +1132,10 @@ watch(
             </p>
             <p class="intro-release">
               現在のバージョン <strong>Ver.{{ nightOverCurrentVersion }}</strong>
-              <RouterLink to="/nightover/releases">更新内容を見る</RouterLink>
+              <span class="intro-release__links">
+                <a :href="nightOverProductUrl" target="_blank" rel="noopener">BOOTH商品ページ</a>
+                <RouterLink to="/nightover/releases">更新内容を見る</RouterLink>
+              </span>
             </p>
 
             <h2 id="main-features">主な機能</h2>
@@ -1158,12 +1160,6 @@ watch(
           </section>
 
           <section v-if="activePage === 'releases'" id="releases" class="doc-section">
-            <h3 id="release-guide">掲載内容</h3>
-            <p>
-              配布したバージョンごとの新機能、変更、修正、利用時の注意事項を掲載します。
-              更新履歴は新しいバージョンから順に並びます。
-            </p>
-
             <h3 id="release-history">更新履歴</h3>
             <div class="release-list">
               <article
@@ -1182,9 +1178,9 @@ watch(
                   </div>
                   <time v-if="release.publishedAt">{{ release.publishedAt }}</time>
                 </header>
-                <p class="release-entry__summary">{{ release.summary }}</p>
+                <p v-if="release.summary" class="release-entry__summary">{{ release.summary }}</p>
 
-                <section v-for="releaseSection in release.sections" :key="releaseSection.title" class="release-entry__section">
+                <section v-for="releaseSection in release.sections ?? []" :key="releaseSection.title" class="release-entry__section">
                   <h5>{{ releaseSection.title }}</h5>
                   <ul>
                     <li v-for="item in releaseSection.items" :key="item">{{ item }}</li>
@@ -1294,7 +1290,7 @@ watch(
               <div><strong>進捗カード</strong></div><div>締切までの日数、作品全体の文字数、目標までの進捗</div>
               <div><strong>操作列</strong></div><div>章・話の追加、表示の切り替え、検索・置換</div>
               <div><strong>章・話の一覧</strong></div><div>アウトライン、各話の文字数、目標の進捗、ステータスの色</div>
-              <div><strong>下部</strong></div><div>作品全体の合計文字数と、保存結果などのお知らせ</div>
+              <div><strong>下部</strong></div><div>作品全体の合計文字数、原稿用紙換算、保存結果などのお知らせ</div>
             </div>
 
             <h3 id="left-deadline">締切と目標</h3>
@@ -1319,7 +1315,8 @@ watch(
 
             <h3 id="left-footer">下部の表示</h3>
             <p>
-              一覧の下には作品全体の合計文字数を表示します。
+              一覧の下には作品全体の合計文字数と、400字詰め原稿用紙に換算したおおよその枚数を表示します。
+              原稿用紙の枚数は合計文字数を400で割り、端数を1枚として数えます。
               その下のお知らせ欄では、「保存しました」「自動保存しました」など直前の処理結果を確認できます。
             </p>
           </section>
@@ -3593,7 +3590,10 @@ button {
   color: var(--doc-accent-dark);
 }
 
-.intro-release a {
+.intro-release__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
   margin-left: auto;
 }
 
@@ -4382,7 +4382,7 @@ button {
     align-items: flex-start;
   }
 
-  .intro-release a {
+  .intro-release__links {
     width: 100%;
     margin-left: 0;
   }
