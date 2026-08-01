@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { nightOverCurrentVersion, nightOverReleases } from '../data/nightover-releases'
 
 type NavItem = {
   id: string
@@ -37,6 +38,7 @@ const navGroups: NavGroup[] = [
     label: 'はじめに',
     items: [
       { id: 'intro', label: 'NIGHTOVER', keywords: '概要 はじめに windows 小説 執筆' },
+      { id: 'releases', label: 'リリース情報', keywords: '更新 アップデート バージョン 変更 修正 追加' },
       { id: 'editions', label: '体験版と製品版', keywords: 'trial full 制限 比較' },
       { id: 'terms', label: '利用規約', keywords: '規約 ライセンス 法人 サークル 返金 外部送信 権利' },
     ],
@@ -136,6 +138,7 @@ const currentPage = computed<NavItem>(
 const currentPageIndex = computed(() => allItems.findIndex((item) => item.id === activePage.value))
 const previousPage = computed(() => allItems[currentPageIndex.value - 1])
 const nextPage = computed(() => allItems[currentPageIndex.value + 1])
+const nightOverExecutableName = `NIGHTOVER_v${nightOverCurrentVersion.replace(/\./g, '_')}.exe`
 
 const searchIndex: SearchEntry[] = [
   {
@@ -148,8 +151,18 @@ const searchIndex: SearchEntry[] = [
     page: 'intro',
     headingId: 'runtime',
     title: '動作形式',
-    text: '対応環境 Windows デスクトップアプリ NIGHTOVER_v1_0_0.exe Ver.1.0.0 作品フォルダ ダーク ライト テーマ',
+    text: `対応環境 Windows デスクトップアプリ ${nightOverExecutableName} Ver.${nightOverCurrentVersion} 作品フォルダ ダーク ライト テーマ`,
   },
+  ...nightOverReleases.map((release) => ({
+    page: 'releases',
+    headingId: `release-${release.version}`,
+    title: `Ver.${release.version} ${release.title}`,
+    text: [
+      'リリース情報 アップデート バージョン 公開日 新機能 追加 変更 修正 注意事項',
+      release.summary,
+      ...release.sections.flatMap((section) => [section.title, ...section.items]),
+    ].join(' '),
+  })),
   {
     page: 'terms',
     headingId: 'terms-license',
@@ -742,6 +755,10 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
     { id: 'main-features', label: '主な機能' },
     { id: 'runtime', label: '動作形式' },
   ],
+  releases: [
+    { id: 'release-guide', label: '掲載内容' },
+    { id: 'release-history', label: '更新履歴' },
+  ],
   terms: [
     { id: 'terms-scope', label: '適用' },
     { id: 'terms-license', label: 'ライセンス' },
@@ -1096,7 +1113,7 @@ watch(
 
         <div class="sidebar-version">
           <span>対応バージョン</span>
-          <strong>Ver.1.0.0</strong>
+          <strong>Ver.{{ nightOverCurrentVersion }}</strong>
         </div>
       </aside>
 
@@ -1114,6 +1131,10 @@ watch(
               NIGHTOVERは、小説執筆向けのWindowsデスクトップアプリです。本文、章と話、
               メモ、資料、締切、記録、解析支援をひとつのプロジェクトで管理します。
             </p>
+            <p class="intro-release">
+              現在のバージョン <strong>Ver.{{ nightOverCurrentVersion }}</strong>
+              <RouterLink to="/nightover/releases">更新内容を見る</RouterLink>
+            </p>
 
             <h2 id="main-features">主な機能</h2>
             <ul>
@@ -1130,9 +1151,46 @@ watch(
               <div class="table-head">項目</div><div class="table-head">内容</div>
               <div>対応環境</div><div>Windows</div>
               <div>アプリ形式</div><div>デスクトップアプリ</div>
-              <div>実行ファイル</div><div><code>NIGHTOVER_v1_0_0.exe</code></div>
+              <div>実行ファイル</div><div><code>{{ nightOverExecutableName }}</code></div>
               <div>作品データ</div><div>作品ごとのフォルダに保存</div>
               <div>表示テーマ</div><div>ダーク / ライト</div>
+            </div>
+          </section>
+
+          <section v-if="activePage === 'releases'" id="releases" class="doc-section">
+            <h3 id="release-guide">掲載内容</h3>
+            <p>
+              配布したバージョンごとの新機能、変更、修正、利用時の注意事項を掲載します。
+              更新履歴は新しいバージョンから順に並びます。
+            </p>
+
+            <h3 id="release-history">更新履歴</h3>
+            <div class="release-list">
+              <article
+                v-for="(release, releaseIndex) in nightOverReleases"
+                :id="`release-${release.version}`"
+                :key="release.version"
+                class="release-entry"
+              >
+                <header class="release-entry__header">
+                  <div>
+                    <div class="release-entry__version-row">
+                      <h4>Ver.{{ release.version }}</h4>
+                      <span v-if="releaseIndex === 0" class="release-entry__current">現在のバージョン</span>
+                    </div>
+                    <p class="release-entry__title">{{ release.title }}</p>
+                  </div>
+                  <time v-if="release.publishedAt">{{ release.publishedAt }}</time>
+                </header>
+                <p class="release-entry__summary">{{ release.summary }}</p>
+
+                <section v-for="releaseSection in release.sections" :key="releaseSection.title" class="release-entry__section">
+                  <h5>{{ releaseSection.title }}</h5>
+                  <ul>
+                    <li v-for="item in releaseSection.items" :key="item">{{ item }}</li>
+                  </ul>
+                </section>
+              </article>
             </div>
           </section>
 
@@ -1191,7 +1249,7 @@ watch(
               <div><strong>保存先から開く</strong></div><div>デフォルト保存場所にある有効なNIGHTOVER作品を一覧から開きます。</div>
               <div><strong>他の場所から開く</strong></div><div>任意の場所にある作品フォルダを選択して開きます。</div>
               <div><strong>最近のプロジェクト</strong></div><div>最近開いた作品を最大5件表示し、キーボード選択と<kbd>Enter</kbd>でも開けます。</div>
-              <div><strong>バージョン</strong></div><div>画面下部に<code>NIGHTOVER Ver.1.0.0</code>を表示します。</div>
+              <div><strong>バージョン</strong></div><div>画面下部に<code>NIGHTOVER Ver.{{ nightOverCurrentVersion }}</code>を表示します。</div>
               <div><strong>テーマ</strong></div><div>右下のトグルからダーク / ライトを切り替えます。</div>
             </div>
             <p>
@@ -3113,7 +3171,7 @@ watch(
 
           <footer class="docs-footer">
             <p>NIGHTOVER 機能リファレンス</p>
-            <p>NIGHTOVER Ver.1.0.0 対応</p>
+            <p>NIGHTOVER Ver.{{ nightOverCurrentVersion }} 対応</p>
           </footer>
         </article>
       </main>
@@ -3517,6 +3575,97 @@ button {
   color: #d0cbc2 !important;
   font-size: 1.03rem;
   line-height: 1.9;
+}
+
+.intro-release {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  align-items: center;
+  margin-top: 22px !important;
+  padding: 12px 0;
+  border-top: 1px solid var(--doc-line);
+  border-bottom: 1px solid var(--doc-line);
+  font-size: 0.76rem;
+}
+
+.intro-release strong {
+  color: var(--doc-accent-dark);
+}
+
+.intro-release a {
+  margin-left: auto;
+}
+
+.release-list {
+  margin: 18px 0 28px;
+  border-top: 1px solid var(--doc-line);
+}
+
+.release-entry {
+  padding: 24px 2px 26px;
+  border-bottom: 1px solid var(--doc-line);
+}
+
+.release-entry__header {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.release-entry__version-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+}
+
+.release-entry__version-row h4 {
+  color: #f1eee8;
+  font-size: 1.08rem;
+}
+
+.release-entry__current {
+  padding: 3px 8px;
+  border: 1px solid #786348;
+  border-radius: 999px;
+  background: var(--doc-accent-soft);
+  color: var(--doc-accent-dark);
+  font-size: 0.61rem;
+  line-height: 1.4;
+}
+
+.release-entry__title {
+  margin: 5px 0 0 !important;
+  color: #d6d1c8 !important;
+  font-size: 0.8rem;
+}
+
+.release-entry time {
+  flex: none;
+  color: var(--doc-subtle);
+  font-size: 0.68rem;
+}
+
+.release-entry__summary {
+  max-width: 700px;
+  margin-top: 18px !important;
+}
+
+.release-entry__section {
+  margin-top: 22px;
+}
+
+.release-entry__section h5 {
+  margin: 0 0 8px;
+  color: #ddd8cf;
+  font-size: 0.78rem;
+  font-weight: 650;
+}
+
+.release-entry__section ul {
+  margin-bottom: 0;
 }
 
 .docs-content ul,
@@ -4227,6 +4376,20 @@ button {
 
   .docs-content h2 {
     font-size: 1.4rem;
+  }
+
+  .intro-release {
+    align-items: flex-start;
+  }
+
+  .intro-release a {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .release-entry__header {
+    display: grid;
+    gap: 8px;
   }
 
   .spec-table {
