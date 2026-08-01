@@ -1227,6 +1227,28 @@ watch(
               <li>必要な場合は集中モード用のパネルボタンから右ペインだけを表示できます。</li>
               <li>本文下部の「ALT長押しでショートカット一覧」は残ります。</li>
             </ul>
+            <div class="screenshot-pair">
+              <figure class="app-screenshot app-screenshot--wide">
+                <a href="/images/nightover/screenshots/focus-mode.png" target="_blank" rel="noopener" aria-label="集中モードの実機画面を原寸で開く">
+                  <img
+                    src="/images/nightover/screenshots/focus-mode.png"
+                    alt="左右のペインを隠し、中央の本文だけを広く表示した集中モードの編集画面"
+                    loading="lazy"
+                  />
+                </a>
+                <figcaption>実機画面 — 左右のペインを隠した集中モード</figcaption>
+              </figure>
+              <figure class="app-screenshot app-screenshot--wide">
+                <a href="/images/nightover/screenshots/focus-mode-right-pane.png" target="_blank" rel="noopener" aria-label="集中モードで右ペインを表示した実機画面を原寸で開く">
+                  <img
+                    src="/images/nightover/screenshots/focus-mode-right-pane.png"
+                    alt="集中モードを維持したまま、右側に話ごとのメモを表示した編集画面"
+                    loading="lazy"
+                  />
+                </a>
+                <figcaption>実機画面 — 集中モードのまま右ペインだけを表示した状態</figcaption>
+              </figure>
+            </div>
             <div class="admonition note">
               <strong>集中モードについて</strong>
               <p>
@@ -1334,9 +1356,13 @@ watch(
               <li>現在文字数、目標文字数、選択中の文字数</li>
               <li>横書き・縦書きのプレビュー</li>
               <li>集中モード</li>
-              <li>文字サイズ、「字 / 行」、縦書き、統計を開く<code>...</code></li>
+              <li><code>...</code>を押すと、文字サイズ、「字 / 行」、縦書き、統計の項目を開けます。</li>
               <li>右ペインの開閉</li>
             </ul>
+            <p>
+              集中モードで隠れる範囲と維持される状態は、
+              <RouterLink to="/nightover/workspace#focus-mode">全体構成の「集中モード」</RouterLink>で確認できます。
+            </p>
             <p>
               別の話を開くと、本文の上に「← 戻る: 直前の話タイトル」が表示されます。
               クリックすると、前に開いていた話へ戻れます。検索結果から別の話へ移動した場合も同様です。
