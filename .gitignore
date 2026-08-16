@@ -1,0 +1,15 @@
+# Dependencies and generated output
+node_modules/
+dist/
+output/
+tmp/
+
+# Local environment files
+.env
+.env.*
+*.local
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
