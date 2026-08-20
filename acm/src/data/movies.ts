@@ -13,7 +13,7 @@ export const movies: Movie[] = [
   { youtubeId: '2rxckpmbdoo', title: 'マーシャルマキシマイザー歌ってみた【ながる】', tags: ['MV'], year: 2022, date: '2022-04-08' },
   { youtubeId: 'rdRZ1AkJ8ys', title: 'ダーリン -須田景凪／covered by 水縹アオ', tags: ['MV'], year: 2025, date: '2025-07-31' },
   { youtubeId: 'TeXRfxSnu_g', title: '【ボイチェンおじさん】ホワイトハッピー【歌ってみた】', tags: ['MV'], year: 2021, date: '2021-08-20' },
-  { youtubeId: 'a9BYP7UwoQ8', title: '【ボイチェンおじさん】東京ヒートアイランド現象【歌ってみた】', tags: ['MV'], year: 2021, date: '2021-07-31' },
+  { youtubeId: 'a9BYP7UwoQ8', title: '【ボイチェンおじさん】東京ヒートアイランド現象【歌ってみた】', tags: ['MV'], year: 2021, date: '2021-07-31', thumbnailUrl: 'https://img.youtube.com/vi/a9BYP7UwoQ8/sddefault.jpg' },
   { youtubeId: 'vo15yW60QFs', title: '爆笑　歌ってみた【wanida】', tags: ['MV'], year: 2022, date: '2022-02-13' },
   { youtubeId: '2iEX-Kbw7Og', title: 'ライカ -yamada／covered by 水縹アオ', tags: ['MV'], year: 2025, date: '2025-03-31' },
   { youtubeId: 'OBbDgXkpMdA', title: 'いろは唄 /羽原ゆとり(Cover)', tags: ['MV'], year: 2022, date: '2022-01-17' },
@@ -25,6 +25,7 @@ export const movies: Movie[] = [
   { youtubeId: 'hRTMYEKU2OE', title: 'ずうっといっしょ！／covered by 水縹アオ', tags: ['MV'], year: 2024, date: '2024-10-31' },
   { youtubeId: 'bzU_y84QVag', title: '再会 -はるまきごはん／covered by 水縹アオ', tags: ['MV'], year: 2026, date: '2026-01-31' },
   { youtubeId: '2UixFWiWShc', title: '【歌ってみた】GURU　-cover-すずやっこ', tags: ['MV'], year: 2026, date: '2026-06-20' },
+  { youtubeId: '-VbE7fxVhak', title: '【活動6周年】れびてーしょん／covered by 水縹アオ【TVアニメ『NEEDY GIRL OVERDOSE』EDテーマ】', tags: ['MV'], year: 2026, date: '2026-08-07' },
   { youtubeId: 'ESQoefo3Vrw', title: 'MusicVket3「Show you!」/クロスフェード', tags: ['MV'], year: 2021, date: '2021-11-03' },
   { youtubeId: 'K_4jydZH-S0', title: 'MusicVket2「ISSUE」/クロスフェード', tags: ['MV'], year: 2021, date: '2021-02-26' },
 ]

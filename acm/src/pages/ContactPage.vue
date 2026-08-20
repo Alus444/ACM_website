@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import PageHeader from '../components/layout/PageHeader.vue'
 import { useMode } from '../composables/useMode'
+import { profilePro } from '../data/profile-pro'
 
 const { isPro } = useMode()
+const proEmail = profilePro.social?.email || 'alus@ac-md.com'
 
 const linksDefault = [
   {
@@ -28,9 +30,9 @@ const linksDefault = [
 const linksPro = [
   {
     label: 'Email',
-    handle: 'azc@ac-md.com',
+    handle: proEmail,
     desc: 'メールでのお問い合わせ',
-    url: 'mailto:azc@ac-md.com',
+    url: `mailto:${proEmail}`,
   },
 ]
 

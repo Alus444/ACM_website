@@ -23,17 +23,20 @@ if (!json) {
 }
 
 const p = JSON.parse(json)
-const skills = p.skills.map(s => `'${s}'`).join(', ')
+const email = typeof p.email === 'string'
+  ? p.email
+  : (typeof p.social?.email === 'string' ? p.social.email : '')
 
 const content = `import type { Profile } from '../types'
 
 export const profilePro: Profile = {
-  name: '${p.name}',
-  handle: '${p.handle}',
-  avatarUrl: '${p.avatarUrl}',
-  bio: '${p.bio}',
-  skills: [${skills}],
+  name: ${JSON.stringify(p.name)},
+  handle: ${JSON.stringify(p.handle)},
+  avatarUrl: ${JSON.stringify(p.avatarUrl)},
+  bio: ${JSON.stringify(p.bio)},
+  skills: ${JSON.stringify(p.skills)},
   social: {
+    email: ${JSON.stringify(email)},
     twitter: '',
     booth: '',
   },

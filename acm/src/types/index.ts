@@ -42,6 +42,7 @@ export interface Movie {
   year?: number
   tags?: string[]
   proOnly?: boolean
+  thumbnailUrl?: string
 }
 
 export interface Profile {
@@ -51,6 +52,7 @@ export interface Profile {
   bio: string
   skills: string[]
   social: {
+    email?: string
     twitter?: string
     pixiv?: string
     booth?: string

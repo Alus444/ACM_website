@@ -11,6 +11,7 @@
     "fetch-booth:force": "node scripts/fetch-booth.mjs --force",
     "dev:rapro": "vite --mode rapro",
     "build:alus": "vue-tsc -b && vite build --mode alus",
+    "prebuild:rapro": "node scripts/gen-profile-pro.mjs",
     "build:rapro": "vue-tsc -b && vite build --mode rapro"
   },
   "dependencies": {

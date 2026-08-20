@@ -27,7 +27,7 @@ const sorted = computed(() =>
         >
           <div class="movie-thumb">
             <img
-              :src="`https://img.youtube.com/vi/${movie.youtubeId}/maxresdefault.jpg`"
+              :src="movie.thumbnailUrl ?? `https://img.youtube.com/vi/${movie.youtubeId}/maxresdefault.jpg`"
               :alt="movie.title"
               loading="lazy"
               @error="($event.target as HTMLImageElement).src = `https://img.youtube.com/vi/${movie.youtubeId}/hqdefault.jpg`"
