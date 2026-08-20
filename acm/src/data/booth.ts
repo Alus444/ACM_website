@@ -3,6 +3,24 @@ import type { BoothItem } from '../types'
 // このファイルは scripts/fetch-booth.mjs で自動生成されます
 export const boothItems: BoothItem[] = [
   {
+    "id": "booth-8656265",
+    "title": "【無料版あり】小説執筆エディタ NIGHTOVER",
+    "description": "どんなソフトなの？という方向け簡易解説用Noteはこちら 全機能を見たいという方向けドキュメントはこちら NIGHTOVERは今まで逆張りして様々な執筆ソ...",
+    "imageUrl": "/images/booth/booth-8656265.jpg",
+    "price": 0,
+    "boothUrl": "https://alushop.booth.pm/items/8656265",
+    "category": "ソフトウェア"
+  },
+  {
+    "id": "booth-8415622",
+    "title": "デジタルフォトフレーム2 PF-526",
+    "description": "画像編集ソフト不要、画像を16枚まで自動で1枚に結合できるツール付きです。 画像の自動は切替はクロスフェードやスワイプなど５種類から選べます。 (This...",
+    "imageUrl": "/images/booth/booth-8415622.jpg",
+    "price": 680,
+    "boothUrl": "https://alushop.booth.pm/items/8415622",
+    "category": "小道具"
+  },
+  {
     "id": "booth-8353878",
     "title": "Aether",
     "description": "ワールドの空をこれ一つで！！！ 日の出、青空、夕焼け、星空に流れ星や天の川。 Aether(エーテル)は一つで全ての時間の表現が可能なシェーダーです。 S...",
