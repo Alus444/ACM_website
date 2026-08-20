@@ -94,7 +94,7 @@ async function downloadImage(imageUrl, itemId) {
 }
 
 async function fetchItem(entry) {
-  const { url, category, categories, tags } = entry
+  const { url, category, categories, tags, price: priceOverride, isStartingPrice: isStartingPriceOverride } = entry
   const itemCategories = categories ?? (category ? [category] : [])
   const primaryCategory = itemCategories[0] ?? ''
   console.log(`Fetching: ${url}`)
@@ -117,7 +117,11 @@ async function fetchItem(entry) {
   const title = cleanTitle(extractMeta(html, 'og:title'))
   const remoteImage = extractMeta(html, 'og:image') || extractMeta(html, 'twitter:image')
   const description = cleanDescription(extractMeta(html, 'og:description'))
-  const { price, isStartingPrice } = extractPrice(html)
+  const { price: fetchedPrice, isStartingPrice: fetchedIsStartingPrice } = extractPrice(html)
+  const price = Number.isFinite(priceOverride) ? priceOverride : fetchedPrice
+  const isStartingPrice = typeof isStartingPriceOverride === 'boolean'
+    ? isStartingPriceOverride
+    : fetchedIsStartingPrice
   const imageUrl = await downloadImage(remoteImage, id)
 
   console.log(`  title: ${title}`)
@@ -160,6 +164,11 @@ async function main() {
       else delete items[idx].categories
       if (entry.tags) items[idx].tags = entry.tags
       else delete items[idx].tags
+      if (Number.isFinite(entry.price)) items[idx].price = entry.price
+      if (typeof entry.isStartingPrice === 'boolean') {
+        if (entry.isStartingPrice) items[idx].isStartingPrice = true
+        else delete items[idx].isStartingPrice
+      }
       continue
     }
     const item = await fetchItem(entry)

@@ -7,9 +7,10 @@ export const boothItems: BoothItem[] = [
     "title": "【無料版あり】小説執筆エディタ NIGHTOVER",
     "description": "どんなソフトなの？という方向け簡易解説用Noteはこちら 全機能を見たいという方向けドキュメントはこちら NIGHTOVERは今まで逆張りして様々な執筆ソ...",
     "imageUrl": "/images/booth/booth-8656265.jpg",
-    "price": 0,
+    "price": 500,
     "boothUrl": "https://alushop.booth.pm/items/8656265",
-    "category": "ソフトウェア"
+    "category": "ソフトウェア",
+    "isStartingPrice": true
   },
   {
     "id": "booth-8415622",

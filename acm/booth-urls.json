@@ -1,5 +1,5 @@
 [
-  { "url": "https://alushop.booth.pm/items/8656265", "category": "ソフトウェア" },
+  { "url": "https://alushop.booth.pm/items/8656265", "category": "ソフトウェア", "price": 500, "isStartingPrice": true },
   { "url": "https://alushop.booth.pm/items/8415622", "category": "小道具" },
   { "url": "https://alushop.booth.pm/items/8353878", "category": "シェーダー" },
   { "url": "https://alushop.booth.pm/items/8171206", "category": "ギミック" },
