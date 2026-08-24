@@ -700,7 +700,7 @@ onUnmounted(() => {
               </a>
               <figcaption class="preset-comparison-caption">
                 <span data-caption-text>街路の細い線と日なた・影で、輪郭、色、走行の乱れを比較できます。</span>
-                <a class="preset-source-link" href="/images/vhs-simulator/screenshots/preset-source-street.webp" target="_blank" rel="noopener" data-lightbox="image" data-lightbox-alt="日なたと影のある街路の加工前画像" data-lightbox-caption="加工前の元画像">元画像を見る</a>
+                <a class="preset-source-link" href="/images/vhs-simulator/screenshots/preset-source-street.webp?v=test4" target="_blank" rel="noopener" data-lightbox="image" data-lightbox-alt="日なたと影のある街路の加工前画像" data-lightbox-caption="加工前の元画像">元画像を見る</a>
               </figcaption>
             </figure>
             <div id="preset" class="preset-grid">
