@@ -104,6 +104,129 @@ const mobileSearchInput = ref<HTMLInputElement | null>(null)
 const mobileSearchButton = ref<HTMLButtonElement | null>(null)
 const menuButton = ref<HTMLButtonElement | null>(null)
 const sidebarNav = ref<HTMLElement | null>(null)
+const comparisonPosition = ref(50)
+const comparisonSourceVideo = ref<HTMLVideoElement | null>(null)
+const comparisonProcessedVideo = ref<HTMLVideoElement | null>(null)
+const comparisonPlaying = ref(false)
+const prefersReducedMotion = ref(true)
+let comparisonPlaybackSyncing = false
+let comparisonSyncFrame: number | undefined
+let comparisonAutoplayRequested = false
+let reducedMotionQuery: MediaQueryList | undefined
+
+function comparisonVideos() {
+  return [comparisonSourceVideo.value, comparisonProcessedVideo.value].filter((video): video is HTMLVideoElement => Boolean(video))
+}
+
+function stopComparisonSync() {
+  if (comparisonSyncFrame !== undefined) {
+    window.cancelAnimationFrame(comparisonSyncFrame)
+    comparisonSyncFrame = undefined
+  }
+}
+
+function syncComparisonFrame() {
+  const source = comparisonSourceVideo.value
+  const processed = comparisonProcessedVideo.value
+
+  if (!source || !processed || source.paused || processed.paused) {
+    comparisonPlaying.value = false
+    stopComparisonSync()
+    return
+  }
+
+  if (source.readyState >= HTMLMediaElement.HAVE_METADATA && processed.readyState >= HTMLMediaElement.HAVE_METADATA) {
+    const drift = Math.abs(source.currentTime - processed.currentTime)
+    if (drift > 0.04) processed.currentTime = source.currentTime
+  }
+
+  comparisonPlaying.value = true
+  comparisonSyncFrame = window.requestAnimationFrame(syncComparisonFrame)
+}
+
+function startComparisonSync() {
+  stopComparisonSync()
+  comparisonSyncFrame = window.requestAnimationFrame(syncComparisonFrame)
+}
+
+async function playComparison() {
+  const source = comparisonSourceVideo.value
+  const processed = comparisonProcessedVideo.value
+  if (!source || !processed) return
+
+  comparisonPlaybackSyncing = true
+  processed.currentTime = source.currentTime
+  const results = await Promise.allSettled([source.play(), processed.play()])
+  const failed = results.some((result) => result.status === 'rejected')
+
+  if (failed) {
+    source.pause()
+    processed.pause()
+  }
+
+  comparisonPlaybackSyncing = false
+  comparisonPlaying.value = !failed && !source.paused && !processed.paused
+  if (comparisonPlaying.value) startComparisonSync()
+}
+
+function pauseComparison() {
+  comparisonPlaybackSyncing = true
+  for (const video of comparisonVideos()) video.pause()
+  if (comparisonSourceVideo.value && comparisonProcessedVideo.value) {
+    comparisonProcessedVideo.value.currentTime = comparisonSourceVideo.value.currentTime
+  }
+  comparisonPlaybackSyncing = false
+  comparisonPlaying.value = false
+  stopComparisonSync()
+}
+
+function toggleComparisonPlayback() {
+  if (comparisonPlaying.value) pauseComparison()
+  else void playComparison()
+}
+
+function onComparisonPlay(event: Event) {
+  if (comparisonPlaybackSyncing) return
+
+  const leader = event.currentTarget as HTMLVideoElement
+  const follower = leader === comparisonSourceVideo.value ? comparisonProcessedVideo.value : comparisonSourceVideo.value
+  if (!follower) return
+
+  comparisonPlaybackSyncing = true
+  follower.currentTime = leader.currentTime
+  void follower.play().catch(() => {
+    leader.pause()
+    follower.pause()
+  }).finally(() => {
+    comparisonPlaybackSyncing = false
+    comparisonPlaying.value = !leader.paused && !follower.paused
+    if (comparisonPlaying.value) startComparisonSync()
+  })
+}
+
+function onComparisonPause() {
+  if (comparisonPlaybackSyncing) return
+  pauseComparison()
+}
+
+function maybeAutoplayComparison() {
+  if (prefersReducedMotion.value || comparisonAutoplayRequested) return
+  const videos = comparisonVideos()
+  if (videos.length !== 2 || videos.some((video) => video.readyState < HTMLMediaElement.HAVE_METADATA)) return
+
+  comparisonAutoplayRequested = true
+  void playComparison()
+}
+
+function onReducedMotionChange(event: MediaQueryListEvent) {
+  prefersReducedMotion.value = event.matches
+  if (event.matches) {
+    pauseComparison()
+  } else {
+    comparisonAutoplayRequested = false
+    maybeAutoplayComparison()
+  }
+}
 
 const activePage = computed(() => {
   const requested = typeof route.params.page === 'string' ? route.params.page : 'overview'
@@ -261,8 +384,14 @@ function onKeydown(event: KeyboardEvent) {
   }
 }
 
-watch(activePage, () => {
+watch(activePage, (page) => {
   document.title = `${currentPage.value.label} | ACM VHS Simulator`
+  if (page === 'overview') {
+    comparisonAutoplayRequested = false
+    nextTick(maybeAutoplayComparison)
+  } else {
+    pauseComparison()
+  }
 })
 
 watch(() => route.fullPath, () => {
@@ -279,6 +408,10 @@ onMounted(() => {
   document.title = `${currentPage.value.label} | ACM VHS Simulator`
   syncViewport()
   revealRouteTarget()
+  reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+  prefersReducedMotion.value = reducedMotionQuery.matches
+  reducedMotionQuery.addEventListener('change', onReducedMotionChange)
+  nextTick(maybeAutoplayComparison)
   window.addEventListener('keydown', onKeydown)
   window.addEventListener('resize', syncViewport)
 })
@@ -286,6 +419,8 @@ onMounted(() => {
 onUnmounted(() => {
   document.documentElement.classList.remove('vhs-docs-open')
   document.documentElement.classList.remove('vhs-nav-open')
+  pauseComparison()
+  reducedMotionQuery?.removeEventListener('change', onReducedMotionChange)
   window.removeEventListener('keydown', onKeydown)
   window.removeEventListener('resize', syncViewport)
 })
@@ -363,11 +498,61 @@ onUnmounted(() => {
                 <RouterLink :to="pagePath('quick-start')">内蔵プリセット</RouterLink>
                 <RouterLink :to="pagePath('parameters')" class="secondary">全項目を見る</RouterLink>
               </div>
-              <figure class="doc-shot hero-shot">
-                <a href="/images/vhs-simulator/screenshots/overview-before-after.webp" target="_blank" rel="noopener" aria-label="元映像と良好な家庭用SPの比較を原寸で開く">
-                  <img src="/images/vhs-simulator/screenshots/overview-before-after.webp" alt="元映像と良好な家庭用SPプリセットを左右に分けた比較" width="1280" height="720" fetchpriority="high" />
-                </a>
-                <figcaption>左：元映像／右：良好な家庭用SP。階段の輪郭、葉の色にじみ、明部の変化を比較。</figcaption>
+              <figure class="doc-shot hero-shot video-comparison-figure">
+                <div class="video-comparison" role="group" aria-label="元映像とレンタル摩耗CRTの動画比較">
+                  <video
+                    ref="comparisonProcessedVideo"
+                    class="video-comparison__video"
+                    :src="'/videos/vhs-simulator/overview-rental-worn-crt.mp4'"
+                    poster="/images/vhs-simulator/screenshots/overview-video-poster.webp"
+                    preload="metadata"
+                    muted
+                    loop
+                    playsinline
+                    aria-label="レンタル摩耗CRT"
+                    @loadedmetadata="maybeAutoplayComparison"
+                    @play="onComparisonPlay"
+                    @pause="onComparisonPause"
+                  ></video>
+                  <div class="video-comparison__source" :style="{ clipPath: `inset(0 ${100 - comparisonPosition}% 0 0)` }">
+                    <video
+                      ref="comparisonSourceVideo"
+                      class="video-comparison__video"
+                      :src="'/videos/vhs-simulator/overview-source.mp4'"
+                      poster="/images/vhs-simulator/screenshots/overview-video-poster.webp"
+                      preload="metadata"
+                      muted
+                      loop
+                      playsinline
+                      aria-label="元映像"
+                      @loadedmetadata="maybeAutoplayComparison"
+                      @play="onComparisonPlay"
+                      @pause="onComparisonPause"
+                    ></video>
+                  </div>
+                  <span class="video-comparison__label video-comparison__label--source" aria-hidden="true">元映像</span>
+                  <span class="video-comparison__label video-comparison__label--processed" aria-hidden="true">レンタル摩耗CRT</span>
+                  <span class="video-comparison__divider" :style="{ left: `${comparisonPosition}%` }" aria-hidden="true">
+                    <i>↔</i>
+                  </span>
+                  <input
+                    v-model.number="comparisonPosition"
+                    class="video-comparison__range"
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="1"
+                    aria-label="元映像とレンタル摩耗CRTの比較位置"
+                    :aria-valuetext="`元映像 ${comparisonPosition}%、レンタル摩耗CRT ${100 - comparisonPosition}%`"
+                  />
+                </div>
+                <div class="video-comparison__toolbar">
+                  <span>スライダーを左右に動かして比較</span>
+                  <button type="button" :aria-label="comparisonPlaying ? '比較動画を一時停止' : '比較動画を再生'" @click="toggleComparisonPlayback">
+                    {{ comparisonPlaying ? '一時停止' : '再生' }}
+                  </button>
+                </div>
+                <figcaption>左：元映像／右：レンタル摩耗CRT。中央のハンドルを動かして、輪郭、色にじみ、テープ摩耗とCRT表示の変化を比較できます。</figcaption>
               </figure>
             </div>
           </section>
@@ -376,12 +561,6 @@ onUnmounted(() => {
           <div class="section-heading"><span>01</span><div><p>POSITIONING</p><h2>概要</h2></div></div>
             <p>ACM VHS Simulatorは、カメラ撮像、テープ記録・再生、CRT表示を順に処理し、一般的なNTSC-J VHSの映像を作ります。特定のカメラやデッキの個体差は再現しません。</p>
             <div class="callout info"><strong>カメラ・VHS・CRTは個別設定</strong><p>カメラ撮像、VHS信号、CRT表示はそれぞれ個別に有効／無効を設定できます。軽量／高精度とは別の項目です。</p></div>
-            <figure class="doc-shot">
-              <a href="/images/vhs-simulator/screenshots/ae2026-workspace.webp" target="_blank" rel="noopener" aria-label="After Effects 2026の操作画面を原寸で開く">
-                <img src="/images/vhs-simulator/screenshots/ae2026-workspace.webp" alt="After Effects 2026でACM VHS Simulatorの設定と処理結果を表示した画面" width="1920" height="1080" loading="lazy" />
-              </a>
-              <figcaption>AE 2026での表示。エフェクトコントロールと処理結果を同じ画面で確認できます。</figcaption>
-            </figure>
           </section>
 
           <section id="support" class="doc-section">
@@ -641,6 +820,25 @@ button { color: inherit; }
 .doc-shot img { display: block; width: 100%; height: auto; }
 .doc-shot figcaption { margin-top: 9px; color: #7f929a; font-size: .68rem; line-height: 1.75; }
 .hero-shot { margin-top: 38px; }
+.video-comparison { position: relative; aspect-ratio: 16 / 9; border: 1px solid var(--vhs-line); background: #05090c; overflow: hidden; }
+.video-comparison:focus-within { border-color: var(--vhs-cyan); box-shadow: 0 0 0 3px rgb(111 229 231 / 14%); }
+.video-comparison__video, .video-comparison__source { position: absolute; width: 100%; height: 100%; inset: 0; }
+.video-comparison__video { display: block; object-fit: cover; }
+.video-comparison__source { z-index: 1; overflow: hidden; will-change: clip-path; }
+.video-comparison__label { position: absolute; z-index: 2; top: 12px; padding: 5px 8px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 3px; background: rgb(3 8 11 / 72%); color: #edf5f6; font-size: .65rem; font-weight: 700; letter-spacing: .03em; pointer-events: none; }
+.video-comparison__label--source { left: 12px; }
+.video-comparison__label--processed { right: 12px; }
+.video-comparison__divider { position: absolute; z-index: 3; top: 0; bottom: 0; width: 2px; background: #eef9fa; box-shadow: 0 0 0 1px rgb(4 10 13 / 40%), 0 0 14px rgb(0 0 0 / 55%); pointer-events: none; transform: translateX(-1px); }
+.video-comparison__divider i { position: absolute; top: 50%; left: 50%; display: grid; width: 38px; height: 38px; border: 2px solid #f3fbfb; border-radius: 50%; background: #102027; box-shadow: 0 4px 18px rgb(0 0 0 / 45%); color: var(--vhs-cyan); font-size: 1rem; font-style: normal; place-items: center; transform: translate(-50%, -50%); }
+.video-comparison__range { position: absolute; z-index: 4; width: 100%; height: 100%; margin: 0; inset: 0; appearance: none; background: transparent; cursor: ew-resize; opacity: 0; touch-action: pan-y; }
+.video-comparison__range::-webkit-slider-runnable-track { height: 100%; background: transparent; }
+.video-comparison__range::-webkit-slider-thumb { width: 44px; height: 100%; border: 0; appearance: none; background: transparent; cursor: ew-resize; }
+.video-comparison__range::-moz-range-track { height: 100%; border: 0; background: transparent; }
+.video-comparison__range::-moz-range-thumb { width: 44px; height: 100%; border: 0; border-radius: 0; background: transparent; cursor: ew-resize; }
+.video-comparison__toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0 0; }
+.video-comparison__toolbar span { color: #7f929a; font-size: .65rem; }
+.video-comparison__toolbar button { padding: 5px 11px; border: 1px solid var(--vhs-line-bright); border-radius: 3px; background: #0b151a; color: var(--vhs-cyan); cursor: pointer; font-size: .68rem; font-weight: 700; }
+.video-comparison__toolbar button:hover, .video-comparison__toolbar button:focus-visible { border-color: var(--vhs-cyan); outline: 2px solid rgb(111 229 231 / 18%); outline-offset: 2px; }
 .doc-shot--presets { margin-bottom: 28px; }
 .doc-section { margin: 0 0 60px; scroll-margin-top: 84px; }
 .doc-section > h2 { margin: 0 0 20px; color: #e0e9ed; font-family: 'Arial Narrow', sans-serif; font-size: 1.55rem; letter-spacing: -.02em; }
