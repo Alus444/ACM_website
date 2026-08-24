@@ -592,8 +592,8 @@ button { color: inherit; }
 .search-results small { display: -webkit-box; overflow: hidden; color: var(--vhs-muted); font-size: .62rem; line-height: 1.55; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .search-panel > p { padding: 24px; color: var(--vhs-muted); font-size: .72rem; text-align: center; }
 
-.docs-layout { display: grid; max-width: 1120px; min-height: 100vh; margin: 0 auto; padding-top: 60px; grid-template-columns: 224px minmax(0, 820px); justify-content: center; }
-.docs-sidebar { position: sticky; top: 60px; height: calc(100vh - 60px); padding: 32px 16px 24px; border-right: 1px solid var(--vhs-line); background: #0a0e11; overflow-y: auto; }
+.docs-layout { display: grid; max-width: 1110px; min-height: 100vh; margin: 0 auto; padding-top: 60px; grid-template-columns: 250px minmax(0, 860px); justify-content: center; }
+.docs-sidebar { position: sticky; top: 60px; height: calc(100vh - 60px); padding: 32px 18px 24px; border-right: 1px solid var(--vhs-line); background: #0a0e11; overflow-y: auto; }
 .nav-group { margin-bottom: 22px; }
 .nav-group > p { margin: 0 0 7px 10px; color: #52666f; font-size: .55rem; font-weight: 700; letter-spacing: .16em; }
 .nav-group a { display: grid; width: 100%; padding: 8px 10px; border: 0; border-left: 2px solid transparent; background: transparent; text-align: left; text-decoration: none; }
@@ -602,7 +602,7 @@ button { color: inherit; }
 .nav-group a span { color: #aebdc4; font-size: .72rem; }
 .nav-group a.active span { color: #e8f6f6; }
 .nav-group a small { display: none; }
-.docs-content { min-width: 0; padding: 54px 56px 70px; }
+.docs-content { min-width: 0; padding: 48px clamp(34px, 4vw, 64px) 60px; }
 .hero-section { max-width: 720px; min-height: 360px; padding: 56px 0 72px; }
 .kicker, .page-intro > p { color: var(--vhs-cyan); font-size: .58rem; font-weight: 700; letter-spacing: .22em; }
 .hero-copy h1 { margin: 0 0 24px; color: #eff5f5; font-size: clamp(2.8rem, 6vw, 4.4rem); font-weight: 700; letter-spacing: -.045em; line-height: 1.05; }
