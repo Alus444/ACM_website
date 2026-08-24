@@ -570,8 +570,6 @@ onUnmounted(() => {
                       @pause="onComparisonPause"
                     ></video>
                   </div>
-                  <span class="video-comparison__label video-comparison__label--source" aria-hidden="true">元映像</span>
-                  <span class="video-comparison__label video-comparison__label--processed" aria-hidden="true">レンタル摩耗CRT</span>
                   <span class="video-comparison__divider" :style="{ left: `${comparisonPosition}%` }" aria-hidden="true">
                     <i>↔</i>
                   </span>
@@ -895,9 +893,6 @@ button { color: inherit; }
 .video-comparison__video, .video-comparison__source { position: absolute; width: 100%; height: 100%; inset: 0; }
 .video-comparison__video { display: block; object-fit: cover; }
 .video-comparison__source { z-index: 1; overflow: hidden; will-change: clip-path; }
-.video-comparison__label { position: absolute; z-index: 2; top: 12px; padding: 5px 8px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 3px; background: rgb(3 8 11 / 72%); color: #edf5f6; font-size: .65rem; font-weight: 700; letter-spacing: .03em; pointer-events: none; }
-.video-comparison__label--source { left: 12px; }
-.video-comparison__label--processed { right: 12px; }
 .video-comparison__divider { position: absolute; z-index: 3; top: 0; bottom: 0; width: 2px; background: #eef9fa; box-shadow: 0 0 0 1px rgb(4 10 13 / 40%), 0 0 14px rgb(0 0 0 / 55%); pointer-events: none; transform: translateX(-1px); }
 .video-comparison__divider i { position: absolute; top: 50%; left: 50%; display: grid; width: 38px; height: 38px; border: 2px solid #f3fbfb; border-radius: 50%; background: #102027; box-shadow: 0 4px 18px rgb(0 0 0 / 45%); color: var(--vhs-cyan); font-size: 1rem; font-style: normal; place-items: center; transform: translate(-50%, -50%); }
 .video-comparison__range { position: absolute; z-index: 4; width: 100%; height: 100%; margin: 0; inset: 0; appearance: none; background: transparent; cursor: ew-resize; opacity: 0; touch-action: pan-y; }
