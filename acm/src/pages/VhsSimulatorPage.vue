@@ -629,6 +629,7 @@ onUnmounted(() => {
           <section id="support" class="doc-section">
             <div class="section-heading"><span>02</span><div><p>SUPPORT</p><h2>対応状況</h2></div></div>
             <div class="status-row"><span class="status ok">AE 2025 / 2026 対応・動作確認済み</span><span class="status">Windows x64</span></div>
+            <div class="callout info"><strong>macOS版について</strong><p>macOS版は現在提供していません。署名・公証を含む開発・配布環境の維持費を、現在の販売規模では賄いにくいためです。利用希望が増えた場合は対応を検討します。</p></div>
           </section>
 
           <section id="pipeline" class="doc-section">
