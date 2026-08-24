@@ -622,6 +622,7 @@ onUnmounted(() => {
                   </button>
                 </div>
                 <figcaption>左：元映像／右：レンタル摩耗CRT。中央のハンドルを動かして、輪郭、色にじみ、テープ摩耗とCRT表示の変化を比較できます。</figcaption>
+                <RouterLink class="video-comparison__more" :to="`${pagePath('quick-start')}#preset-samples`">その他のサンプル画像を見る →</RouterLink>
               </figure>
             </div>
           </section>
@@ -661,9 +662,9 @@ onUnmounted(() => {
           <section id="manual-install" class="doc-section">
             <h2>手動インストール</h2>
             <ol class="steps">
-              <li><b>01</b><div><strong>Adobeアプリを終了</strong><p>After EffectsとDynamic Linkを利用しているAdobeアプリを終了します。</p></div></li>
-              <li><b>02</b><div><strong>フォルダー全体をコピー</strong><p>AEXだけを取り出さず、配布フォルダーごとAdobe共通MediaCoreのプラグインフォルダーへ配置します。</p></div></li>
-              <li><b>03</b><div><strong>After Effectsで確認</strong><p>エフェクト＆プリセットから「ACM VHS Simulator」を検索します。カテゴリは「ACM」です。</p></div></li>
+              <li><b>1</b><div><strong>Adobeアプリを終了</strong><p>After EffectsとDynamic Linkを利用しているAdobeアプリを終了します。</p></div></li>
+              <li><b>2</b><div><strong>フォルダー全体をコピー</strong><p>AEXだけを取り出さず、配布フォルダーごとAdobe共通MediaCoreのプラグインフォルダーへ配置します。</p></div></li>
+              <li><b>3</b><div><strong>After Effectsで確認</strong><p>エフェクト＆プリセットから「ACM VHS Simulator」を検索します。カテゴリは「ACM」です。</p></div></li>
             </ol>
             <code class="path-block">C:\Program Files\Adobe\Common\Plug-ins\7.0\MediaCore\</code>
           </section>
@@ -676,7 +677,7 @@ onUnmounted(() => {
           <section id="built-in-presets" class="doc-section">
             <h2>プリセット一覧</h2>
             <p>仕上がりに近いものを選び、必要な項目だけ調整します。</p>
-            <figure class="doc-shot doc-shot--presets">
+            <figure id="preset-samples" class="doc-shot doc-shot--presets">
               <a href="/images/vhs-simulator/screenshots/preset-comparison.webp?v=20260824-current-labels" target="_blank" rel="noopener" aria-label="6種類の内蔵プリセット比較を原寸で開く">
                 <img src="/images/vhs-simulator/screenshots/preset-comparison.webp?v=20260824-current-labels" alt="同じ映像に6種類の内蔵プリセットを適用した比較" width="1920" height="720" loading="lazy" />
               </a>
@@ -961,6 +962,8 @@ button { color: inherit; }
 .video-comparison__toolbar span { color: #7f929a; font-size: .65rem; }
 .video-comparison__toolbar button { padding: 5px 11px; border: 1px solid var(--vhs-line-bright); border-radius: 3px; background: #0b151a; color: var(--vhs-cyan); cursor: pointer; font-size: .68rem; font-weight: 700; }
 .video-comparison__toolbar button:hover, .video-comparison__toolbar button:focus-visible { border-color: var(--vhs-cyan); outline: 2px solid rgb(111 229 231 / 18%); outline-offset: 2px; }
+.doc-shot .video-comparison__more { display: inline-flex; margin-top: 12px; border: 0; background: transparent; color: var(--vhs-cyan); cursor: pointer; font-size: .68rem; font-weight: 700; overflow: visible; text-decoration: none; }
+.doc-shot .video-comparison__more:hover, .doc-shot .video-comparison__more:focus-visible { border: 0; color: #b9ffff; outline: 1px solid rgb(111 229 231 / 48%); outline-offset: 3px; }
 .screenshot-lightbox { position: fixed; z-index: 1000; display: grid; padding: 54px 24px 24px; background: rgb(7 7 8 / 92%); backdrop-filter: blur(5px); inset: 0; place-items: center; }
 .screenshot-lightbox__figure { display: grid; max-width: min(96vw, 1500px); max-height: calc(100vh - 78px); margin: 0; place-items: center; }
 .screenshot-lightbox__figure img { display: block; max-width: 100%; max-height: calc(100vh - 112px); border: 1px solid #514a40; border-radius: 10px; background: #111; box-shadow: 0 24px 80px rgb(0 0 0 / 55%); object-fit: contain; }
@@ -971,7 +974,7 @@ button { color: inherit; }
 .screenshot-lightbox-enter-active .screenshot-lightbox__figure, .screenshot-lightbox-leave-active .screenshot-lightbox__figure { transition: transform .18s ease; }
 .screenshot-lightbox-enter-from, .screenshot-lightbox-leave-to { opacity: 0; }
 .screenshot-lightbox-enter-from .screenshot-lightbox__figure, .screenshot-lightbox-leave-to .screenshot-lightbox__figure { transform: scale(.975); }
-.doc-shot--presets { margin-bottom: 28px; }
+.doc-shot--presets { margin-bottom: 28px; scroll-margin-top: 84px; }
 .doc-section { margin: 0 0 60px; scroll-margin-top: 84px; }
 .doc-section > h2 { margin: 0 0 20px; color: #e0e9ed; font-family: 'Arial Narrow', sans-serif; font-size: 1.55rem; letter-spacing: -.02em; }
 .doc-section > p, .group-description { margin: 0 0 18px; color: #96a6ae; font-size: .8rem; line-height: 2; }
