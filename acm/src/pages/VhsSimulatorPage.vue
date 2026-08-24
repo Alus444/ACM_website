@@ -671,10 +671,16 @@ onUnmounted(() => {
             <h2>プリセット一覧</h2>
             <p>仕上がりに近いものを選び、必要な項目だけ調整します。</p>
             <figure class="doc-shot doc-shot--presets">
-              <a href="/images/vhs-simulator/screenshots/preset-comparison.webp" target="_blank" rel="noopener" aria-label="6種類の内蔵プリセット比較を原寸で開く">
-                <img src="/images/vhs-simulator/screenshots/preset-comparison.webp" alt="同じ映像に6種類の内蔵プリセットを適用した比較" width="1920" height="720" loading="lazy" />
+              <a href="/images/vhs-simulator/screenshots/preset-comparison.webp?v=20260824-current-labels" target="_blank" rel="noopener" aria-label="6種類の内蔵プリセット比較を原寸で開く">
+                <img src="/images/vhs-simulator/screenshots/preset-comparison.webp?v=20260824-current-labels" alt="同じ映像に6種類の内蔵プリセットを適用した比較" width="1920" height="720" loading="lazy" />
               </a>
               <figcaption>同じフレームへ6種類の内蔵プリセットを適用。輪郭、色、走行の乱れ、CRT表示の違いを比較できます。</figcaption>
+            </figure>
+            <figure class="doc-shot doc-shot--presets">
+              <a href="/images/vhs-simulator/screenshots/preset-comparison-parking.webp" target="_blank" rel="noopener" aria-label="濡れた駐車場で6種類の内蔵プリセット比較を原寸で開く">
+                <img src="/images/vhs-simulator/screenshots/preset-comparison-parking.webp" alt="雪の残る濡れた駐車場に6種類の内蔵プリセットを適用した比較" width="1920" height="720" loading="lazy" />
+              </a>
+              <figcaption>濡れた路面と黄色い区画線で、色にじみ、暗部、反射の変化を比較できます。</figcaption>
             </figure>
             <div id="preset" class="preset-grid">
               <article v-for="preset in vhsPresetSummaries" :id="`preset-${preset.id}`" :key="preset.id">
