@@ -120,6 +120,18 @@ let reducedMotionQuery: MediaQueryList | undefined
 let previousBodyOverflow = ''
 let lightboxTrigger: HTMLElement | null = null
 
+const comparisonRevealStyle = computed(() => {
+  const position = Math.min(100, Math.max(0, comparisonPosition.value))
+  if (position <= 0) {
+    const mask = 'linear-gradient(to right, transparent, transparent)'
+    return { maskImage: mask, WebkitMaskImage: mask }
+  }
+  if (position >= 100) return { maskImage: 'none', WebkitMaskImage: 'none' }
+
+  const mask = `linear-gradient(to right, #000 0, #000 calc(${position}% - 5px), transparent calc(${position}% + 5px), transparent 100%)`
+  return { maskImage: mask, WebkitMaskImage: mask }
+})
+
 function comparisonVideos() {
   return [comparisonSourceVideo.value, comparisonProcessedVideo.value].filter((video): video is HTMLVideoElement => Boolean(video))
 }
@@ -143,7 +155,7 @@ function syncComparisonFrame() {
 
   if (source.readyState >= HTMLMediaElement.HAVE_METADATA && processed.readyState >= HTMLMediaElement.HAVE_METADATA) {
     const drift = Math.abs(source.currentTime - processed.currentTime)
-    if (drift > 0.04) processed.currentTime = source.currentTime
+    if (drift > 0.012) processed.currentTime = source.currentTime
   }
 
   comparisonPlaying.value = true
@@ -554,7 +566,7 @@ onUnmounted(() => {
                     @play="onComparisonPlay"
                     @pause="onComparisonPause"
                   ></video>
-                  <div class="video-comparison__source" :style="{ clipPath: `inset(0 ${100 - comparisonPosition}% 0 0)` }">
+                  <div class="video-comparison__source" :style="comparisonRevealStyle">
                     <video
                       ref="comparisonSourceVideo"
                       class="video-comparison__video"
@@ -892,7 +904,7 @@ button { color: inherit; }
 .video-comparison:focus-within { border-color: var(--vhs-cyan); box-shadow: 0 0 0 3px rgb(111 229 231 / 14%); }
 .video-comparison__video, .video-comparison__source { position: absolute; width: 100%; height: 100%; inset: 0; }
 .video-comparison__video { display: block; object-fit: cover; }
-.video-comparison__source { z-index: 1; overflow: hidden; will-change: clip-path; }
+.video-comparison__source { z-index: 1; overflow: hidden; }
 .video-comparison__divider { position: absolute; z-index: 3; top: 0; bottom: 0; width: 2px; background: #eef9fa; box-shadow: 0 0 0 1px rgb(4 10 13 / 40%), 0 0 14px rgb(0 0 0 / 55%); pointer-events: none; transform: translateX(-1px); }
 .video-comparison__divider i { position: absolute; top: 50%; left: 50%; display: grid; width: 38px; height: 38px; border: 2px solid #f3fbfb; border-radius: 50%; background: #102027; box-shadow: 0 4px 18px rgb(0 0 0 / 45%); color: var(--vhs-cyan); font-size: 1rem; font-style: normal; place-items: center; transform: translate(-50%, -50%); }
 .video-comparison__range { position: absolute; z-index: 4; width: 100%; height: 100%; margin: 0; inset: 0; appearance: none; background: transparent; cursor: ew-resize; opacity: 0; touch-action: pan-y; }
