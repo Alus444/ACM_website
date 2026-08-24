@@ -6,6 +6,7 @@ import MoviePage from '../pages/MoviePage.vue'
 import PricingPage from '../pages/PricingPage.vue'
 import WorksPage from '../pages/WorksPage.vue'
 import NightOverPage from '../pages/NightOverPage.vue'
+import VhsSimulatorPage from '../pages/VhsSimulatorPage.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -24,9 +25,29 @@ const router = createRouter({
         title: 'NIGHTOVER — 機能リファレンス',
       },
     },
+    {
+      path: '/vhs-simulator/recipes',
+      redirect: '/vhs-simulator/quick-start',
+    },
+    {
+      path: '/vhs-simulator/rendering',
+      redirect: '/vhs-simulator/preview',
+    },
+    {
+      path: '/vhs-simulator/limits',
+      redirect: '/vhs-simulator/troubleshooting',
+    },
+    {
+      path: '/vhs-simulator/:page?',
+      component: VhsSimulatorPage,
+      meta: {
+        standalone: true,
+        title: 'ACM VHS Simulator — リファレンスマニュアル',
+      },
+    },
   ],
   scrollBehavior(to) {
-    if (to.hash) return { el: to.hash, behavior: 'smooth' }
+    if (to.hash) return { el: to.hash, top: 84, behavior: 'smooth' }
     return { top: 0 }
   },
 })
