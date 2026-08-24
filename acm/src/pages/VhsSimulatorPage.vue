@@ -649,8 +649,8 @@ onUnmounted(() => {
               <li><b>4</b><div><strong>効果の濃さを決める</strong><small>FINAL MIX</small></div><span>処理後の映像を元映像と混ぜ、最終的なかかり具合を整えます。</span></li>
             </ol>
             <figure class="doc-shot">
-              <a href="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp" target="_blank" rel="noopener" aria-label="カメラ撮像、VHS記録・再生、CRT表示の処理段階比較を原寸で開く">
-                <img src="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp" alt="元画像、カメラ撮像後、VHS記録・再生後、CRT表示後の4段階比較" width="1280" height="720" loading="lazy" />
+              <a href="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp?v=20260825-ja-flow" target="_blank" rel="noopener" aria-label="カメラ撮像、VHS記録・再生、CRT表示の処理段階比較を原寸で開く">
+                <img src="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp?v=20260825-ja-flow" alt="元画像、カメラ撮像後、VHS記録・再生後、CRT表示後の4段階比較" width="1280" height="720" loading="lazy" />
               </a>
               <figcaption>元画像へカメラ撮像、VHS記録・再生、CRT表示を順に重ねた変化。細線、色境界、画面下端で各段階の違いを確認できます。</figcaption>
             </figure>
