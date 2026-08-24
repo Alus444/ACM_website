@@ -642,10 +642,10 @@ onUnmounted(() => {
           <section id="pipeline" class="doc-section">
             <div class="section-heading"><span>03</span><div><p>PIPELINE</p><h2>処理の流れ</h2></div></div>
             <div class="pipeline">
-              <div><b>01</b><strong>CAMERA</strong><span>解像感・色・暗部</span></div><i>→</i>
-              <div><b>02</b><strong>VHS SIGNAL</strong><span>帯域・ノイズ・走行</span></div><i>→</i>
-              <div><b>03</b><strong>CRT DISPLAY</strong><span>走査線・発光・曲率</span></div><i>→</i>
-              <div><b>04</b><strong>FINAL MIX</strong><span>元映像との最終合成</span></div>
+              <div><b>1</b><strong>CAMERA</strong><span>解像感・色・暗部</span></div><i>→</i>
+              <div><b>2</b><strong>VHS SIGNAL</strong><span>帯域・ノイズ・走行</span></div><i>→</i>
+              <div><b>3</b><strong>CRT DISPLAY</strong><span>走査線・発光・曲率</span></div><i>→</i>
+              <div><b>4</b><strong>FINAL MIX</strong><span>元映像との最終合成</span></div>
             </div>
             <figure class="doc-shot">
               <a href="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp" target="_blank" rel="noopener" aria-label="Camera、VHS、CRTの処理段階比較を原寸で開く">
