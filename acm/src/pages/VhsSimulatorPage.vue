@@ -363,6 +363,12 @@ onUnmounted(() => {
                 <RouterLink :to="pagePath('quick-start')">内蔵プリセット</RouterLink>
                 <RouterLink :to="pagePath('parameters')" class="secondary">全項目を見る</RouterLink>
               </div>
+              <figure class="doc-shot hero-shot">
+                <a href="/images/vhs-simulator/screenshots/overview-before-after.webp" target="_blank" rel="noopener" aria-label="元映像と良好な家庭用SPの比較を原寸で開く">
+                  <img src="/images/vhs-simulator/screenshots/overview-before-after.webp" alt="元映像と良好な家庭用SPプリセットを左右に分けた比較" width="1280" height="720" fetchpriority="high" />
+                </a>
+                <figcaption>左：元映像／右：良好な家庭用SP。階段の輪郭、葉の色にじみ、明部の変化を比較。</figcaption>
+              </figure>
             </div>
           </section>
 
@@ -370,6 +376,12 @@ onUnmounted(() => {
           <div class="section-heading"><span>01</span><div><p>POSITIONING</p><h2>概要</h2></div></div>
             <p>ACM VHS Simulatorは、カメラ撮像、テープ記録・再生、CRT表示を順に処理し、一般的なNTSC-J VHSの映像を作ります。特定のカメラやデッキの個体差は再現しません。</p>
             <div class="callout info"><strong>カメラ・VHS・CRTは個別設定</strong><p>カメラ撮像、VHS信号、CRT表示はそれぞれ個別に有効／無効を設定できます。軽量／高精度とは別の項目です。</p></div>
+            <figure class="doc-shot">
+              <a href="/images/vhs-simulator/screenshots/ae2026-workspace.webp" target="_blank" rel="noopener" aria-label="After Effects 2026の操作画面を原寸で開く">
+                <img src="/images/vhs-simulator/screenshots/ae2026-workspace.webp" alt="After Effects 2026でACM VHS Simulatorの設定と処理結果を表示した画面" width="1920" height="1080" loading="lazy" />
+              </a>
+              <figcaption>AE 2026での表示。エフェクトコントロールと処理結果を同じ画面で確認できます。</figcaption>
+            </figure>
           </section>
 
           <section id="support" class="doc-section">
@@ -385,6 +397,12 @@ onUnmounted(() => {
               <div><b>03</b><strong>CRT DISPLAY</strong><span>走査線・発光・曲率</span></div><i>→</i>
               <div><b>04</b><strong>FINAL MIX</strong><span>元映像との最終合成</span></div>
             </div>
+            <figure class="doc-shot">
+              <a href="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp" target="_blank" rel="noopener" aria-label="Camera、VHS、CRTの処理段階比較を原寸で開く">
+                <img src="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp" alt="元画像、Camera、CameraとVHS、CameraとVHSとCRTの4段階比較" width="1280" height="720" loading="lazy" />
+              </a>
+              <figcaption>元画像からCamera、VHS、CRTへ処理を重ねた変化。細線、色境界、画面下端で各段階の違いを確認できます。</figcaption>
+            </figure>
           </section>
 
         </template>
@@ -409,6 +427,12 @@ onUnmounted(() => {
           <section id="built-in-presets" class="doc-section">
             <h2>プリセット一覧</h2>
             <p>仕上がりに近いものを選び、必要な項目だけ調整します。</p>
+            <figure class="doc-shot doc-shot--presets">
+              <a href="/images/vhs-simulator/screenshots/preset-comparison.webp" target="_blank" rel="noopener" aria-label="6種類の内蔵プリセット比較を原寸で開く">
+                <img src="/images/vhs-simulator/screenshots/preset-comparison.webp" alt="同じ映像に6種類の内蔵プリセットを適用した比較" width="1920" height="720" loading="lazy" />
+              </a>
+              <figcaption>同じフレームへ6種類の内蔵プリセットを適用。輪郭、色、走行の乱れ、CRT表示の違いを比較できます。</figcaption>
+            </figure>
             <div id="preset" class="preset-grid">
               <article v-for="preset in vhsPresetSummaries" :id="`preset-${preset.id}`" :key="preset.id">
                 <h3>{{ preset.name }}</h3>
@@ -611,6 +635,13 @@ button { color: inherit; }
 .hero-actions a { padding: 11px 16px; border: 1px solid var(--vhs-cyan); border-radius: 4px; background: var(--vhs-cyan); color: #061014; font-size: .68rem; font-weight: 700; letter-spacing: .05em; text-decoration: none; }
 .hero-actions a:hover, .hero-actions a:focus-visible { box-shadow: 0 0 0 3px rgb(111 229 231 / 14%); outline: 0; }
 .hero-actions a.secondary { background: transparent; color: var(--vhs-cyan); }
+.doc-shot { margin: 28px 0 0; }
+.doc-shot a { display: block; border: 1px solid var(--vhs-line); background: #05090c; overflow: hidden; }
+.doc-shot a:hover, .doc-shot a:focus-visible { border-color: var(--vhs-line-bright); outline: 0; }
+.doc-shot img { display: block; width: 100%; height: auto; }
+.doc-shot figcaption { margin-top: 9px; color: #7f929a; font-size: .68rem; line-height: 1.75; }
+.hero-shot { margin-top: 38px; }
+.doc-shot--presets { margin-bottom: 28px; }
 .doc-section { margin: 0 0 60px; scroll-margin-top: 84px; }
 .doc-section > h2 { margin: 0 0 20px; color: #e0e9ed; font-family: 'Arial Narrow', sans-serif; font-size: 1.55rem; letter-spacing: -.02em; }
 .doc-section > p, .group-description { margin: 0 0 18px; color: #96a6ae; font-size: .8rem; line-height: 2; }
