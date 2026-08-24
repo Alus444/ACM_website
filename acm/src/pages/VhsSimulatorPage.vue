@@ -109,10 +109,16 @@ const comparisonSourceVideo = ref<HTMLVideoElement | null>(null)
 const comparisonProcessedVideo = ref<HTMLVideoElement | null>(null)
 const comparisonPlaying = ref(false)
 const prefersReducedMotion = ref(true)
+const lightboxSrc = ref('')
+const lightboxAlt = ref('')
+const lightboxCaption = ref('')
+const lightboxCloseButton = ref<HTMLButtonElement | null>(null)
 let comparisonPlaybackSyncing = false
 let comparisonSyncFrame: number | undefined
 let comparisonAutoplayRequested = false
 let reducedMotionQuery: MediaQueryList | undefined
+let previousBodyOverflow = ''
+let lightboxTrigger: HTMLElement | null = null
 
 function comparisonVideos() {
   return [comparisonSourceVideo.value, comparisonProcessedVideo.value].filter((video): video is HTMLVideoElement => Boolean(video))
@@ -226,6 +232,33 @@ function onReducedMotionChange(event: MediaQueryListEvent) {
     comparisonAutoplayRequested = false
     maybeAutoplayComparison()
   }
+}
+
+function handleScreenshotClick(event: MouseEvent) {
+  const target = event.target
+  if (!(target instanceof Element)) return
+
+  const link = target.closest<HTMLAnchorElement>('.doc-shot a')
+  const image = link?.querySelector<HTMLImageElement>('img')
+  if (!link || !image) return
+
+  event.preventDefault()
+  lightboxTrigger = link
+  lightboxSrc.value = link.href
+  lightboxAlt.value = image.alt
+  lightboxCaption.value = link.closest('figure')?.querySelector('figcaption')?.textContent?.trim() ?? ''
+  previousBodyOverflow = document.body.style.overflow
+  document.body.style.overflow = 'hidden'
+  nextTick(() => lightboxCloseButton.value?.focus())
+}
+
+function closeLightbox() {
+  if (!lightboxSrc.value) return
+  lightboxSrc.value = ''
+  lightboxAlt.value = ''
+  lightboxCaption.value = ''
+  document.body.style.overflow = previousBodyOverflow
+  nextTick(() => lightboxTrigger?.focus())
 }
 
 const activePage = computed(() => {
@@ -366,6 +399,12 @@ async function revealRouteTarget() {
 }
 
 function onKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape' && lightboxSrc.value) {
+    event.preventDefault()
+    closeLightbox()
+    return
+  }
+
   const target = event.target as HTMLElement | null
   const isEditing = target?.matches('input, textarea, select, [contenteditable="true"]')
 
@@ -420,6 +459,7 @@ onUnmounted(() => {
   document.documentElement.classList.remove('vhs-docs-open')
   document.documentElement.classList.remove('vhs-nav-open')
   pauseComparison()
+  document.body.style.overflow = previousBodyOverflow
   reducedMotionQuery?.removeEventListener('change', onReducedMotionChange)
   window.removeEventListener('keydown', onKeydown)
   window.removeEventListener('resize', syncViewport)
@@ -488,7 +528,7 @@ onUnmounted(() => {
         </nav>
       </aside>
 
-      <main class="docs-content">
+      <main class="docs-content" @click="handleScreenshotClick">
         <template v-if="activePage === 'overview'">
           <section class="hero-section">
             <div class="hero-copy">
@@ -723,6 +763,33 @@ onUnmounted(() => {
       </main>
 
     </div>
+
+    <Teleport to="body">
+      <Transition name="screenshot-lightbox">
+        <div
+          v-if="lightboxSrc"
+          class="screenshot-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label="スクリーンショットの拡大表示"
+          @click.self="closeLightbox"
+        >
+          <button
+            ref="lightboxCloseButton"
+            class="screenshot-lightbox__close"
+            type="button"
+            aria-label="拡大表示を閉じる"
+            @click="closeLightbox"
+          >
+            ×
+          </button>
+          <figure class="screenshot-lightbox__figure">
+            <img :src="lightboxSrc" :alt="lightboxAlt" />
+            <figcaption v-if="lightboxCaption">{{ lightboxCaption }}</figcaption>
+          </figure>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
@@ -815,9 +882,12 @@ button { color: inherit; }
 .hero-actions a:hover, .hero-actions a:focus-visible { box-shadow: 0 0 0 3px rgb(111 229 231 / 14%); outline: 0; }
 .hero-actions a.secondary { background: transparent; color: var(--vhs-cyan); }
 .doc-shot { margin: 28px 0 0; }
-.doc-shot a { display: block; border: 1px solid var(--vhs-line); background: #05090c; overflow: hidden; }
+.doc-shot a { display: block; border: 1px solid var(--vhs-line); background: #05090c; cursor: zoom-in; overflow: hidden; transition: border-color .16s ease; }
 .doc-shot a:hover, .doc-shot a:focus-visible { border-color: var(--vhs-line-bright); outline: 0; }
-.doc-shot img { display: block; width: 100%; height: auto; }
+.doc-shot img { display: block; width: 100%; height: auto; transition: transform .22s ease; }
+@media (hover: hover) and (pointer: fine) {
+  .doc-shot a:hover img { transform: scale(1.018); }
+}
 .doc-shot figcaption { margin-top: 9px; color: #7f929a; font-size: .68rem; line-height: 1.75; }
 .hero-shot { margin-top: 38px; }
 .video-comparison { position: relative; aspect-ratio: 16 / 9; border: 1px solid var(--vhs-line); background: #05090c; overflow: hidden; }
@@ -839,6 +909,16 @@ button { color: inherit; }
 .video-comparison__toolbar span { color: #7f929a; font-size: .65rem; }
 .video-comparison__toolbar button { padding: 5px 11px; border: 1px solid var(--vhs-line-bright); border-radius: 3px; background: #0b151a; color: var(--vhs-cyan); cursor: pointer; font-size: .68rem; font-weight: 700; }
 .video-comparison__toolbar button:hover, .video-comparison__toolbar button:focus-visible { border-color: var(--vhs-cyan); outline: 2px solid rgb(111 229 231 / 18%); outline-offset: 2px; }
+.screenshot-lightbox { position: fixed; z-index: 1000; display: grid; padding: 54px 24px 24px; background: rgb(7 7 8 / 92%); backdrop-filter: blur(5px); inset: 0; place-items: center; }
+.screenshot-lightbox__figure { display: grid; max-width: min(96vw, 1500px); max-height: calc(100vh - 78px); margin: 0; place-items: center; }
+.screenshot-lightbox__figure img { display: block; max-width: 100%; max-height: calc(100vh - 112px); border: 1px solid #514a40; border-radius: 10px; background: #111; box-shadow: 0 24px 80px rgb(0 0 0 / 55%); object-fit: contain; }
+.screenshot-lightbox__figure figcaption { margin-top: 10px; color: #b8b0a4; font-size: .72rem; line-height: 1.6; text-align: center; }
+.screenshot-lightbox__close { position: fixed; top: 14px; right: 18px; display: grid; width: 40px; height: 40px; padding: 0; border: 1px solid #655d52; border-radius: 50%; background: #211f1d; color: #f5f1eb; cursor: pointer; font: 400 1.45rem/1 sans-serif; place-items: center; }
+.screenshot-lightbox__close:hover, .screenshot-lightbox__close:focus-visible { border-color: #6fe5e7; outline: none; }
+.screenshot-lightbox-enter-active, .screenshot-lightbox-leave-active { transition: opacity .18s ease; }
+.screenshot-lightbox-enter-active .screenshot-lightbox__figure, .screenshot-lightbox-leave-active .screenshot-lightbox__figure { transition: transform .18s ease; }
+.screenshot-lightbox-enter-from, .screenshot-lightbox-leave-to { opacity: 0; }
+.screenshot-lightbox-enter-from .screenshot-lightbox__figure, .screenshot-lightbox-leave-to .screenshot-lightbox__figure { transform: scale(.975); }
 .doc-shot--presets { margin-bottom: 28px; }
 .doc-section { margin: 0 0 60px; scroll-margin-top: 84px; }
 .doc-section > h2 { margin: 0 0 20px; color: #e0e9ed; font-family: 'Arial Narrow', sans-serif; font-size: 1.55rem; letter-spacing: -.02em; }
