@@ -108,9 +108,6 @@ const comparisonPosition = ref(50)
 const comparisonSourceVideo = ref<HTMLVideoElement | null>(null)
 const comparisonProcessedVideo = ref<HTMLVideoElement | null>(null)
 const comparisonPlaying = ref(false)
-const comparisonExpanded = ref(false)
-const comparisonExpandButton = ref<HTMLButtonElement | null>(null)
-const comparisonCloseButton = ref<HTMLButtonElement | null>(null)
 const prefersReducedMotion = ref(true)
 const lightboxSrc = ref('')
 const lightboxAlt = ref('')
@@ -260,29 +257,6 @@ function onReducedMotionChange(event: MediaQueryListEvent) {
     comparisonAutoplayRequested = false
     maybeAutoplayComparison()
   }
-}
-
-function openComparison() {
-  if (comparisonExpanded.value) return
-  const wasPlaying = comparisonPlaying.value
-  previousBodyOverflow = document.body.style.overflow
-  document.body.style.overflow = 'hidden'
-  comparisonExpanded.value = true
-  nextTick(() => {
-    comparisonCloseButton.value?.focus()
-    if (wasPlaying && comparisonVideos().some((video) => video.paused)) void playComparison()
-  })
-}
-
-function closeComparison() {
-  if (!comparisonExpanded.value) return
-  const wasPlaying = comparisonPlaying.value
-  comparisonExpanded.value = false
-  document.body.style.overflow = previousBodyOverflow
-  nextTick(() => {
-    comparisonExpandButton.value?.focus()
-    if (wasPlaying && comparisonVideos().some((video) => video.paused)) void playComparison()
-  })
 }
 
 function handleScreenshotClick(event: MouseEvent) {
@@ -450,12 +424,6 @@ async function revealRouteTarget() {
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && comparisonExpanded.value) {
-    event.preventDefault()
-    closeComparison()
-    return
-  }
-
   if (event.key === 'Escape' && lightboxSrc.value) {
     event.preventDefault()
     closeLightbox()
@@ -491,7 +459,6 @@ watch(activePage, (page) => {
 })
 
 watch(() => route.fullPath, () => {
-  closeComparison()
   closeTransientUi()
   revealRouteTarget()
 })
@@ -597,83 +564,57 @@ onUnmounted(() => {
                 <RouterLink :to="pagePath('parameters')" class="secondary">全項目を見る</RouterLink>
               </div>
               <figure class="doc-shot hero-shot video-comparison-figure">
-                <Teleport to="body" :disabled="!comparisonExpanded">
-                  <div
-                    :class="['video-comparison-stage', { 'video-comparison-stage--expanded': comparisonExpanded }]"
-                    :role="comparisonExpanded ? 'dialog' : undefined"
-                    :aria-modal="comparisonExpanded ? 'true' : undefined"
-                    :aria-label="comparisonExpanded ? '動画比較の拡大表示' : undefined"
-                    @click.self="closeComparison"
-                  >
-                    <button
-                      v-if="comparisonExpanded"
-                      ref="comparisonCloseButton"
-                      class="video-comparison-stage__close"
-                      type="button"
-                      aria-label="拡大表示を閉じる"
-                      @click="closeComparison"
-                    >
-                      ×
-                    </button>
-                    <div class="video-comparison-frame">
-                      <div class="video-comparison" role="group" aria-label="元映像とレンタル摩耗CRTの動画比較">
-                        <video
-                          ref="comparisonProcessedVideo"
-                          class="video-comparison__video"
-                          :src="`/videos/vhs-simulator/overview-rental-worn-crt.mp4?v=${comparisonVideoVersion}`"
-                          poster="/images/vhs-simulator/screenshots/overview-video-poster.webp"
-                          preload="metadata"
-                          muted
-                          loop
-                          playsinline
-                          aria-label="レンタル摩耗CRT"
-                          @loadedmetadata="maybeAutoplayComparison"
-                          @play="onComparisonPlay"
-                          @pause="onComparisonPause"
-                        ></video>
-                        <div class="video-comparison__source" :style="comparisonRevealStyle">
-                          <video
-                            ref="comparisonSourceVideo"
-                            class="video-comparison__video"
-                            :src="`/videos/vhs-simulator/overview-source.mp4?v=${comparisonVideoVersion}`"
-                            poster="/images/vhs-simulator/screenshots/overview-video-poster.webp"
-                            preload="metadata"
-                            muted
-                            loop
-                            playsinline
-                            aria-label="元映像"
-                            @loadedmetadata="maybeAutoplayComparison"
-                            @play="onComparisonPlay"
-                            @pause="onComparisonPause"
-                          ></video>
-                        </div>
-                        <span class="video-comparison__divider" :style="{ left: `${comparisonPosition}%` }" aria-hidden="true">
-                          <i>↔</i>
-                        </span>
-                        <input
-                          v-model.number="comparisonPosition"
-                          class="video-comparison__range"
-                          type="range"
-                          min="0"
-                          max="100"
-                          step="1"
-                          aria-label="元映像とレンタル摩耗CRTの比較位置"
-                          :aria-valuetext="`元映像 ${comparisonPosition}%、レンタル摩耗CRT ${100 - comparisonPosition}%`"
-                        />
-                      </div>
-                      <div class="video-comparison__toolbar">
-                        <span>スライダーを左右に動かして比較</span>
-                        <div class="video-comparison__actions">
-                          <button v-if="!comparisonExpanded" ref="comparisonExpandButton" type="button" @click="openComparison">拡大表示</button>
-                          <button type="button" :aria-label="comparisonPlaying ? '比較動画を一時停止' : '比較動画を再生'" @click="toggleComparisonPlayback">
-                            {{ comparisonPlaying ? '一時停止' : '再生' }}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <p v-if="comparisonExpanded" class="video-comparison-stage__caption">左：元映像／右：レンタル摩耗CRT。中央のハンドルを動かして、輪郭、色にじみ、テープ摩耗とCRT表示の変化を比較できます。</p>
+                <div class="video-comparison" role="group" aria-label="元映像とレンタル摩耗CRTの動画比較">
+                  <video
+                    ref="comparisonProcessedVideo"
+                    class="video-comparison__video"
+                    :src="`/videos/vhs-simulator/overview-rental-worn-crt.mp4?v=${comparisonVideoVersion}`"
+                    poster="/images/vhs-simulator/screenshots/overview-video-poster.webp"
+                    preload="metadata"
+                    muted
+                    loop
+                    playsinline
+                    aria-label="レンタル摩耗CRT"
+                    @loadedmetadata="maybeAutoplayComparison"
+                    @play="onComparisonPlay"
+                    @pause="onComparisonPause"
+                  ></video>
+                  <div class="video-comparison__source" :style="comparisonRevealStyle">
+                    <video
+                      ref="comparisonSourceVideo"
+                      class="video-comparison__video"
+                      :src="`/videos/vhs-simulator/overview-source.mp4?v=${comparisonVideoVersion}`"
+                      poster="/images/vhs-simulator/screenshots/overview-video-poster.webp"
+                      preload="metadata"
+                      muted
+                      loop
+                      playsinline
+                      aria-label="元映像"
+                      @loadedmetadata="maybeAutoplayComparison"
+                      @play="onComparisonPlay"
+                      @pause="onComparisonPause"
+                    ></video>
                   </div>
-                </Teleport>
+                  <span class="video-comparison__divider" :style="{ left: `${comparisonPosition}%` }" aria-hidden="true">
+                    <i>↔</i>
+                  </span>
+                  <input
+                    v-model.number="comparisonPosition"
+                    class="video-comparison__range"
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="1"
+                    aria-label="元映像とレンタル摩耗CRTの比較位置"
+                    :aria-valuetext="`元映像 ${comparisonPosition}%、レンタル摩耗CRT ${100 - comparisonPosition}%`"
+                  />
+                </div>
+                <div class="video-comparison__toolbar">
+                  <span>スライダーを左右に動かして比較</span>
+                  <button type="button" :aria-label="comparisonPlaying ? '比較動画を一時停止' : '比較動画を再生'" @click="toggleComparisonPlayback">
+                    {{ comparisonPlaying ? '一時停止' : '再生' }}
+                  </button>
+                </div>
                 <figcaption>左：元映像／右：レンタル摩耗CRT。中央のハンドルを動かして、輪郭、色にじみ、テープ摩耗とCRT表示の変化を比較できます。</figcaption>
               </figure>
             </div>
@@ -972,13 +913,6 @@ button { color: inherit; }
 }
 .doc-shot figcaption { margin-top: 9px; color: #7f929a; font-size: .68rem; line-height: 1.75; }
 .hero-shot { margin-top: 38px; }
-.video-comparison-stage { --vhs-cyan: #6fe5e7; --vhs-line: #29424c; --vhs-line-bright: #43818d; }
-.video-comparison-frame { width: 100%; }
-.video-comparison-stage--expanded { position: fixed; z-index: 1000; display: flex; padding: 56px 24px 24px; background: rgb(7 7 8 / 92%); backdrop-filter: blur(5px); inset: 0; align-items: center; flex-direction: column; justify-content: center; }
-.video-comparison-stage--expanded .video-comparison-frame { width: min(96vw, calc((100vh - 150px) * 1.7778), 1500px); }
-.video-comparison-stage__close { position: fixed; top: 14px; right: 18px; z-index: 2; display: grid; width: 40px; height: 40px; padding: 0; border: 1px solid #655d52; border-radius: 50%; background: #211f1d; color: #f5f1eb; cursor: pointer; font: 400 1.45rem/1 sans-serif; place-items: center; }
-.video-comparison-stage__close:hover, .video-comparison-stage__close:focus-visible { border-color: #6fe5e7; outline: none; }
-.video-comparison-stage__caption { max-width: min(92vw, 960px); margin: 10px 0 0; color: #b8b0a4; font-size: .72rem; line-height: 1.6; text-align: center; }
 .video-comparison { position: relative; aspect-ratio: 16 / 9; border: 1px solid var(--vhs-line); background: #05090c; overflow: hidden; }
 .video-comparison:focus-within { border-color: var(--vhs-cyan); box-shadow: 0 0 0 3px rgb(111 229 231 / 14%); }
 .video-comparison__video, .video-comparison__source { position: absolute; width: 100%; height: 100%; inset: 0; }
@@ -993,7 +927,6 @@ button { color: inherit; }
 .video-comparison__range::-moz-range-thumb { width: 44px; height: 100%; border: 0; border-radius: 0; background: transparent; cursor: ew-resize; }
 .video-comparison__toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0 0; }
 .video-comparison__toolbar span { color: #7f929a; font-size: .65rem; }
-.video-comparison__actions { display: flex; align-items: center; gap: 8px; }
 .video-comparison__toolbar button { padding: 5px 11px; border: 1px solid var(--vhs-line-bright); border-radius: 3px; background: #0b151a; color: var(--vhs-cyan); cursor: pointer; font-size: .68rem; font-weight: 700; }
 .video-comparison__toolbar button:hover, .video-comparison__toolbar button:focus-visible { border-color: var(--vhs-cyan); outline: 2px solid rgb(111 229 231 / 18%); outline-offset: 2px; }
 .screenshot-lightbox { position: fixed; z-index: 1000; display: grid; padding: 54px 24px 24px; background: rgb(7 7 8 / 92%); backdrop-filter: blur(5px); inset: 0; place-items: center; }
