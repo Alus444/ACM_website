@@ -875,7 +875,7 @@ button { color: inherit; }
 .docs-content { min-width: 0; padding: 48px clamp(34px, 4vw, 64px) 60px; }
 .hero-section { max-width: 720px; min-height: 360px; padding: 56px 0 72px; }
 .kicker, .page-intro > p { color: var(--vhs-cyan); font-size: .58rem; font-weight: 700; letter-spacing: .22em; }
-.hero-copy h1 { margin: 0 0 24px; color: #eff5f5; font-size: clamp(2.8rem, 6vw, 4.4rem); font-weight: 700; letter-spacing: -.045em; line-height: 1.05; }
+.hero-copy h1 { margin: 0 0 24px; color: #eff5f5; font-size: clamp(2.3rem, 3.6vw, 3.35rem); font-weight: 700; letter-spacing: -.045em; line-height: 1.05; }
 .hero-lead { max-width: 580px; color: #9dafb7; font-size: .9rem; line-height: 1.9; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
 .hero-actions a { padding: 11px 16px; border: 1px solid var(--vhs-cyan); border-radius: 4px; background: var(--vhs-cyan); color: #061014; font-size: .68rem; font-weight: 700; letter-spacing: .05em; text-decoration: none; }
@@ -1062,7 +1062,7 @@ button { color: inherit; }
 .hero-copy h1 {
   max-width: none;
   font-family: 'Arial Black', 'Arial Narrow', system-ui, sans-serif;
-  font-size: clamp(2.9rem, 4.7vw, 4.35rem);
+  font-size: clamp(2.3rem, 3.6vw, 3.35rem);
   letter-spacing: -.045em;
   line-height: 1;
   white-space: nowrap;
