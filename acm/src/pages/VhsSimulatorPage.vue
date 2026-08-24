@@ -264,14 +264,20 @@ function handleScreenshotClick(event: MouseEvent) {
   if (!(target instanceof Element)) return
 
   const link = target.closest<HTMLAnchorElement>('.doc-shot a')
+  if (!link) return
   const image = link?.querySelector<HTMLImageElement>('img')
-  if (!link || !image) return
+  const textLightbox = link.dataset.lightbox === 'image'
+  if (!image && !textLightbox) return
+
+  const figure = link.closest('figure')
+  const caption = figure?.querySelector<HTMLElement>('[data-caption-text]')
+    ?? figure?.querySelector<HTMLElement>('figcaption')
 
   event.preventDefault()
   lightboxTrigger = link
   lightboxSrc.value = link.href
-  lightboxAlt.value = image.alt
-  lightboxCaption.value = link.closest('figure')?.querySelector('figcaption')?.textContent?.trim() ?? ''
+  lightboxAlt.value = image?.alt ?? link.dataset.lightboxAlt ?? ''
+  lightboxCaption.value = link.dataset.lightboxCaption ?? caption?.textContent?.trim() ?? ''
   previousBodyOverflow = document.body.style.overflow
   document.body.style.overflow = 'hidden'
   nextTick(() => lightboxCloseButton.value?.focus())
@@ -674,13 +680,28 @@ onUnmounted(() => {
               <a href="/images/vhs-simulator/screenshots/preset-comparison.webp?v=20260824-current-labels" target="_blank" rel="noopener" aria-label="6種類の内蔵プリセット比較を原寸で開く">
                 <img src="/images/vhs-simulator/screenshots/preset-comparison.webp?v=20260824-current-labels" alt="同じ映像に6種類の内蔵プリセットを適用した比較" width="1920" height="720" loading="lazy" />
               </a>
-              <figcaption>同じフレームへ6種類の内蔵プリセットを適用。輪郭、色、走行の乱れ、CRT表示の違いを比較できます。</figcaption>
+              <figcaption class="preset-comparison-caption">
+                <span data-caption-text>同じフレームへ6種類の内蔵プリセットを適用。輪郭、色、走行の乱れ、CRT表示の違いを比較できます。</span>
+                <a class="preset-source-link" href="/images/vhs-simulator/screenshots/preset-source-steps.webp" target="_blank" rel="noopener" data-lightbox="image" data-lightbox-alt="階段と植栽を写した加工前の元画像" data-lightbox-caption="加工前の元画像">元画像を見る</a>
+              </figcaption>
             </figure>
             <figure class="doc-shot doc-shot--presets">
               <a href="/images/vhs-simulator/screenshots/preset-comparison-parking.webp" target="_blank" rel="noopener" aria-label="濡れた駐車場で6種類の内蔵プリセット比較を原寸で開く">
                 <img src="/images/vhs-simulator/screenshots/preset-comparison-parking.webp" alt="雪の残る濡れた駐車場に6種類の内蔵プリセットを適用した比較" width="1920" height="720" loading="lazy" />
               </a>
-              <figcaption>濡れた路面と黄色い区画線で、色にじみ、暗部、反射の変化を比較できます。</figcaption>
+              <figcaption class="preset-comparison-caption">
+                <span data-caption-text>濡れた路面と黄色い区画線で、色にじみ、暗部、反射の変化を比較できます。</span>
+                <a class="preset-source-link" href="/images/vhs-simulator/screenshots/preset-source-parking.webp" target="_blank" rel="noopener" data-lightbox="image" data-lightbox-alt="雪の残る濡れた駐車場の加工前画像" data-lightbox-caption="加工前の元画像">元画像を見る</a>
+              </figcaption>
+            </figure>
+            <figure class="doc-shot doc-shot--presets">
+              <a href="/images/vhs-simulator/screenshots/preset-comparison-street.webp" target="_blank" rel="noopener" aria-label="街路で6種類の内蔵プリセット比較を原寸で開く">
+                <img src="/images/vhs-simulator/screenshots/preset-comparison-street.webp" alt="日なたと影のある街路に6種類の内蔵プリセットを適用した比較" width="1920" height="720" loading="lazy" />
+              </a>
+              <figcaption class="preset-comparison-caption">
+                <span data-caption-text>街路の細い線と日なた・影で、輪郭、色、走行の乱れを比較できます。</span>
+                <a class="preset-source-link" href="/images/vhs-simulator/screenshots/preset-source-street.webp" target="_blank" rel="noopener" data-lightbox="image" data-lightbox-alt="日なたと影のある街路の加工前画像" data-lightbox-caption="加工前の元画像">元画像を見る</a>
+              </figcaption>
             </figure>
             <div id="preset" class="preset-grid">
               <article v-for="preset in vhsPresetSummaries" :id="`preset-${preset.id}`" :key="preset.id">
@@ -919,6 +940,10 @@ button { color: inherit; }
   .doc-shot a:hover img { transform: scale(1.018); }
 }
 .doc-shot figcaption { margin-top: 9px; color: #7f929a; font-size: .68rem; line-height: 1.75; }
+.preset-comparison-caption { display: flex; align-items: baseline; justify-content: space-between; gap: 8px 16px; flex-wrap: wrap; }
+.doc-shot .preset-source-link { display: inline-flex; flex: none; align-items: center; gap: 6px; border: 0; background: transparent; color: var(--vhs-cyan); cursor: zoom-in; font-weight: 700; overflow: visible; text-decoration: none; }
+.doc-shot .preset-source-link::after { color: currentcolor; content: '▷'; font-size: .72em; }
+.doc-shot .preset-source-link:hover, .doc-shot .preset-source-link:focus-visible { border: 0; color: #b9ffff; outline: 1px solid rgb(111 229 231 / 48%); outline-offset: 3px; }
 .hero-shot { margin-top: 38px; }
 .video-comparison { position: relative; aspect-ratio: 16 / 9; border: 1px solid var(--vhs-line); background: #05090c; overflow: hidden; }
 .video-comparison:focus-within { border-color: var(--vhs-cyan); box-shadow: 0 0 0 3px rgb(111 229 231 / 14%); }
