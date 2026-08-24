@@ -121,7 +121,7 @@ let reducedMotionQuery: MediaQueryList | undefined
 let previousBodyOverflow = ''
 let lightboxTrigger: HTMLElement | null = null
 
-const comparisonVideoVersion = '20260824-24fps-r2'
+const comparisonVideoVersion = '20260825-custom-r1'
 
 const comparisonRevealStyle = computed(() => {
   const position = Math.min(100, Math.max(0, comparisonPosition.value))
@@ -570,17 +570,17 @@ onUnmounted(() => {
                 <RouterLink :to="pagePath('parameters')" class="secondary">全項目を見る</RouterLink>
               </div>
               <figure class="doc-shot hero-shot video-comparison-figure">
-                <div class="video-comparison" role="group" aria-label="元映像とレンタル摩耗CRTの動画比較">
+                <div class="video-comparison" role="group" aria-label="元映像とカスタム設定の動画比較">
                   <video
                     ref="comparisonProcessedVideo"
                     class="video-comparison__video"
-                    :src="`/videos/vhs-simulator/overview-rental-worn-crt.mp4?v=${comparisonVideoVersion}`"
+                    :src="`/videos/vhs-simulator/overview-custom.mp4?v=${comparisonVideoVersion}`"
                     poster="/images/vhs-simulator/screenshots/overview-video-poster.webp"
                     preload="metadata"
                     muted
                     loop
                     playsinline
-                    aria-label="レンタル摩耗CRT"
+                    aria-label="カスタム設定"
                     @loadedmetadata="maybeAutoplayComparison"
                     @play="onComparisonPlay"
                     @pause="onComparisonPause"
@@ -611,8 +611,8 @@ onUnmounted(() => {
                     min="0"
                     max="100"
                     step="1"
-                    aria-label="元映像とレンタル摩耗CRTの比較位置"
-                    :aria-valuetext="`元映像 ${comparisonPosition}%、レンタル摩耗CRT ${100 - comparisonPosition}%`"
+                    aria-label="元映像とカスタム設定の比較位置"
+                    :aria-valuetext="`元映像 ${comparisonPosition}%、カスタム設定 ${100 - comparisonPosition}%`"
                   />
                 </div>
                 <div class="video-comparison__toolbar">
@@ -621,7 +621,7 @@ onUnmounted(() => {
                     {{ comparisonPlaying ? '一時停止' : '再生' }}
                   </button>
                 </div>
-                <figcaption>左：元映像／右：レンタル摩耗CRT。中央のハンドルを動かして、輪郭、色にじみ、テープ摩耗とCRT表示の変化を比較できます。</figcaption>
+                <figcaption>左：元映像／右：カスタム設定。中央のハンドルを動かして、輪郭、色にじみ、テープ摩耗とCRT表示の変化を比較できます。</figcaption>
                 <RouterLink class="video-comparison__more" :to="`${pagePath('quick-start')}#preset-samples`">その他のサンプル画像を見る →</RouterLink>
               </figure>
             </div>
