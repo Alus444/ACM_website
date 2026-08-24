@@ -641,17 +641,18 @@ onUnmounted(() => {
 
           <section id="pipeline" class="doc-section">
             <div class="section-heading"><span>03</span><div><p>PIPELINE</p><h2>処理の流れ</h2></div></div>
-            <div class="pipeline">
-              <div><b>1</b><strong>CAMERA</strong><span>解像感・色・暗部</span></div><i>→</i>
-              <div><b>2</b><strong>VHS SIGNAL</strong><span>帯域・ノイズ・走行</span></div><i>→</i>
-              <div><b>3</b><strong>CRT DISPLAY</strong><span>走査線・発光・曲率</span></div><i>→</i>
-              <div><b>4</b><strong>FINAL MIX</strong><span>元映像との最終合成</span></div>
-            </div>
+            <p>元映像へ、カメラ撮像、VHSの記録・再生、CRT表示の順で質感を重ねます。最後に元映像との混ざり具合を決めます。</p>
+            <ol class="pipeline">
+              <li><b>1</b><div><strong>家庭用カメラの画にする</strong><small>CAMERA</small></div><span>解像感を落とし、色にじみ、輪郭の硬さ、暗部ノイズを加えます。</span></li>
+              <li><b>2</b><div><strong>VHSへ記録・再生する</strong><small>VHS TAPE</small></div><span>VHS特有のぼけ、色ずれ、テープノイズ、走行の乱れを加えます。</span></li>
+              <li><b>3</b><div><strong>ブラウン管に表示する</strong><small>CRT DISPLAY</small></div><span>走査線、発光、色の格子、画面の丸みを加えます。</span></li>
+              <li><b>4</b><div><strong>効果の濃さを決める</strong><small>FINAL MIX</small></div><span>処理後の映像を元映像と混ぜ、最終的なかかり具合を整えます。</span></li>
+            </ol>
             <figure class="doc-shot">
-              <a href="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp" target="_blank" rel="noopener" aria-label="Camera、VHS、CRTの処理段階比較を原寸で開く">
-                <img src="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp" alt="元画像、Camera、CameraとVHS、CameraとVHSとCRTの4段階比較" width="1280" height="720" loading="lazy" />
+              <a href="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp" target="_blank" rel="noopener" aria-label="カメラ撮像、VHS記録・再生、CRT表示の処理段階比較を原寸で開く">
+                <img src="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp" alt="元画像、カメラ撮像後、VHS記録・再生後、CRT表示後の4段階比較" width="1280" height="720" loading="lazy" />
               </a>
-              <figcaption>元画像からCamera、VHS、CRTへ処理を重ねた変化。細線、色境界、画面下端で各段階の違いを確認できます。</figcaption>
+              <figcaption>元画像へカメラ撮像、VHS記録・再生、CRT表示を順に重ねた変化。細線、色境界、画面下端で各段階の違いを確認できます。</figcaption>
             </figure>
           </section>
 
@@ -991,14 +992,14 @@ button { color: inherit; }
 .status { padding: 5px 10px; border: 1px solid #30444d; border-radius: 999px; color: #8799a1; font-size: .6rem; }
 .status.ok { border-color: #397667; color: #80c6b0; }
 .status.caution { border-color: #786a39; color: #d1bb68; }
-.pipeline { display: grid; align-items: stretch; grid-template-columns: repeat(7, auto); }
-.pipeline > div { display: grid; min-width: 0; gap: 4px; padding: 15px 13px; border: 1px solid var(--vhs-line); background: #091015; }
-.pipeline b { color: #3c5b65; font-family: ui-monospace, monospace; font-size: .52rem; }
-.pipeline strong { color: #dce7ea; font-size: .68rem; }
-.pipeline span { color: #71828a; font-size: .55rem; line-height: 1.5; }
-.pipeline > i { display: flex; min-width: 28px; align-items: center; justify-content: center; padding: 0 5px; color: #6b8c95; font-size: 0; font-style: normal; }
-.pipeline > i::before { width: 20px; height: 2px; background: currentColor; content: ''; }
-.pipeline > i::after { width: 0; height: 0; margin-left: -1px; border-top: 5px solid transparent; border-bottom: 5px solid transparent; border-left: 8px solid currentColor; content: ''; }
+.pipeline { display: grid; gap: 10px; margin: 20px 0 0; padding: 0; list-style: none; }
+.pipeline > li { position: relative; display: grid; min-width: 0; align-items: center; gap: 14px; padding: 17px 18px; border: 1px solid var(--vhs-line); background: #091015; grid-template-columns: 32px minmax(190px, .8fr) minmax(0, 1.4fr); }
+.pipeline > li:not(:last-child)::after { position: absolute; z-index: 2; bottom: -10px; left: 28px; width: 0; height: 0; border-top: 7px solid #6b8c95; border-right: 5px solid transparent; border-left: 5px solid transparent; content: ''; }
+.pipeline b { color: var(--vhs-cyan); font-family: ui-monospace, monospace; font-size: .78rem; }
+.pipeline div { display: grid; min-width: 0; gap: 2px; }
+.pipeline strong { color: #dce7ea; font-size: .78rem; line-height: 1.45; }
+.pipeline small { color: #69808a; font-size: .52rem; font-weight: 700; letter-spacing: .12em; }
+.pipeline span { color: #8fa1a8; font-size: .65rem; line-height: 1.7; }
 .page-intro { max-width: 720px; margin-bottom: 52px; padding: 32px 0 34px; border-bottom: 1px solid var(--vhs-line); }
 .page-intro > p { display: none; }
 .page-intro h1 { margin: 0 0 14px; color: #edf3f4; font-size: clamp(2.1rem, 4vw, 3rem); letter-spacing: -.035em; line-height: 1.12; }
@@ -1133,8 +1134,9 @@ button { color: inherit; }
 .callout strong { font-size: .9rem; }
 .callout p { color: #bdc9cd; font-size: .88rem; line-height: 1.8; }
 .status { color: #bac7cb; font-size: .76rem; }
-.pipeline b { color: #79919a; font-size: .66rem; }
+.pipeline b { color: var(--vhs-cyan); font-size: .8rem; }
 .pipeline strong { font-size: .82rem; }
+.pipeline small { font-size: .62rem; }
 .pipeline span { color: #a7b7bd; font-size: .72rem; line-height: 1.6; }
 .page-intro > span { color: #b7c5ca; font-size: .94rem; line-height: 1.7; }
 .steps li > b { color: #78929b; font-size: .78rem; }
@@ -1182,8 +1184,7 @@ button { color: inherit; }
   .docs-sidebar.open { transform: translateX(0); }
   .docs-content { padding: 42px 28px 60px; }
   .hero-section { min-height: 0; }
-  .pipeline { gap: 8px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .pipeline > i { display: none; }
+  .pipeline > li { grid-template-columns: 32px minmax(170px, .8fr) minmax(0, 1fr); }
 }
 
 @media (max-width: 600px) {
@@ -1199,7 +1200,9 @@ button { color: inherit; }
   .hero-section { padding: 44px 0 58px; }
   .hero-copy h1 { font-size: clamp(2rem, 12vw, 2.5rem); line-height: 1.08; white-space: normal; }
   .quality-comparison { grid-template-columns: 1fr; }
-  .pipeline { gap: 6px; grid-template-columns: 1fr; }
+  .pipeline > li { align-items: start; gap: 4px 12px; padding: 15px; grid-template-columns: 28px minmax(0, 1fr); }
+  .pipeline > li span { grid-column: 2; }
+  .pipeline > li:not(:last-child)::after { left: 24px; }
   .page-intro h1 { font-size: 2.15rem; }
   .preset-grid { grid-template-columns: 1fr; }
   .parameter-card { gap: 14px; grid-template-columns: 1fr; }
