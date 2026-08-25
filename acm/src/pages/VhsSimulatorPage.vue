@@ -108,6 +108,7 @@ const comparisonPosition = ref(50)
 const comparisonSourceVideo = ref<HTMLVideoElement | null>(null)
 const comparisonProcessedVideo = ref<HTMLVideoElement | null>(null)
 const comparisonPlaying = ref(false)
+const comparisonRefreshing = ref(false)
 const prefersReducedMotion = ref(true)
 const lightboxSrc = ref('')
 const lightboxAlt = ref('')
@@ -216,6 +217,55 @@ function toggleComparisonPlayback() {
   else void playComparison()
 }
 
+function waitForComparisonMetadata(video: HTMLVideoElement) {
+  return new Promise<void>((resolve) => {
+    let settled = false
+
+    const finish = () => {
+      if (settled) return
+      settled = true
+      window.clearTimeout(timeout)
+      video.removeEventListener('loadedmetadata', finish)
+      video.removeEventListener('error', finish)
+      resolve()
+    }
+
+    const timeout = window.setTimeout(finish, 8000)
+    video.addEventListener('loadedmetadata', finish, { once: true })
+    video.addEventListener('error', finish, { once: true })
+  })
+}
+
+async function refreshComparisonVideos() {
+  const source = comparisonSourceVideo.value
+  const processed = comparisonProcessedVideo.value
+  if (!source || !processed || comparisonRefreshing.value) return
+
+  const resumeAfterRefresh = comparisonPlaying.value
+  const resumeTime = Number.isFinite(source.currentTime) ? source.currentTime : 0
+
+  comparisonRefreshing.value = true
+  pauseComparison()
+  comparisonPlaybackSyncing = true
+
+  const sourceReady = waitForComparisonMetadata(source)
+  const processedReady = waitForComparisonMetadata(processed)
+  source.load()
+  processed.load()
+  await Promise.all([sourceReady, processedReady])
+
+  const availableDuration = Math.min(source.duration, processed.duration)
+  const restoredTime = Number.isFinite(availableDuration) && availableDuration > 0
+    ? Math.min(resumeTime, Math.max(0, availableDuration - 1 / 24))
+    : 0
+  source.currentTime = restoredTime
+  processed.currentTime = restoredTime
+
+  comparisonPlaybackSyncing = false
+  comparisonRefreshing.value = false
+  if (resumeAfterRefresh) await playComparison()
+}
+
 function onComparisonPlay(event: Event) {
   if (comparisonPlaybackSyncing) return
 
@@ -241,7 +291,7 @@ function onComparisonPause() {
 }
 
 function maybeAutoplayComparison() {
-  if (prefersReducedMotion.value || comparisonAutoplayRequested) return
+  if (prefersReducedMotion.value || comparisonAutoplayRequested || comparisonRefreshing.value) return
   const videos = comparisonVideos()
   if (videos.length !== 2 || videos.some((video) => video.readyState < HTMLMediaElement.HAVE_METADATA)) return
 
@@ -617,9 +667,14 @@ onUnmounted(() => {
                 </div>
                 <div class="video-comparison__toolbar">
                   <span>スライダーを左右に動かして比較</span>
-                  <button type="button" :aria-label="comparisonPlaying ? '比較動画を一時停止' : '比較動画を再生'" @click="toggleComparisonPlayback">
-                    {{ comparisonPlaying ? '一時停止' : '再生' }}
-                  </button>
+                  <div class="video-comparison__actions">
+                    <button type="button" :aria-label="comparisonPlaying ? '比較動画を一時停止' : '比較動画を再生'" :disabled="comparisonRefreshing" @click="toggleComparisonPlayback">
+                      {{ comparisonPlaying ? '一時停止' : '再生' }}
+                    </button>
+                    <button type="button" aria-label="比較動画を再読み込み" :disabled="comparisonRefreshing" @click="refreshComparisonVideos">
+                      {{ comparisonRefreshing ? '読み込み中' : '再読み込み' }}
+                    </button>
+                  </div>
                 </div>
                 <figcaption>左：元映像／右：カスタム設定。中央のハンドルを動かして、輪郭、色にじみ、テープ摩耗とCRT表示の変化を比較できます。</figcaption>
                 <RouterLink class="video-comparison__more" :to="`${pagePath('quick-start')}#preset-samples`">その他のサンプル画像を見る →</RouterLink>
@@ -953,10 +1008,12 @@ button { color: inherit; }
 .video-comparison__range::-webkit-slider-thumb { width: 44px; height: 100%; border: 0; appearance: none; background: transparent; cursor: ew-resize; }
 .video-comparison__range::-moz-range-track { height: 100%; border: 0; background: transparent; }
 .video-comparison__range::-moz-range-thumb { width: 44px; height: 100%; border: 0; border-radius: 0; background: transparent; cursor: ew-resize; }
-.video-comparison__toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0 0; }
+.video-comparison__toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0 0; }
 .video-comparison__toolbar span { color: #7f929a; font-size: .65rem; }
+.video-comparison__actions { display: flex; flex: none; gap: 7px; }
 .video-comparison__toolbar button { padding: 5px 11px; border: 1px solid var(--vhs-line-bright); border-radius: 3px; background: #0b151a; color: var(--vhs-cyan); cursor: pointer; font-size: .68rem; font-weight: 700; }
 .video-comparison__toolbar button:hover, .video-comparison__toolbar button:focus-visible { border-color: var(--vhs-cyan); outline: 2px solid rgb(111 229 231 / 18%); outline-offset: 2px; }
+.video-comparison__toolbar button:disabled { border-color: var(--vhs-line); color: #61737a; cursor: wait; }
 .doc-shot .video-comparison__more { display: inline-flex; margin-top: 12px; border: 0; background: transparent; color: var(--vhs-cyan); cursor: pointer; font-size: .68rem; font-weight: 700; overflow: visible; text-decoration: none; }
 .doc-shot .video-comparison__more:hover, .doc-shot .video-comparison__more:focus-visible { border: 0; color: #b9ffff; outline: 1px solid rgb(111 229 231 / 48%); outline-offset: 3px; }
 .screenshot-lightbox { position: fixed; z-index: 1000; display: grid; padding: 54px 24px 24px; background: rgb(7 7 8 / 92%); backdrop-filter: blur(5px); inset: 0; place-items: center; }
