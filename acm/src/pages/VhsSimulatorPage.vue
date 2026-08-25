@@ -126,31 +126,65 @@ const comparisonVideoVersion = '20260825-custom-r1'
 
 const vhsPresetSamples = [
   {
+    id: 'steps',
+    comparisonFile: 'preset-comparison.webp?v=20260824-current-labels',
+    sourceFile: 'preset-source-steps.webp',
+    alt: '階段と植栽の映像に6種類の内蔵プリセットを適用した比較',
+    sourceAlt: '階段と植栽を写した加工前の元画像',
+    caption: '輪郭、色、走行の乱れ、CRT表示の違いを比較できます。',
+  },
+  {
+    id: 'parking',
+    comparisonFile: 'preset-comparison-parking.webp',
+    sourceFile: 'preset-source-parking.webp',
+    alt: '雪の残る濡れた駐車場に6種類の内蔵プリセットを適用した比較',
+    sourceAlt: '雪の残る濡れた駐車場の加工前画像',
+    caption: '濡れた路面と黄色い区画線で、色にじみ、暗部、反射の変化を比較できます。',
+  },
+  {
+    id: 'street',
+    comparisonFile: 'preset-comparison-street.webp',
+    sourceFile: 'preset-source-street.webp?v=test4',
+    alt: '日なたと影のある街路に6種類の内蔵プリセットを適用した比較',
+    sourceAlt: '日なたと影のある街路の加工前画像',
+    caption: '街路の細い線と日なた・影で、輪郭、色、走行の乱れを比較できます。',
+  },
+  {
     id: 'dsc1386',
+    comparisonFile: 'preset-comparison-dsc1386.webp',
+    sourceFile: 'preset-source-dsc1386.webp',
     alt: '夜の駅通路に6種類の内蔵プリセットを適用した比較',
     sourceAlt: '夜の駅通路を写した加工前の元画像',
     caption: '夜の駅通路で、暗部の残り方、点光源のにじみ、床面の解像感を比較できます。',
   },
   {
     id: 'dsc1373',
+    comparisonFile: 'preset-comparison-dsc1373.webp',
+    sourceFile: 'preset-source-dsc1373.webp',
     alt: '高架下の通路に6種類の内蔵プリセットを適用した比較',
     sourceAlt: '高架下の通路を写した加工前の元画像',
     caption: '高架下の深い影と明るい出口で、階調、輪郭、走行の乱れを比較できます。',
   },
   {
     id: 'dsc1361',
+    comparisonFile: 'preset-comparison-dsc1361.webp',
+    sourceFile: 'preset-source-dsc1361.webp',
     alt: '蛍光灯と金属壁に6種類の内蔵プリセットを適用した比較',
     sourceAlt: '蛍光灯と金属壁を写した加工前の元画像',
     caption: '蛍光灯と金属壁で、ハイライトのにじみ、面のノイズ、細い配管の変化を比較できます。',
   },
   {
     id: 'dsc0804',
+    comparisonFile: 'preset-comparison-dsc0804.webp',
+    sourceFile: 'preset-source-dsc0804.webp',
     alt: '夜の路地に6種類の内蔵プリセットを適用した比較',
     sourceAlt: '夜の路地を写した加工前の元画像',
     caption: '夜の路地で、暗部ノイズ、白線のにじみ、街灯周辺の階調を比較できます。',
   },
   {
     id: 'dsc0735',
+    comparisonFile: 'preset-comparison-dsc0735.webp',
+    sourceFile: 'preset-source-dsc0735.webp',
     alt: '夕景と電線に6種類の内蔵プリセットを適用した比較',
     sourceAlt: '夕景と電線を写した加工前の元画像',
     caption: '夕空のグラデーションと電線で、色の変化、細線の崩れ、CRT表示を比較できます。',
@@ -771,12 +805,12 @@ onUnmounted(() => {
             <h2 id="preset-samples" class="preset-samples-heading">画像で比較</h2>
             <p>同じ写真へ6種類の内蔵プリセットを適用しています。</p>
             <figure v-for="sample in vhsPresetSamples" :key="sample.id" class="doc-shot doc-shot--presets">
-              <a :href="`/images/vhs-simulator/screenshots/preset-comparison-${sample.id}.webp`" target="_blank" rel="noopener" :aria-label="`${sample.alt}を原寸で開く`">
-                <img :src="`/images/vhs-simulator/screenshots/preset-comparison-${sample.id}.webp`" :alt="sample.alt" width="1920" height="720" loading="lazy" />
+              <a :href="`/images/vhs-simulator/screenshots/${sample.comparisonFile}`" target="_blank" rel="noopener" :aria-label="`${sample.alt}を原寸で開く`">
+                <img :src="`/images/vhs-simulator/screenshots/${sample.comparisonFile}`" :alt="sample.alt" width="1920" height="720" loading="lazy" />
               </a>
               <figcaption class="preset-comparison-caption">
                 <span data-caption-text>{{ sample.caption }}</span>
-                <a class="preset-source-link" :href="`/images/vhs-simulator/screenshots/preset-source-${sample.id}.webp`" target="_blank" rel="noopener" data-lightbox="image" :data-lightbox-alt="sample.sourceAlt" data-lightbox-caption="加工前の元画像">元画像を見る</a>
+                <a class="preset-source-link" :href="`/images/vhs-simulator/screenshots/${sample.sourceFile}`" target="_blank" rel="noopener" data-lightbox="image" :data-lightbox-alt="sample.sourceAlt" data-lightbox-caption="加工前の元画像">元画像を見る</a>
               </figcaption>
             </figure>
           </section>
