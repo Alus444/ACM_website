@@ -124,6 +124,39 @@ let lightboxTrigger: HTMLElement | null = null
 
 const comparisonVideoVersion = '20260825-custom-r1'
 
+const vhsPresetSamples = [
+  {
+    id: 'dsc1386',
+    alt: '夜の駅通路に6種類の内蔵プリセットを適用した比較',
+    sourceAlt: '夜の駅通路を写した加工前の元画像',
+    caption: '夜の駅通路で、暗部の残り方、点光源のにじみ、床面の解像感を比較できます。',
+  },
+  {
+    id: 'dsc1373',
+    alt: '高架下の通路に6種類の内蔵プリセットを適用した比較',
+    sourceAlt: '高架下の通路を写した加工前の元画像',
+    caption: '高架下の深い影と明るい出口で、階調、輪郭、走行の乱れを比較できます。',
+  },
+  {
+    id: 'dsc1361',
+    alt: '蛍光灯と金属壁に6種類の内蔵プリセットを適用した比較',
+    sourceAlt: '蛍光灯と金属壁を写した加工前の元画像',
+    caption: '蛍光灯と金属壁で、ハイライトのにじみ、面のノイズ、細い配管の変化を比較できます。',
+  },
+  {
+    id: 'dsc0804',
+    alt: '夜の路地に6種類の内蔵プリセットを適用した比較',
+    sourceAlt: '夜の路地を写した加工前の元画像',
+    caption: '夜の路地で、暗部ノイズ、白線のにじみ、街灯周辺の階調を比較できます。',
+  },
+  {
+    id: 'dsc0735',
+    alt: '夕景と電線に6種類の内蔵プリセットを適用した比較',
+    sourceAlt: '夕景と電線を写した加工前の元画像',
+    caption: '夕空のグラデーションと電線で、色の変化、細線の崩れ、CRT表示を比較できます。',
+  },
+] as const
+
 const comparisonRevealStyle = computed(() => {
   const position = Math.min(100, Math.max(0, comparisonPosition.value))
   if (position <= 0) {
@@ -727,33 +760,6 @@ onUnmounted(() => {
           <section id="built-in-presets" class="doc-section">
             <h2>プリセット一覧</h2>
             <p>仕上がりに近いものを選び、必要な項目だけ調整します。</p>
-            <figure id="preset-samples" class="doc-shot doc-shot--presets">
-              <a href="/images/vhs-simulator/screenshots/preset-comparison.webp?v=20260824-current-labels" target="_blank" rel="noopener" aria-label="6種類の内蔵プリセット比較を原寸で開く">
-                <img src="/images/vhs-simulator/screenshots/preset-comparison.webp?v=20260824-current-labels" alt="同じ映像に6種類の内蔵プリセットを適用した比較" width="1920" height="720" loading="lazy" />
-              </a>
-              <figcaption class="preset-comparison-caption">
-                <span data-caption-text>同じフレームへ6種類の内蔵プリセットを適用。輪郭、色、走行の乱れ、CRT表示の違いを比較できます。</span>
-                <a class="preset-source-link" href="/images/vhs-simulator/screenshots/preset-source-steps.webp" target="_blank" rel="noopener" data-lightbox="image" data-lightbox-alt="階段と植栽を写した加工前の元画像" data-lightbox-caption="加工前の元画像">元画像を見る</a>
-              </figcaption>
-            </figure>
-            <figure class="doc-shot doc-shot--presets">
-              <a href="/images/vhs-simulator/screenshots/preset-comparison-parking.webp" target="_blank" rel="noopener" aria-label="濡れた駐車場で6種類の内蔵プリセット比較を原寸で開く">
-                <img src="/images/vhs-simulator/screenshots/preset-comparison-parking.webp" alt="雪の残る濡れた駐車場に6種類の内蔵プリセットを適用した比較" width="1920" height="720" loading="lazy" />
-              </a>
-              <figcaption class="preset-comparison-caption">
-                <span data-caption-text>濡れた路面と黄色い区画線で、色にじみ、暗部、反射の変化を比較できます。</span>
-                <a class="preset-source-link" href="/images/vhs-simulator/screenshots/preset-source-parking.webp" target="_blank" rel="noopener" data-lightbox="image" data-lightbox-alt="雪の残る濡れた駐車場の加工前画像" data-lightbox-caption="加工前の元画像">元画像を見る</a>
-              </figcaption>
-            </figure>
-            <figure class="doc-shot doc-shot--presets">
-              <a href="/images/vhs-simulator/screenshots/preset-comparison-street.webp" target="_blank" rel="noopener" aria-label="街路で6種類の内蔵プリセット比較を原寸で開く">
-                <img src="/images/vhs-simulator/screenshots/preset-comparison-street.webp" alt="日なたと影のある街路に6種類の内蔵プリセットを適用した比較" width="1920" height="720" loading="lazy" />
-              </a>
-              <figcaption class="preset-comparison-caption">
-                <span data-caption-text>街路の細い線と日なた・影で、輪郭、色、走行の乱れを比較できます。</span>
-                <a class="preset-source-link" href="/images/vhs-simulator/screenshots/preset-source-street.webp?v=test4" target="_blank" rel="noopener" data-lightbox="image" data-lightbox-alt="日なたと影のある街路の加工前画像" data-lightbox-caption="加工前の元画像">元画像を見る</a>
-              </figcaption>
-            </figure>
             <div id="preset" class="preset-grid">
               <article v-for="preset in vhsPresetSummaries" :id="`preset-${preset.id}`" :key="preset.id">
                 <h3>{{ preset.name }}</h3>
@@ -762,6 +768,17 @@ onUnmounted(() => {
               </article>
             </div>
             <div class="callout info"><strong>適用後も調整できます</strong><p>プリセットを選ぶと各項目へ値が入ります。適用後はすべて個別に変更でき、表示中のプリセット名自体はレンダー結果に影響しません。</p></div>
+            <h2 id="preset-samples" class="preset-samples-heading">画像で比較</h2>
+            <p>同じ写真へ6種類の内蔵プリセットを適用しています。</p>
+            <figure v-for="sample in vhsPresetSamples" :key="sample.id" class="doc-shot doc-shot--presets">
+              <a :href="`/images/vhs-simulator/screenshots/preset-comparison-${sample.id}.webp`" target="_blank" rel="noopener" :aria-label="`${sample.alt}を原寸で開く`">
+                <img :src="`/images/vhs-simulator/screenshots/preset-comparison-${sample.id}.webp`" :alt="sample.alt" width="1920" height="720" loading="lazy" />
+              </a>
+              <figcaption class="preset-comparison-caption">
+                <span data-caption-text>{{ sample.caption }}</span>
+                <a class="preset-source-link" :href="`/images/vhs-simulator/screenshots/preset-source-${sample.id}.webp`" target="_blank" rel="noopener" data-lightbox="image" :data-lightbox-alt="sample.sourceAlt" data-lightbox-caption="加工前の元画像">元画像を見る</a>
+              </figcaption>
+            </figure>
           </section>
         </template>
 
@@ -1026,6 +1043,7 @@ button { color: inherit; }
 .screenshot-lightbox-enter-active .screenshot-lightbox__figure, .screenshot-lightbox-leave-active .screenshot-lightbox__figure { transition: transform .18s ease; }
 .screenshot-lightbox-enter-from, .screenshot-lightbox-leave-to { opacity: 0; }
 .screenshot-lightbox-enter-from .screenshot-lightbox__figure, .screenshot-lightbox-leave-to .screenshot-lightbox__figure { transform: scale(.975); }
+.doc-section > .preset-samples-heading { margin-top: 48px; scroll-margin-top: 84px; }
 .doc-shot--presets { margin-bottom: 28px; scroll-margin-top: 84px; }
 .doc-section { margin: 0 0 60px; scroll-margin-top: 84px; }
 .doc-section > h2 { margin: 0 0 20px; color: #e0e9ed; font-family: 'Arial Narrow', sans-serif; font-size: 1.55rem; letter-spacing: -.02em; }
