@@ -696,7 +696,7 @@ onUnmounted(() => {
 
           <section id="pipeline" class="doc-section">
             <div class="section-heading"><span>03</span><div><p>VISUAL BREAKDOWN</p><h2>効果の重なり</h2></div></div>
-            <p>カメラ撮像、VHS信号、CRT表示は、必要なものだけ個別に使えます。下の画像では、変化が分かるように各効果を順に有効にしています。</p>
+            <p>カメラ撮像、VHS信号、CRT表示を組み合わせて使います。下の画像では、変化が分かるように各効果を順に有効にしています。</p>
             <figure class="doc-shot">
               <a href="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp?v=20260825-ja-flow" target="_blank" rel="noopener" aria-label="カメラ撮像、VHS記録・再生、CRT表示の処理段階比較を原寸で開く">
                 <img src="/images/vhs-simulator/screenshots/pipeline-camera-vhs-crt.webp?v=20260825-ja-flow" alt="元画像、カメラ撮像後、VHS記録・再生後、CRT表示後の4段階比較" width="1280" height="720" loading="lazy" />
