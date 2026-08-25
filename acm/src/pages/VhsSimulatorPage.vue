@@ -189,6 +189,14 @@ const vhsPresetSamples = [
     sourceAlt: '夕景と電線を写した加工前の元画像',
     caption: '夕空のグラデーションと電線で、色の変化、細線の崩れ、CRT表示を比較できます。',
   },
+  {
+    id: 'dsc1265',
+    comparisonFile: 'preset-comparison-dsc1265.webp',
+    sourceFile: 'preset-source-dsc1265.webp',
+    alt: '青空と白い雲に6種類の内蔵プリセットを適用した比較',
+    sourceAlt: '青空と白い雲、電線、樹木を写した加工前の元画像',
+    caption: '青空と白い雲、細い電線で、色の変化、輪郭の崩れ、CRT表示を比較できます。',
+  },
 ] as const
 
 const comparisonRevealStyle = computed(() => {
