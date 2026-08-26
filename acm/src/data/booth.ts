@@ -3,6 +3,15 @@ import type { BoothItem } from '../types'
 // このファイルは scripts/fetch-booth.mjs で自動生成されます
 export const boothItems: BoothItem[] = [
   {
+    "id": "booth-8735023",
+    "title": "ID PASS : PARALLAX",
+    "description": "カードテンプレートは縦3+横4の7種類！ PC内のフォントを選んで好きな文字を画像に合成できる機能付き！ 適当な画像をいれても1枚のテクスチャにワンボタン...",
+    "imageUrl": "/images/booth/booth-8735023.jpg",
+    "price": 1200,
+    "boothUrl": "https://alushop.booth.pm/items/8735023",
+    "category": "装飾品"
+  },
+  {
     "id": "booth-8656265",
     "title": "【無料版あり】小説執筆エディタ NIGHTOVER",
     "description": "どんなソフトなの？という方向け簡易解説用Noteはこちら 全機能を見たいという方向けドキュメントはこちら NIGHTOVERは今まで逆張りして様々な執筆ソ...",
