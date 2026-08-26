@@ -18,13 +18,21 @@ import { documentationItems } from '../data/documents'
           class="document-card"
         >
           <div class="document-image">
-            <img :src="item.imageUrl" :alt="`${item.title}の画面`" loading="lazy" />
+            <div class="document-image-placeholder" aria-hidden="true">
+              <span>▧</span>
+            </div>
+            <img
+              :src="item.imageUrl"
+              :alt="item.imageAlt"
+              loading="lazy"
+              @error="($event.target as HTMLImageElement).style.display = 'none'"
+            />
+            <p class="document-category">{{ item.category }}</p>
           </div>
           <div class="document-body">
-            <p class="document-category">{{ item.category }}</p>
             <h2 class="document-title">{{ item.title }}</h2>
             <p class="document-description">{{ item.description }}</p>
-            <span class="document-link">ドキュメントを開く <span aria-hidden="true">&rarr;</span></span>
+            <span class="document-link">ドキュメントを開く <span aria-hidden="true">▷</span></span>
           </div>
         </RouterLink>
       </div>
@@ -45,18 +53,19 @@ import { documentationItems } from '../data/documents'
 
 .documents-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.5rem;
 }
 
 .document-card {
-  display: grid;
-  grid-template-rows: auto 1fr;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   color: inherit;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--bg-card);
+  text-decoration: none;
   transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
 }
 
@@ -67,56 +76,92 @@ import { documentationItems } from '../data/documents'
 }
 
 .document-image {
-  aspect-ratio: 16 / 9;
+  position: relative;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border);
+  background: var(--bg-primary);
 }
 
 .document-image img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s;
+  transition: transform 0.4s;
 }
 
 .document-card:hover .document-image img {
-  transform: scale(1.02);
+  transform: scale(1.04);
+}
+
+.document-image-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0d1117, #0d1f33);
+}
+
+.document-image-placeholder span {
+  color: var(--border);
+  font-size: 3rem;
 }
 
 .document-body {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: 1.5rem;
+  padding: 1.25rem;
 }
 
 .document-category {
-  margin: 0 0 0.5rem;
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  margin: 0;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid rgba(0, 200, 255, 0.4);
+  border-radius: 4px;
+  background: rgba(8, 11, 18, 0.75);
   color: var(--accent);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.05em;
 }
 
 .document-title {
   margin: 0;
   color: var(--text-primary);
-  font-size: 1.3rem;
-  line-height: 1.35;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 .document-description {
-  margin: 0.8rem 0 1.5rem;
+  flex: 1;
+  margin: 0.5rem 0 1rem;
   color: var(--text-secondary);
-  font-size: 0.87rem;
-  line-height: 1.8;
+  font-size: 0.82rem;
+  line-height: 1.7;
 }
 
 .document-link {
+  align-self: flex-end;
   margin-top: auto;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  transition: color 0.2s;
+}
+
+.document-link span {
+  user-select: none;
+}
+
+.document-card:hover .document-link {
   color: var(--accent);
-  font-size: 0.82rem;
 }
 
 @media (max-width: 700px) {
