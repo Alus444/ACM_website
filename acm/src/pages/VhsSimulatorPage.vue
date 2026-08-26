@@ -201,6 +201,16 @@ const vhsPresetSamples = [
   },
 ] as const
 
+const termsSearchEntries = [
+  { id: 'terms-license', title: 'ライセンス', description: '1人につき1ライセンス。本人が所有または管理する複数のWindows PCで使用できます。', keywords: 'ライセンス 1人 複数 pc windows' },
+  { id: 'terms-organization', title: '法人・サークルでの利用', description: '法人、団体、サークルでは、実際に使用する人数と同数のライセンスが必要です。', keywords: '法人 団体 サークル 組織 複数人 共用 担当者' },
+  { id: 'terms-works', title: '完成映像とプロジェクトファイル', description: '完成映像は商用・非商用を問わず利用でき、プラグイン本体を含まないプロジェクトファイルも納品できます。', keywords: '商用 非商用 映像 静止画 aep プロジェクト 納品 販売 クレジット' },
+  { id: 'terms-prohibited', title: '禁止事項', description: 'プラグイン本体、付属データ、ライセンスの再配布や共用は禁止です。', keywords: '禁止 再配布 販売 貸与 譲渡 共用 解析 改変' },
+  { id: 'terms-environment', title: '動作環境', description: '対応環境、Adobe製品、Windows、GPUドライバーなどの変更に関する条件です。', keywords: '動作環境 after effects adobe windows gpu 互換性' },
+  { id: 'terms-refunds', title: '返品・交換・返金', description: 'ダウンロード商品の返品、交換、返金と、配布ファイルに問題がある場合の対応です。', keywords: '返品 交換 返金 重複決済 破損 ダウンロード booth' },
+  { id: 'terms-liability', title: '保証と責任', description: '不具合、目的適合性、出力確認、損害賠償の範囲に関する条件です。', keywords: '保証 責任 損害 賠償 不具合 免責 出力 確認' },
+] as const
+
 const comparisonRevealStyle = computed(() => {
   const position = Math.min(100, Math.max(0, comparisonPosition.value))
   if (position <= 0) {
@@ -487,7 +497,11 @@ const searchResults = computed<SearchResult[]>(() => {
     .filter((issue) => `${issue.question} ${issue.answer} ${issue.keywords}`.toLocaleLowerCase('ja-JP').includes(query))
     .map((issue) => ({ page: 'troubleshooting', hash: `#${issue.id}`, eyebrow: 'TROUBLESHOOTING', title: issue.question, description: issue.answer }))
 
-  return [...pageResults, ...glossaryResults, ...parameterResults, ...presetResults, ...issueResults].slice(0, 12)
+  const termsResults = termsSearchEntries
+    .filter((entry) => `${entry.title} ${entry.description} ${entry.keywords}`.toLocaleLowerCase('ja-JP').includes(query))
+    .map((entry) => ({ page: 'terms', hash: `#${entry.id}`, eyebrow: '利用規約', title: entry.title, description: entry.description }))
+
+  return [...pageResults, ...glossaryResults, ...parameterResults, ...presetResults, ...issueResults, ...termsResults].slice(0, 12)
 })
 
 const pageIndex = computed(() => allVhsNavItems.findIndex((item) => item.id === activePage.value))
@@ -535,6 +549,25 @@ const currentToc = computed<PageTocItem[]>(() => {
       { id: 'known-issues', label: '想定される問題' },
       ...vhsIssues.map((issue) => ({ id: issue.id, label: issue.question, nested: true })),
       { id: 'crash-recovery', label: 'クラッシュした場合' },
+    ]
+  }
+
+  if (activePage.value === 'terms') {
+    return [
+      { id: 'terms-scope', label: '適用' },
+      { id: 'terms-license', label: 'ライセンス' },
+      { id: 'terms-organization', label: '法人・サークルでの利用' },
+      { id: 'terms-works', label: '完成映像とプロジェクト' },
+      { id: 'terms-software-rights', label: '本ソフトの権利' },
+      { id: 'terms-prohibited', label: '禁止事項' },
+      { id: 'terms-environment', label: '動作環境' },
+      { id: 'terms-updates', label: '更新とサポート' },
+      { id: 'terms-refunds', label: '返品・交換・返金' },
+      { id: 'terms-liability', label: '保証と責任' },
+      { id: 'terms-termination', label: '利用停止' },
+      { id: 'terms-changes', label: '規約の変更' },
+      { id: 'terms-law', label: '準拠法' },
+      { id: 'terms-contact', label: '提供者・お問い合わせ' },
     ]
   }
 
@@ -959,6 +992,156 @@ onUnmounted(() => {
           <section id="crash-recovery" class="doc-section"><div class="callout warning"><strong>クラッシュした場合</strong><p>作業中のプロジェクトを別名で保存し、同じフレームをCPUで確認します。直らない場合は配布フォルダーを入れ直してください。問い合わせ時はAEのバージョン、解像度、GPU名、問題が起きるフレームを控えてください。</p></div></section>
         </template>
 
+        <template v-else-if="activePage === 'terms'">
+          <section class="page-intro"><p>TERMS OF USE</p><span>ライセンスと利用条件。</span></section>
+          <section id="terms" class="doc-section terms-section">
+            <p>
+              この利用規約は、ACMが提供するAfter Effectsプラグイン「ACM VHS Simulator」の利用条件を定めるものです。
+              BOOTH、そのほか提供者が認めた方法で取得した本ソフトに適用されます。
+            </p>
+            <dl class="terms-meta">
+              <div><dt>制定日</dt><dd><time datetime="2026-08-26">2026年8月26日</time></dd></div>
+              <div><dt>提供者</dt><dd>ACM</dd></div>
+            </dl>
+
+            <h2 id="terms-scope">第1条　適用</h2>
+            <p>
+              本規約は、ACM（以下「提供者」）が提供するWindows向けAfter Effectsプラグイン「ACM VHS Simulator」
+              （プラグイン本体、内蔵プリセット、付属データ、ドキュメントおよび更新版を含み、以下「本ソフト」）の利用条件を定めるものです。
+            </p>
+            <p>
+              利用者は、本ソフトを購入または取得し、インストールもしくは使用した時点で、本規約に同意したものとします。
+            </p>
+
+            <h2 id="terms-license">第2条　ライセンス</h2>
+            <p>本ソフトは、実際に使用する1人につき1ライセンスを必要とします。</p>
+            <p>
+              ライセンスを取得した本人は、本人が所有または管理する複数のWindows PCへ本ソフトをインストールできます。
+              PCの台数による追加ライセンスは必要ありません。
+            </p>
+
+            <h2 id="terms-organization">第3条　法人・サークルでの利用</h2>
+            <p>法人、団体、サークル、そのほか複数人で構成される組織でも、本ソフトを利用できます。</p>
+            <p>
+              ただし、実際に本ソフトを使用する人数と同数のライセンスが必要です。
+              1つのライセンスを複数人で共用することはできません。
+            </p>
+            <p>
+              組織が購入したライセンスも、最初に割り当てた利用者本人に限って有効です。
+              退職、担当者の交代、そのほかの理由を問わず、別の利用者への変更、引き継ぎ、再割り当てはできません。
+              新しい利用者が使用する場合は、その利用者のための新しいライセンスが必要です。
+            </p>
+
+            <h2 id="terms-works">第4条　完成映像とプロジェクトファイル</h2>
+            <p>
+              本ソフトを使用して作成した映像、静止画、そのほかの作品に関する権利は、利用者または正当な権利者に帰属します。
+            </p>
+            <p>利用者は、本ソフトを使用した作品を、営利・非営利を問わず自由に公開、上映、放送、配信、納品または販売できます。</p>
+            <p>作品へのクレジット表記や、提供者への利用報告は必要ありません。</p>
+            <p>
+              本ソフトのプラグイン本体や付属データを含めない場合、利用者は、本ソフトの設定値を含むAfter Effectsプロジェクトファイルを第三者へ納品、共有または販売できます。
+              受領者が自身の環境で本ソフトを使用して編集またはレンダーする場合、受領者本人のライセンスが必要です。
+            </p>
+
+            <h2 id="terms-software-rights">第5条　本ソフトの権利</h2>
+            <p>
+              本ソフト、付属データ、画面表示およびドキュメントに関する著作権その他の権利は、提供者または正当な権利者に帰属します。
+              本ソフトの購入または取得によって、これらの権利が利用者へ譲渡されるものではありません。
+            </p>
+
+            <h2 id="terms-prohibited">第6条　禁止事項</h2>
+            <p>利用者は、次の行為を行ってはいけません。</p>
+            <ul>
+              <li>本ソフト、配布フォルダー内のファイルまたは付属データを第三者へ再配布、販売、貸与または譲渡する行為</li>
+              <li>1つのライセンスを複数人で共用する行為</li>
+              <li>第三者が自由にダウンロードまたは使用できる場所へ本ソフトを置く行為</li>
+              <li>本ソフトをAfter Effectsプロジェクト、テンプレート、素材集、そのほかの配布物へ同梱する行為</li>
+              <li>購入やライセンスに関する制限を回避する行為</li>
+              <li>不正利用や再配布を目的として本ソフトを解析、改変する行為</li>
+              <li>本ソフトの著作権表示や識別情報を削除する行為</li>
+              <li>法令または公序良俗に反する目的で本ソフトを使用する行為</li>
+              <li>提供者または第三者の権利や利益を侵害する行為</li>
+            </ul>
+
+            <h2 id="terms-environment">第7条　動作環境</h2>
+            <p>本ソフトは、提供者がドキュメントまたは商品ページで案内する対応環境で使用するものとします。</p>
+            <p>
+              After Effects、Windows、GPUドライバー、そのほかの外部環境の変更により、一部または全部の機能が使用できなくなる場合があります。
+              提供者は、案内していない環境や将来の環境における動作を保証しません。
+            </p>
+            <p>
+              出力結果は、素材、解像度、色管理、プロジェクト設定および本ソフトの設定値によって変わります。
+              利用者は、公開、納品または販売の前に、完成した出力を自身で確認するものとします。
+            </p>
+            <p>重要なAfter Effectsプロジェクトや素材については、本ソフトの導入または更新前にバックアップを作成してください。</p>
+
+            <h2 id="terms-updates">第8条　更新とサポート</h2>
+            <p>提供者は、本ソフトの機能、仕様、動作環境、価格または提供方法を変更することがあります。</p>
+            <p>
+              不具合修正、機能追加、アップデートおよび利用者サポートが、将来にわたって継続されることを保証するものではありません。
+              大きな機能変更を伴う新しい製品版については、別の商品として提供する場合があります。
+            </p>
+
+            <h2 id="terms-refunds">第9条　返品・交換・返金</h2>
+            <p>
+              ダウンロード商品の性質上、注文確定後の返品、交換、キャンセルおよび購入者の都合による返金は原則として受け付けません。
+              BOOTHを通じて購入した場合は、決済、キャンセルおよび返金に関するBOOTHの規約と手続きも適用されます。
+            </p>
+            <p>次の事情は、購入者の都合に含まれます。</p>
+            <ul>
+              <li>対応環境を確認せずに購入した場合</li>
+              <li>期待していた機能や出力結果と異なる場合</li>
+              <li>購入後に本ソフトを使用しなくなった場合</li>
+              <li>案内していないOS、After Effectsのバージョン、仮想環境または第三者製ソフトウェアとの組み合わせでのみ正常に動作しない場合</li>
+              <li>本規約や商品説明を確認せずに購入した場合</li>
+            </ul>
+            <p>
+              配布ファイルの破損、内容物の不足、対応環境で本ソフトを使用できない重大な不具合など、提供者側に原因がある場合は、状況を確認したうえで修正版、交換データまたは更新版の提供を行います。
+              これらの方法で正常な商品を提供できない場合は、販売サービスの規約と手続きに従って対応します。
+            </p>
+
+            <h2 id="terms-liability">第10条　保証と責任</h2>
+            <p>
+              提供者は、本ソフトに不具合が一切存在しないこと、すべての環境で動作すること、利用者の特定の目的に適合すること、
+              または特定のカメラ、テープ、再生機もしくはブラウン管テレビの出力を完全に再現することを保証しません。
+            </p>
+            <p>
+              提供者の通常の過失によって利用者に損害が生じ、提供者が賠償責任を負う場合、
+              その範囲は直接かつ通常の損害に限り、賠償額の上限は利用者が対象ライセンスの取得に支払った金額とします。
+            </p>
+            <p>この制限は、提供者の故意または重大な過失によって損害が発生した場合には適用しません。</p>
+
+            <h2 id="terms-termination">第11条　利用停止</h2>
+            <p>
+              利用者が本規約へ重大な違反をした場合、提供者は当該利用者のライセンスを終了できます。
+              ライセンスが終了した場合、利用者は本ソフトの使用を停止し、管理するPCから本ソフトおよびその複製を削除するものとします。
+            </p>
+            <p>本ソフトを使用して作成した完成映像、静止画およびプロジェクトファイルは、ライセンス終了後も利用者が保持できます。</p>
+
+            <h2 id="terms-changes">第12条　規約の変更</h2>
+            <p>
+              提供者は、変更の必要性、変更内容の相当性、そのほかの事情に照らして合理的な場合、本規約を変更することがあります。
+            </p>
+            <p>
+              変更する場合は、変更内容と適用開始日をACM VHS Simulatorのドキュメント、BOOTHの商品ページ、
+              そのほか適切な場所で、適用開始日までに案内します。
+            </p>
+
+            <h2 id="terms-law">第13条　準拠法</h2>
+            <p>本規約は日本法に準拠します。</p>
+            <p>
+              本ソフトまたは本規約に関して問題が生じた場合、利用者と提供者は、まず誠実に話し合って解決を図るものとします。
+            </p>
+
+            <h2 id="terms-contact">第14条　提供者・お問い合わせ</h2>
+            <ul>
+              <li>提供者: ACM</li>
+              <li>販売場所: BOOTH、そのほか提供者が認めた販売場所</li>
+              <li>お問い合わせ: BOOTHのメッセージ機能または提供者が案内する連絡先</li>
+            </ul>
+          </section>
+        </template>
+
         <nav class="footer-nav" aria-label="前後のページ">
           <RouterLink v-if="previousPage" :to="pagePath(previousPage.id)"><span>← 前のページ</span><strong>{{ previousPage.label }}</strong></RouterLink><span v-else></span>
           <RouterLink v-if="nextPage" :to="pagePath(nextPage.id)" class="next"><span>次のページ →</span><strong>{{ nextPage.label }}</strong></RouterLink>
@@ -1159,6 +1342,13 @@ button { color: inherit; }
 .doc-section { margin: 0 0 60px; scroll-margin-top: 84px; }
 .doc-section > h2 { margin: 0 0 20px; color: #e0e9ed; font-family: 'Arial Narrow', sans-serif; font-size: 1.55rem; letter-spacing: -.02em; }
 .doc-section > p, .group-description { margin: 0 0 18px; color: #96a6ae; font-size: .8rem; line-height: 2; }
+.terms-meta { display: grid; margin: 4px 0 36px; border-top: 1px solid var(--vhs-line); }
+.terms-meta > div { display: grid; padding: 11px 0; border-bottom: 1px solid var(--vhs-line); grid-template-columns: 110px minmax(0, 1fr); }
+.terms-meta dt { color: #71868e; font-size: .68rem; font-weight: 700; }
+.terms-meta dd { margin: 0; color: #c5d1d5; font-size: .76rem; }
+.terms-section > h2 { margin: 38px 0 14px; padding-top: 22px; border-top: 1px solid var(--vhs-line); font-family: inherit; font-size: 1.12rem; scroll-margin-top: 84px; }
+.terms-section > ul { margin: 0 0 24px; padding-left: 1.25rem; color: #aab8bd; font-size: .78rem; line-height: 1.9; }
+.terms-section > ul li + li { margin-top: 5px; }
 .section-heading { margin-bottom: 20px; }
 .section-heading > span, .section-heading p { display: none; }
 .section-heading h2 { margin: 0; color: #e5ecee; font-size: 1.55rem; letter-spacing: -.02em; }
@@ -1296,6 +1486,10 @@ button { color: inherit; }
 .hero-lead { color: #c4d0d4; font-size: 1rem; line-height: 1.85; }
 .hero-actions a { padding: 12px 18px; font-size: .86rem; }
 .doc-section > p, .group-description { color: #c5d0d4; font-size: 1rem; line-height: 1.9; }
+.terms-meta dt { font-size: .78rem; }
+.terms-meta dd { font-size: .9rem; }
+.terms-section > h2 { font-size: 1.22rem; }
+.terms-section > ul { color: #c0cbcf; font-size: .94rem; line-height: 1.85; }
 .section-heading > span { color: #77919a; font-size: .78rem; }
 .section-heading p { font-size: .68rem; }
 .section-heading h2, .doc-section > h2 { line-height: 1.35; }

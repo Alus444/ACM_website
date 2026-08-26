@@ -93,6 +93,7 @@ export const vhsNavGroups: VhsNavGroup[] = [
     label: '運用とサポート',
     items: [
       { id: 'troubleshooting', label: '診断・トラブル対応', description: '症状別の確認と対処', keywords: '診断 トラブル 変化しない 出ない gpu 日本語 文字化け' },
+      { id: 'terms', label: '利用規約', description: 'ライセンスと利用条件', keywords: '利用規約 ライセンス 商用 法人 サークル 複数人 プロジェクト 納品 再配布 返金 保証 責任' },
     ],
   },
 ]
