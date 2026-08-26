@@ -993,18 +993,17 @@ onUnmounted(() => {
         </template>
 
         <template v-else-if="activePage === 'terms'">
-          <section class="page-intro"><p>TERMS OF USE</p><span>ライセンスと利用条件。</span></section>
           <section id="terms" class="doc-section terms-section">
             <p>
               この利用規約は、ACMが提供するAfter Effectsプラグイン「ACM VHS Simulator」の利用条件を定めるものです。
               BOOTH、そのほか提供者が認めた方法で取得した本ソフトに適用されます。
             </p>
-            <dl class="terms-meta">
-              <div><dt>制定日</dt><dd><time datetime="2026-08-26">2026年8月26日</time></dd></div>
-              <div><dt>提供者</dt><dd>ACM</dd></div>
-            </dl>
+            <p class="terms-meta">
+              <strong>制定日:</strong> <time datetime="2026-08-26">2026年8月26日</time><br />
+              <strong>提供者:</strong> ACM
+            </p>
 
-            <h2 id="terms-scope">第1条　適用</h2>
+            <h3 id="terms-scope">第1条　適用</h3>
             <p>
               本規約は、ACM（以下「提供者」）が提供するWindows向けAfter Effectsプラグイン「ACM VHS Simulator」
               （プラグイン本体、内蔵プリセット、付属データ、ドキュメントおよび更新版を含み、以下「本ソフト」）の利用条件を定めるものです。
@@ -1013,14 +1012,14 @@ onUnmounted(() => {
               利用者は、本ソフトを購入または取得し、インストールもしくは使用した時点で、本規約に同意したものとします。
             </p>
 
-            <h2 id="terms-license">第2条　ライセンス</h2>
+            <h3 id="terms-license">第2条　ライセンス</h3>
             <p>本ソフトは、実際に使用する1人につき1ライセンスを必要とします。</p>
             <p>
               ライセンスを取得した本人は、本人が所有または管理する複数のWindows PCへ本ソフトをインストールできます。
               PCの台数による追加ライセンスは必要ありません。
             </p>
 
-            <h2 id="terms-organization">第3条　法人・サークルでの利用</h2>
+            <h3 id="terms-organization">第3条　法人・サークルでの利用</h3>
             <p>法人、団体、サークル、そのほか複数人で構成される組織でも、本ソフトを利用できます。</p>
             <p>
               ただし、実際に本ソフトを使用する人数と同数のライセンスが必要です。
@@ -1032,7 +1031,7 @@ onUnmounted(() => {
               新しい利用者が使用する場合は、その利用者のための新しいライセンスが必要です。
             </p>
 
-            <h2 id="terms-works">第4条　完成映像とプロジェクトファイル</h2>
+            <h3 id="terms-works">第4条　完成映像とプロジェクトファイル</h3>
             <p>
               本ソフトを使用して作成した映像、静止画、そのほかの作品に関する権利は、利用者または正当な権利者に帰属します。
             </p>
@@ -1043,13 +1042,13 @@ onUnmounted(() => {
               受領者が自身の環境で本ソフトを使用して編集またはレンダーする場合、受領者本人のライセンスが必要です。
             </p>
 
-            <h2 id="terms-software-rights">第5条　本ソフトの権利</h2>
+            <h3 id="terms-software-rights">第5条　本ソフトの権利</h3>
             <p>
               本ソフト、付属データ、画面表示およびドキュメントに関する著作権その他の権利は、提供者または正当な権利者に帰属します。
               本ソフトの購入または取得によって、これらの権利が利用者へ譲渡されるものではありません。
             </p>
 
-            <h2 id="terms-prohibited">第6条　禁止事項</h2>
+            <h3 id="terms-prohibited">第6条　禁止事項</h3>
             <p>利用者は、次の行為を行ってはいけません。</p>
             <ul>
               <li>本ソフト、配布フォルダー内のファイルまたは付属データを第三者へ再配布、販売、貸与または譲渡する行為</li>
@@ -1063,7 +1062,7 @@ onUnmounted(() => {
               <li>提供者または第三者の権利や利益を侵害する行為</li>
             </ul>
 
-            <h2 id="terms-environment">第7条　動作環境</h2>
+            <h3 id="terms-environment">第7条　動作環境</h3>
             <p>本ソフトは、提供者がドキュメントまたは商品ページで案内する対応環境で使用するものとします。</p>
             <p>
               After Effects、Windows、GPUドライバー、そのほかの外部環境の変更により、一部または全部の機能が使用できなくなる場合があります。
@@ -1075,14 +1074,14 @@ onUnmounted(() => {
             </p>
             <p>重要なAfter Effectsプロジェクトや素材については、本ソフトの導入または更新前にバックアップを作成してください。</p>
 
-            <h2 id="terms-updates">第8条　更新とサポート</h2>
+            <h3 id="terms-updates">第8条　更新とサポート</h3>
             <p>提供者は、本ソフトの機能、仕様、動作環境、価格または提供方法を変更することがあります。</p>
             <p>
               不具合修正、機能追加、アップデートおよび利用者サポートが、将来にわたって継続されることを保証するものではありません。
               大きな機能変更を伴う新しい製品版については、別の商品として提供する場合があります。
             </p>
 
-            <h2 id="terms-refunds">第9条　返品・交換・返金</h2>
+            <h3 id="terms-refunds">第9条　返品・交換・返金</h3>
             <p>
               ダウンロード商品の性質上、注文確定後の返品、交換、キャンセルおよび購入者の都合による返金は原則として受け付けません。
               BOOTHを通じて購入した場合は、決済、キャンセルおよび返金に関するBOOTHの規約と手続きも適用されます。
@@ -1100,7 +1099,7 @@ onUnmounted(() => {
               これらの方法で正常な商品を提供できない場合は、販売サービスの規約と手続きに従って対応します。
             </p>
 
-            <h2 id="terms-liability">第10条　保証と責任</h2>
+            <h3 id="terms-liability">第10条　保証と責任</h3>
             <p>
               提供者は、本ソフトに不具合が一切存在しないこと、すべての環境で動作すること、利用者の特定の目的に適合すること、
               または特定のカメラ、テープ、再生機もしくはブラウン管テレビの出力を完全に再現することを保証しません。
@@ -1111,14 +1110,14 @@ onUnmounted(() => {
             </p>
             <p>この制限は、提供者の故意または重大な過失によって損害が発生した場合には適用しません。</p>
 
-            <h2 id="terms-termination">第11条　利用停止</h2>
+            <h3 id="terms-termination">第11条　利用停止</h3>
             <p>
               利用者が本規約へ重大な違反をした場合、提供者は当該利用者のライセンスを終了できます。
               ライセンスが終了した場合、利用者は本ソフトの使用を停止し、管理するPCから本ソフトおよびその複製を削除するものとします。
             </p>
             <p>本ソフトを使用して作成した完成映像、静止画およびプロジェクトファイルは、ライセンス終了後も利用者が保持できます。</p>
 
-            <h2 id="terms-changes">第12条　規約の変更</h2>
+            <h3 id="terms-changes">第12条　規約の変更</h3>
             <p>
               提供者は、変更の必要性、変更内容の相当性、そのほかの事情に照らして合理的な場合、本規約を変更することがあります。
             </p>
@@ -1127,13 +1126,13 @@ onUnmounted(() => {
               そのほか適切な場所で、適用開始日までに案内します。
             </p>
 
-            <h2 id="terms-law">第13条　準拠法</h2>
+            <h3 id="terms-law">第13条　準拠法</h3>
             <p>本規約は日本法に準拠します。</p>
             <p>
               本ソフトまたは本規約に関して問題が生じた場合、利用者と提供者は、まず誠実に話し合って解決を図るものとします。
             </p>
 
-            <h2 id="terms-contact">第14条　提供者・お問い合わせ</h2>
+            <h3 id="terms-contact">第14条　提供者・お問い合わせ</h3>
             <ul>
               <li>提供者: ACM</li>
               <li>販売場所: BOOTH、そのほか提供者が認めた販売場所</li>
@@ -1342,13 +1341,12 @@ button { color: inherit; }
 .doc-section { margin: 0 0 60px; scroll-margin-top: 84px; }
 .doc-section > h2 { margin: 0 0 20px; color: #e0e9ed; font-family: 'Arial Narrow', sans-serif; font-size: 1.55rem; letter-spacing: -.02em; }
 .doc-section > p, .group-description { margin: 0 0 18px; color: #96a6ae; font-size: .8rem; line-height: 2; }
-.terms-meta { display: grid; margin: 4px 0 36px; border-top: 1px solid var(--vhs-line); }
-.terms-meta > div { display: grid; padding: 11px 0; border-bottom: 1px solid var(--vhs-line); grid-template-columns: 110px minmax(0, 1fr); }
-.terms-meta dt { color: #71868e; font-size: .68rem; font-weight: 700; }
-.terms-meta dd { margin: 0; color: #c5d1d5; font-size: .76rem; }
-.terms-section > h2 { margin: 38px 0 14px; padding-top: 22px; border-top: 1px solid var(--vhs-line); font-family: inherit; font-size: 1.12rem; scroll-margin-top: 84px; }
-.terms-section > ul { margin: 0 0 24px; padding-left: 1.25rem; color: #aab8bd; font-size: .78rem; line-height: 1.9; }
-.terms-section > ul li + li { margin-top: 5px; }
+.doc-section.terms-section > p { margin: 0 0 15px; color: #c5d0d4; font-size: .9375rem; line-height: 1.8; }
+.terms-meta strong { color: #e4ecee; }
+.terms-section > h3 { margin: 34px 0 10px; color: #dce6e9; font-size: 1.15rem; font-weight: 650; line-height: 1.5; }
+.terms-section > h3[id] { scroll-margin-top: 84px; }
+.terms-section > ul { margin: 10px 0 20px; padding-left: 1.55rem; color: #c5d0d4; font-size: .9375rem; line-height: 1.8; }
+.terms-section > ul li { margin: 5px 0; padding-left: .2rem; }
 .section-heading { margin-bottom: 20px; }
 .section-heading > span, .section-heading p { display: none; }
 .section-heading h2 { margin: 0; color: #e5ecee; font-size: 1.55rem; letter-spacing: -.02em; }
@@ -1486,10 +1484,6 @@ button { color: inherit; }
 .hero-lead { color: #c4d0d4; font-size: 1rem; line-height: 1.85; }
 .hero-actions a { padding: 12px 18px; font-size: .86rem; }
 .doc-section > p, .group-description { color: #c5d0d4; font-size: 1rem; line-height: 1.9; }
-.terms-meta dt { font-size: .78rem; }
-.terms-meta dd { font-size: .9rem; }
-.terms-section > h2 { font-size: 1.22rem; }
-.terms-section > ul { color: #c0cbcf; font-size: .94rem; line-height: 1.85; }
 .section-heading > span { color: #77919a; font-size: .78rem; }
 .section-heading p { font-size: .68rem; }
 .section-heading h2, .doc-section > h2 { line-height: 1.35; }
