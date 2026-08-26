@@ -13,6 +13,8 @@ import { documentationItems } from '../data/documents'
           v-for="item in documentationItems"
           :key="item.id"
           :to="item.path"
+          target="_blank"
+          rel="noopener"
           class="document-card"
         >
           <div class="document-image">

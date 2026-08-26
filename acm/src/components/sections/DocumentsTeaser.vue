@@ -1,7 +1,7 @@
 <template>
   <section class="documents-teaser" aria-labelledby="documents-teaser-title">
     <div class="section-inner">
-      <RouterLink to="/docs" class="documents-panel">
+      <RouterLink to="/docs" target="_blank" rel="noopener" class="documents-panel">
         <div class="documents-copy">
           <p class="section-label">Documents</p>
           <h2 id="documents-teaser-title" class="section-title">制作物のドキュメント</h2>

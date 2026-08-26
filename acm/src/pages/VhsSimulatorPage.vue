@@ -20,6 +20,12 @@ type SearchResult = {
   description: string
 }
 
+type PageTocItem = {
+  id: string
+  label: string
+  nested?: boolean
+}
+
 type ParameterRangeVisual = {
   kind: 'meter' | 'choices'
   labels: string[]
@@ -96,12 +102,8 @@ function meterInitialAlignment(position: number) {
 const route = useRoute()
 const searchQuery = ref('')
 const mobileNavOpen = ref(false)
-const mobileSearchOpen = ref(false)
 const isMobileLayout = ref(false)
-const isCompactHeader = ref(false)
-const desktopSearchInput = ref<HTMLInputElement | null>(null)
-const mobileSearchInput = ref<HTMLInputElement | null>(null)
-const mobileSearchButton = ref<HTMLButtonElement | null>(null)
+const searchInput = ref<HTMLInputElement | null>(null)
 const menuButton = ref<HTMLButtonElement | null>(null)
 const sidebarNav = ref<HTMLElement | null>(null)
 const comparisonPosition = ref(50)
@@ -492,6 +494,59 @@ const pageIndex = computed(() => allVhsNavItems.findIndex((item) => item.id === 
 const previousPage = computed(() => pageIndex.value > 0 ? allVhsNavItems[pageIndex.value - 1] : undefined)
 const nextPage = computed(() => pageIndex.value < allVhsNavItems.length - 1 ? allVhsNavItems[pageIndex.value + 1] : undefined)
 
+function glossaryGroupId(index: number) {
+  return `glossary-group-${index + 1}`
+}
+
+const currentToc = computed<PageTocItem[]>(() => {
+  if (activePage.value === 'overview') {
+    return [
+      { id: 'positioning', label: '概要' },
+      { id: 'support', label: '対応状況' },
+      { id: 'pipeline', label: '効果の重なり' },
+    ]
+  }
+
+  if (activePage.value === 'install') {
+    return [
+      { id: 'manual-install', label: '手動インストール' },
+      { id: 'update', label: '更新' },
+      { id: 'uninstall', label: '削除' },
+    ]
+  }
+
+  if (activePage.value === 'quick-start') {
+    return [
+      { id: 'built-in-presets', label: 'プリセット一覧' },
+      { id: 'preset-samples', label: '画像で比較' },
+    ]
+  }
+
+  if (activePage.value === 'glossary') {
+    return vhsGlossaryGroups.map((group, index) => ({ id: glossaryGroupId(index), label: group.label }))
+  }
+
+  if (activePage.value === 'parameters') {
+    return vhsParameterGroups.map((group) => ({ id: `table-${group.id}`, label: group.label }))
+  }
+
+  if (activePage.value === 'troubleshooting') {
+    return [
+      { id: 'known-issues', label: '想定される問題' },
+      ...vhsIssues.map((issue) => ({ id: issue.id, label: issue.question, nested: true })),
+      { id: 'crash-recovery', label: 'クラッシュした場合' },
+    ]
+  }
+
+  const items: PageTocItem[] = []
+  if (activePage.value === 'preview') items.push({ id: 'quality-overview', label: '軽量・高精度' })
+  for (const group of activeParameterGroups.value) {
+    items.push({ id: group.id, label: group.label })
+    items.push(...group.parameters.map((parameter) => ({ id: parameter.id, label: parameter.label, nested: true })))
+  }
+  return items
+})
+
 function pagePath(id: string) {
   return id === 'overview' ? '/vhs-simulator' : `/vhs-simulator/${id}`
 }
@@ -500,29 +555,23 @@ function resultPath(result: SearchResult) {
   return `${pagePath(result.page)}${result.hash ?? ''}`
 }
 
+function jumpToHeading(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
 function closeTransientUi() {
   mobileNavOpen.value = false
-  mobileSearchOpen.value = false
   searchQuery.value = ''
 }
 
 function toggleMobileNavigation() {
   const nextState = !mobileNavOpen.value
   mobileNavOpen.value = nextState
-  mobileSearchOpen.value = false
   if (nextState) nextTick(() => sidebarNav.value?.querySelector<HTMLElement>('a')?.focus())
-}
-
-function toggleMobileSearch() {
-  mobileSearchOpen.value = !mobileSearchOpen.value
-  mobileNavOpen.value = false
-  if (mobileSearchOpen.value) nextTick(() => mobileSearchInput.value?.focus())
-}
-
-function closeMobileSearch() {
-  mobileSearchOpen.value = false
-  searchQuery.value = ''
-  nextTick(() => mobileSearchButton.value?.focus())
 }
 
 function closeMobileNavigation() {
@@ -531,20 +580,13 @@ function closeMobileNavigation() {
 }
 
 function focusSearch() {
-  if (isCompactHeader.value) {
-    mobileSearchOpen.value = true
-    mobileNavOpen.value = false
-    nextTick(() => mobileSearchInput.value?.focus())
-    return
-  }
-  desktopSearchInput.value?.focus()
+  if (isMobileLayout.value) mobileNavOpen.value = true
+  nextTick(() => searchInput.value?.focus())
 }
 
 function syncViewport() {
-  isMobileLayout.value = window.matchMedia('(max-width: 960px)').matches
-  isCompactHeader.value = window.matchMedia('(max-width: 600px)').matches
+  isMobileLayout.value = window.matchMedia('(max-width: 820px)').matches
   if (!isMobileLayout.value) mobileNavOpen.value = false
-  if (!isCompactHeader.value) mobileSearchOpen.value = false
 }
 
 async function revealRouteTarget() {
@@ -574,7 +616,6 @@ function onKeydown(event: KeyboardEvent) {
     const returnFocus = mobileNavOpen.value
     searchQuery.value = ''
     mobileNavOpen.value = false
-    mobileSearchOpen.value = false
     if (returnFocus) nextTick(() => menuButton.value?.focus())
   }
 }
@@ -629,46 +670,38 @@ onUnmounted(() => {
         <span class="brand-copy">
           <strong>ACM VHS Simulator</strong>
         </span>
+        <span class="docs-label">Documentation</span>
       </RouterLink>
 
       <div class="header-tools">
-        <label class="search-box desktop-search">
-          <span aria-hidden="true">⌕</span>
-          <input ref="desktopSearchInput" v-model="searchQuery" type="search" placeholder="検索" aria-label="リファレンスを検索" aria-controls="vhs-search-results" />
-          <kbd>/</kbd>
-        </label>
-        <button ref="mobileSearchButton" class="mobile-search-button" type="button" :aria-expanded="mobileSearchOpen" aria-controls="vhs-mobile-search" :aria-label="mobileSearchOpen ? '検索を閉じる' : '検索を開く'" @click="toggleMobileSearch">⌕</button>
         <button ref="menuButton" class="mobile-menu" type="button" :aria-expanded="mobileNavOpen" aria-controls="vhs-docs-sidebar" :aria-label="mobileNavOpen ? 'メニューを閉じる' : 'メニューを開く'" @click="toggleMobileNavigation">
           <span></span><span></span><span></span>
         </button>
-      </div>
-
-      <div v-if="mobileSearchOpen && isCompactHeader" id="vhs-mobile-search" class="mobile-search-drawer">
-        <label class="search-box">
-          <span aria-hidden="true">⌕</span>
-          <input ref="mobileSearchInput" v-model="searchQuery" type="search" placeholder="検索" aria-label="リファレンスを検索" aria-controls="vhs-search-results" />
-        </label>
-        <button type="button" aria-label="検索を閉じる" @click="closeMobileSearch">閉じる</button>
-      </div>
-
-      <div v-if="searchQuery" id="vhs-search-results" class="search-panel" role="region" aria-label="検索結果">
-        <div v-if="searchResults.length" class="search-results">
-          <RouterLink v-for="result in searchResults" :key="`${result.page}-${result.hash ?? result.title}`" :to="resultPath(result)" @click="closeTransientUi">
-            <span>{{ result.eyebrow }}</span>
-            <strong>{{ result.title }}</strong>
-            <small>{{ result.description }}</small>
-          </RouterLink>
-        </div>
-        <p v-else>該当する項目がありません。</p>
       </div>
     </header>
 
     <div class="docs-layout">
       <button v-if="mobileNavOpen && isMobileLayout" class="nav-backdrop" type="button" aria-label="メニューを閉じる" @click="closeMobileNavigation"></button>
       <aside id="vhs-docs-sidebar" :class="['docs-sidebar', { open: mobileNavOpen }]" :aria-hidden="isMobileLayout && !mobileNavOpen ? 'true' : undefined" :inert="isMobileLayout && !mobileNavOpen ? true : undefined">
-        <nav ref="sidebarNav" aria-label="ACM VHS Simulator ドキュメント">
+        <label class="sidebar-search">
+          <span aria-hidden="true">⌕</span>
+          <input ref="searchInput" v-model="searchQuery" type="search" placeholder="ドキュメントを検索" aria-label="ドキュメントを検索" aria-controls="vhs-search-results" />
+          <kbd>/</kbd>
+        </label>
+
+        <div v-if="searchQuery" id="vhs-search-results" class="sidebar-search-results" role="region" aria-label="検索結果">
+          <p>検索結果</p>
+          <RouterLink v-for="result in searchResults" :key="`${result.page}-${result.hash ?? result.title}`" :to="resultPath(result)" @click="closeTransientUi">
+            <span>{{ result.eyebrow }}</span>
+            <strong>{{ result.title }}</strong>
+            <small>{{ result.description }}</small>
+          </RouterLink>
+          <span v-if="searchResults.length === 0" class="search-empty">該当する項目がありません。</span>
+        </div>
+
+        <nav v-else ref="sidebarNav" aria-label="ACM VHS Simulator ドキュメント">
           <section v-for="group in vhsNavGroups" :key="group.label" class="nav-group">
-            <p>{{ group.label }}</p>
+            <h2>{{ group.label }}</h2>
             <RouterLink
               v-for="item in group.items"
               :key="item.id"
@@ -682,6 +715,11 @@ onUnmounted(() => {
             </RouterLink>
           </section>
         </nav>
+
+        <div class="sidebar-version">
+          <span>対応バージョン</span>
+          <strong>Ver.{{ vhsCurrentVersion }}</strong>
+        </div>
       </aside>
 
       <main class="docs-content" @click="handleScreenshotClick">
@@ -826,7 +864,7 @@ onUnmounted(() => {
 
         <template v-else-if="activePage === 'glossary'">
           <section class="page-intro"><p>GLOSSARY</p><h1>用語集</h1><span>CRT、TVL、RFなどの用語。</span></section>
-          <section v-for="group in vhsGlossaryGroups" :key="group.label" class="doc-section glossary-section">
+          <section v-for="(group, groupIndex) in vhsGlossaryGroups" :id="glossaryGroupId(groupIndex)" :key="group.label" class="doc-section glossary-section">
             <h2>{{ group.label }}</h2>
             <div class="glossary-list">
               <article v-for="term in group.terms" :id="term.id" :key="term.id" class="glossary-entry">
@@ -853,7 +891,7 @@ onUnmounted(() => {
 
         <template v-else-if="activeParameterGroups.length">
           <section class="page-intro"><p>{{ activeParameterEyebrow }}</p><h1>{{ currentPage.label }}</h1><span>{{ currentPage.description }}</span></section>
-          <section v-if="activePage === 'preview'" class="doc-section">
+          <section v-if="activePage === 'preview'" id="quality-overview" class="doc-section">
             <div class="quality-comparison">
               <article><span>軽量</span><h2>軽量プレビュー</h2><p>再生負荷を抑えたい編集作業向け。一部の細かな表現を簡略化します。</p></article>
               <article><span>高精度</span><h2>高精度処理</h2><p>細かなノイズや信号の崩れまで表示します。質感の確認と最終出力向けです。</p></article>
@@ -912,8 +950,8 @@ onUnmounted(() => {
 
         <template v-else-if="activePage === 'troubleshooting'">
           <section class="page-intro"><p>DIAGNOSIS</p><h1>診断・トラブルシューティング</h1><span>症状ごとの確認事項と対処方法。</span></section>
-          <section class="doc-section issue-list"><h2 class="issue-heading">想定される問題</h2><details v-for="issue in vhsIssues" :id="issue.id" :key="issue.id"><summary>{{ issue.question }}</summary><p>{{ issue.answer }}</p></details></section>
-          <section class="doc-section"><div class="callout warning"><strong>クラッシュした場合</strong><p>作業中のプロジェクトを別名で保存し、同じフレームをCPUで確認します。直らない場合は配布フォルダーを入れ直してください。問い合わせ時はAEのバージョン、解像度、GPU名、問題が起きるフレームを控えてください。</p></div></section>
+          <section id="known-issues" class="doc-section issue-list"><h2 class="issue-heading">想定される問題</h2><details v-for="issue in vhsIssues" :id="issue.id" :key="issue.id"><summary>{{ issue.question }}</summary><p>{{ issue.answer }}</p></details></section>
+          <section id="crash-recovery" class="doc-section"><div class="callout warning"><strong>クラッシュした場合</strong><p>作業中のプロジェクトを別名で保存し、同じフレームをCPUで確認します。直らない場合は配布フォルダーを入れ直してください。問い合わせ時はAEのバージョン、解像度、GPU名、問題が起きるフレームを控えてください。</p></div></section>
         </template>
 
         <nav class="footer-nav" aria-label="前後のページ">
@@ -923,6 +961,21 @@ onUnmounted(() => {
         <footer class="docs-footer"><p>ACM VHS Simulator Reference Manual</p><p>Ver.{{ vhsCurrentVersion }}</p></footer>
       </main>
 
+      <aside class="page-toc">
+        <strong>このページの内容</strong>
+        <nav aria-label="このページの内容">
+          <button
+            v-for="item in currentToc"
+            :key="item.id"
+            :class="{ nested: item.nested }"
+            type="button"
+            @click="jumpToHeading(item.id)"
+          >
+            {{ item.label }}
+          </button>
+        </nav>
+        <button class="to-top" type="button" @click="scrollToTop">ページ先頭へ ↑</button>
+      </aside>
     </div>
 
     <Teleport to="body">
@@ -987,13 +1040,11 @@ button, input { font: inherit; }
 button { color: inherit; }
 
 .docs-header {
-  position: fixed;
+  position: sticky;
   z-index: 60;
   top: 0;
-  right: 0;
-  left: 0;
   display: flex;
-  height: 60px;
+  height: 64px;
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
@@ -1002,37 +1053,39 @@ button { color: inherit; }
   backdrop-filter: blur(10px);
 }
 
-.brand { padding: 0; border: 0; background: none; text-align: left; text-decoration: none; }
+.brand { display: flex; align-items: center; gap: 12px; padding: 0; border: 0; background: none; text-align: left; text-decoration: none; }
 .brand-copy strong { color: #eef3f4; font-size: .92rem; font-weight: 650; letter-spacing: .01em; }
+.docs-label { padding-left: 12px; border-left: 1px solid var(--vhs-line); color: var(--vhs-subtle); font-size: .72rem; }
 
 .header-tools { display: flex; align-items: center; gap: 12px; }
-.search-box { display: flex; width: min(34vw, 360px); height: 38px; align-items: center; gap: 8px; padding: 0 10px; border: 1px solid var(--vhs-line); border-radius: 5px; background: #090d11; color: var(--vhs-subtle); }
-.search-box:focus-within { border-color: var(--vhs-line-bright); box-shadow: 0 0 0 2px rgb(111 229 231 / 6%); }
-.search-box input { min-width: 0; flex: 1; border: 0; outline: 0; background: transparent; color: var(--vhs-text); font-size: .72rem; }
-.search-box input::placeholder { color: #506068; }
-.search-box kbd { padding: 1px 6px; border: 1px solid #26343a; border-radius: 3px; color: #5e6b72; font-size: .58rem; }
-.mobile-menu, .mobile-search-button { display: none; }
-.mobile-search-drawer { display: none; }
+.mobile-menu { display: none; }
 
-.search-panel { position: absolute; top: 57px; right: 24px; width: min(520px, calc(100vw - 32px)); padding: 8px; border: 1px solid var(--vhs-line-bright); border-radius: 7px; background: #090d11; box-shadow: 0 22px 70px rgb(0 0 0 / 55%); }
-.search-results { display: grid; max-height: min(72vh, 560px); overflow-y: auto; }
-.search-results a { display: grid; gap: 2px; padding: 11px 12px; border: 0; border-bottom: 1px solid #14232a; background: transparent; text-align: left; text-decoration: none; }
-.search-results a:hover, .search-results a:focus-visible { background: #10191e; outline: 1px solid var(--vhs-line-bright); outline-offset: -1px; }
-.search-results span { color: var(--vhs-cyan); font-size: .52rem; letter-spacing: .13em; }
-.search-results strong { color: #e2e9ed; font-size: .76rem; }
-.search-results small { display: -webkit-box; overflow: hidden; color: var(--vhs-muted); font-size: .62rem; line-height: 1.55; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-.search-panel > p { padding: 24px; color: var(--vhs-muted); font-size: .72rem; text-align: center; }
-
-.docs-layout { display: grid; max-width: 1110px; min-height: 100vh; margin: 0 auto; padding-top: 60px; grid-template-columns: 250px minmax(0, 860px); justify-content: center; }
-.docs-sidebar { position: sticky; top: 60px; height: calc(100vh - 60px); padding: 32px 18px 24px; border-right: 1px solid var(--vhs-line); background: #0a0e11; overflow-y: auto; }
-.nav-group { margin-bottom: 22px; }
-.nav-group > p { margin: 0 0 7px 10px; color: #52666f; font-size: .55rem; font-weight: 700; letter-spacing: .16em; }
+.docs-layout { display: grid; min-height: calc(100vh - 64px); margin: 0 auto; grid-template-columns: 270px minmax(0, 860px) 220px; justify-content: center; }
+.docs-sidebar { position: sticky; top: 64px; height: calc(100vh - 64px); padding: 22px 18px 30px; border-right: 1px solid var(--vhs-line); background: #0a0e11; overflow-y: auto; }
+.sidebar-search { display: grid; height: 38px; align-items: center; gap: 8px; padding: 0 10px; border: 1px solid var(--vhs-line); border-radius: 5px; background: #090d11; color: var(--vhs-subtle); grid-template-columns: auto 1fr auto; }
+.sidebar-search:focus-within { border-color: var(--vhs-line-bright); box-shadow: 0 0 0 2px rgb(111 229 231 / 8%); }
+.sidebar-search input { min-width: 0; border: 0; outline: 0; background: transparent; color: var(--vhs-text); font-size: .72rem; }
+.sidebar-search input::placeholder { color: #83969e; }
+.sidebar-search kbd { color: #71858d; font-size: .58rem; }
+.sidebar-search-results { display: grid; margin-top: 18px; }
+.sidebar-search-results > p { margin: 0 8px 7px; color: #d6e0e3; font-size: .68rem; font-weight: 700; }
+.sidebar-search-results a { display: grid; gap: 2px; padding: 9px 10px; border-bottom: 1px solid #14232a; text-decoration: none; }
+.sidebar-search-results a:hover, .sidebar-search-results a:focus-visible { background: #10191e; outline: 1px solid var(--vhs-line-bright); outline-offset: -1px; }
+.sidebar-search-results a span { color: var(--vhs-cyan); font-size: .58rem; letter-spacing: .1em; }
+.sidebar-search-results a strong { color: #e2e9ed; font-size: .76rem; }
+.sidebar-search-results a small { display: -webkit-box; overflow: hidden; color: #91a3aa; font-size: .65rem; line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.search-empty { padding: 20px 10px; color: var(--vhs-muted); font-size: .72rem; text-align: center; }
+.nav-group { margin-top: 24px; }
+.nav-group > h2 { margin: 0 0 7px 10px; color: #52666f; font-size: .55rem; font-weight: 700; letter-spacing: .16em; }
 .nav-group a { display: grid; width: 100%; padding: 8px 10px; border: 0; border-left: 2px solid transparent; background: transparent; text-align: left; text-decoration: none; }
 .nav-group a:hover, .nav-group a:focus-visible { background: rgb(111 229 231 / 5%); outline: 1px solid var(--vhs-line-bright); outline-offset: -1px; }
 .nav-group a.active { border-left-color: var(--vhs-cyan); background: rgb(111 229 231 / 5%); }
 .nav-group a span { color: #aebdc4; font-size: .72rem; }
 .nav-group a.active span { color: #e8f6f6; }
 .nav-group a small { display: none; }
+.sidebar-version { display: grid; gap: 2px; margin-top: 26px; padding: 16px 10px 0; border-top: 1px solid var(--vhs-line); }
+.sidebar-version span { color: var(--vhs-subtle); font-size: .58rem; }
+.sidebar-version strong { color: #d8e3e6; font-size: .7rem; }
 .docs-content { min-width: 0; padding: 48px clamp(34px, 4vw, 64px) 60px; }
 .hero-section { max-width: 720px; min-height: 360px; padding: 56px 0 72px; }
 .kicker, .page-intro > p { color: var(--vhs-cyan); font-size: .58rem; font-weight: 700; letter-spacing: .22em; }
@@ -1206,14 +1259,21 @@ button { color: inherit; }
 .footer-nav strong { color: #b8c8cd; font-size: .68rem; }
 .docs-footer { display: flex; justify-content: space-between; gap: 18px; margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--vhs-line); }
 .docs-footer p { color: #4f6068; font-size: .54rem; }
+.page-toc { position: sticky; top: 64px; height: calc(100vh - 64px); padding: 50px 20px 30px; overflow-y: auto; }
+.page-toc > strong { display: block; margin-bottom: 10px; color: #d4dfe2; font-size: .66rem; }
+.page-toc nav { display: grid; border-left: 1px solid var(--vhs-line); }
+.page-toc nav button { padding: 5px 0 5px 14px; border: 0; background: transparent; color: var(--vhs-subtle); cursor: pointer; font-size: .63rem; line-height: 1.5; text-align: left; }
+.page-toc nav button.nested { padding-left: 24px; color: #71858d; font-size: .59rem; }
+.page-toc nav button:hover, .page-toc nav button:focus-visible { color: var(--vhs-cyan); outline: 0; }
+.to-top { margin-top: 18px; padding: 5px 0; border: 0; background: transparent; color: var(--vhs-subtle); cursor: pointer; font-size: .6rem; }
+.to-top:hover, .to-top:focus-visible { color: var(--vhs-cyan); outline: 0; }
 /* Readability baseline for the reference pages. */
-.search-box input { font-size: .82rem; }
-.search-box input::placeholder { color: #91a2a9; }
-.search-results span { font-size: .66rem; }
-.search-results strong { font-size: .9rem; }
-.search-results small, .search-panel > p { color: #aebdc3; font-size: .78rem; }
+.sidebar-search input { font-size: .82rem; }
+.sidebar-search-results a span { font-size: .62rem; }
+.sidebar-search-results a strong { font-size: .82rem; }
+.sidebar-search-results a small { color: #aebdc3; font-size: .7rem; }
 
-.nav-group > p { color: #82969e; font-size: .68rem; }
+.nav-group > h2 { color: #82969e; font-size: .68rem; }
 .nav-group a { gap: 4px; padding: 10px 12px; }
 .nav-group a span { color: #d0dade; font-size: .88rem; font-weight: 600; }
 .nav-group a small { color: #91a3aa; font-size: .72rem; line-height: 1.45; }
@@ -1272,14 +1332,18 @@ button { color: inherit; }
 .footer-nav span { color: #899ba2; font-size: .65rem; }
 .footer-nav strong { color: #d1dbde; font-size: .86rem; }
 .docs-footer p { color: #87989f; font-size: .7rem; }
-@media (max-width: 960px) {
+@media (max-width: 1180px) {
+  .docs-layout { grid-template-columns: 250px minmax(0, 860px); }
+  .page-toc { display: none; }
+}
+
+@media (max-width: 820px) {
   .docs-header { padding: 0 14px; }
-  .search-box { width: min(48vw, 360px); }
   .mobile-menu { display: grid; width: 38px; height: 34px; align-content: center; gap: 4px; padding: 8px; border: 1px solid var(--vhs-line); border-radius: 4px; background: #091015; cursor: pointer; }
   .mobile-menu span { height: 1px; background: #8aa0a8; }
   .docs-layout { display: block; }
-  .nav-backdrop { position: fixed; z-index: 40; inset: 60px 0 0; border: 0; background: rgb(2 5 7 / 72%); cursor: pointer; }
-  .docs-sidebar { position: fixed; z-index: 50; top: 60px; right: auto; bottom: 0; left: 0; width: min(320px, 88vw); height: auto; border-right: 1px solid var(--vhs-line-bright); box-shadow: 18px 0 56px rgb(0 0 0 / 42%); transform: translateX(-102%); transition: transform .2s ease; }
+  .nav-backdrop { position: fixed; z-index: 40; inset: 64px 0 0; border: 0; background: rgb(2 5 7 / 72%); cursor: pointer; }
+  .docs-sidebar { position: fixed; z-index: 50; top: 64px; right: auto; bottom: 0; left: 0; width: min(320px, 88vw); height: auto; border-right: 1px solid var(--vhs-line-bright); box-shadow: 18px 0 56px rgb(0 0 0 / 42%); transform: translateX(-102%); transition: transform .2s ease; }
   .docs-sidebar.open { transform: translateX(0); }
   .docs-content { padding: 42px 28px 60px; }
   .hero-section { min-height: 0; }
@@ -1287,13 +1351,8 @@ button { color: inherit; }
 
 @media (max-width: 600px) {
   .brand-copy strong { font-size: .78rem; white-space: nowrap; }
+  .docs-label { display: none; }
   .header-tools { gap: 7px; }
-  .desktop-search { display: none; }
-  .mobile-search-button { display: grid; width: 38px; height: 34px; padding: 0; border: 1px solid var(--vhs-line); border-radius: 4px; background: #091015; color: #a9bcc3; cursor: pointer; font-size: 1.1rem; place-items: center; }
-  .mobile-search-drawer { position: absolute; top: 59px; right: 0; left: 0; display: flex; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--vhs-line); background: #0a0e11; }
-  .mobile-search-drawer .search-box { width: auto; flex: 1; }
-  .mobile-search-drawer > button { padding: 0 6px; border: 0; background: transparent; color: var(--vhs-cyan); cursor: pointer; font-size: .75rem; }
-  .search-panel { top: 116px; right: 12px; width: calc(100vw - 24px); }
   .docs-content { padding: 32px 17px 46px; }
   .hero-section { padding: 44px 0 58px; }
   .hero-copy h1 { font-size: clamp(2rem, 12vw, 2.5rem); line-height: 1.08; white-space: normal; }

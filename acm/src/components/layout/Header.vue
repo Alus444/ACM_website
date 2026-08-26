@@ -24,7 +24,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
         <RouterLink to="/" class="nav-link">Top</RouterLink>
         <RouterLink to="/booth" class="nav-link">BOOTH</RouterLink>
         <RouterLink to="/movie" class="nav-link">MOVIE</RouterLink>
-        <RouterLink to="/docs" class="nav-link">DOCS</RouterLink>
+        <RouterLink to="/docs" target="_blank" rel="noopener" class="nav-link">DOCS</RouterLink>
         <RouterLink v-if="isPro" to="/works" class="nav-link">Works</RouterLink>
         <RouterLink v-else to="/pricing" class="nav-link">Commission</RouterLink>
         <RouterLink to="/contact" class="nav-link">Contact</RouterLink>
