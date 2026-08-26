@@ -862,11 +862,11 @@ onUnmounted(() => {
           <section class="page-intro"><p>INSTALLATION</p><span>After Effectsを終了し、配布フォルダーごと配置します。</span></section>
           <section id="manual-install" class="doc-section">
             <h2>手動インストール</h2>
-            <ol class="steps">
-              <li><b>1</b><div><strong>Adobeアプリを終了</strong><p>After EffectsとDynamic Linkを利用しているAdobeアプリを終了します。</p></div></li>
-              <li><b>2</b><div><strong>フォルダー全体をコピー</strong><p>AEXだけを取り出さず、配布フォルダーごとAdobe共通MediaCoreのプラグインフォルダーへ配置します。</p></div></li>
-              <li><b>3</b><div><strong>After Effectsで確認</strong><p>エフェクト＆プリセットから「ACM VHS Simulator」を検索します。カテゴリは「ACM」です。</p></div></li>
-            </ol>
+            <ul class="steps">
+              <li><div><strong>Adobeアプリを終了</strong><p>After EffectsとDynamic Linkを利用しているAdobeアプリを終了します。</p></div></li>
+              <li><div><strong>フォルダー全体をコピー</strong><p>AEXだけを取り出さず、配布フォルダーごとAdobe共通MediaCoreのプラグインフォルダーへ配置します。</p></div></li>
+              <li><div><strong>After Effectsで確認</strong><p>エフェクト＆プリセットから「ACM VHS Simulator」を検索します。カテゴリは「ACM」です。</p></div></li>
+            </ul>
             <code class="path-block">C:\Program Files\Adobe\Common\Plug-ins\7.0\MediaCore\</code>
           </section>
           <section id="update" class="doc-section"><h2>更新</h2><p>After Effectsを終了してから、ACM VHS Simulatorフォルダー全体を新しい配布物で置き換えます。旧版が残っている場合は、新しい配置を確認した後に削除します。</p></section>
@@ -1364,8 +1364,7 @@ button { color: inherit; }
 .page-intro > p { display: none; }
 .page-intro > span { color: #7e9199; font-size: .75rem; }
 .steps { display: grid; margin: 20px 0; list-style: none; }
-.steps li { display: grid; align-items: start; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--vhs-line); background: transparent; grid-template-columns: 34px 1fr; }
-.steps li > b { color: #3f6873; font-family: ui-monospace, monospace; font-size: .65rem; }
+.steps li { padding: 18px 0; border-bottom: 1px solid var(--vhs-line); background: transparent; }
 .steps strong { color: #d9e5e8; font-size: .76rem; }
 .steps p { margin-top: 5px; color: #7f9098; font-size: .68rem; line-height: 1.7; }
 .path-block { display: block; padding: 14px 16px; border: 1px solid #233941; background: #05090c; color: #9bd6d8; font-size: .69rem; overflow-x: auto; }
@@ -1492,7 +1491,6 @@ button { color: inherit; }
 .callout p { color: #bdc9cd; font-size: .88rem; line-height: 1.8; }
 .status { color: #bac7cb; font-size: .76rem; }
 .page-intro > span { color: #b7c5ca; font-size: .94rem; line-height: 1.7; }
-.steps li > b { color: #78929b; font-size: .78rem; }
 .steps strong { font-size: .95rem; }
 .steps p { color: #b6c3c8; font-size: .88rem; line-height: 1.75; }
 .path-block { font-size: .86rem; }
