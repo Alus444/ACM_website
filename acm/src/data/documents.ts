@@ -23,8 +23,8 @@ export const documentationItems: DocumentationItem[] = [
     title: 'ACM VHS Simulator',
     category: 'After Effectsプラグイン',
     description: 'インストール、内蔵プリセット、各パラメータ、想定される問題を掲載しています。',
-    imageUrl: '/images/documents/vhs-simulator.webp',
-    imageAlt: '青空と雲の映像にレンタル摩耗CRT設定を適用したサムネイル',
+    imageUrl: '/images/documents/vhs-simulator-logo.webp',
+    imageAlt: '青空と雲の映像にVHS Simulatorのロゴを重ねたサムネイル',
     path: '/vhs-simulator',
   },
 ]
