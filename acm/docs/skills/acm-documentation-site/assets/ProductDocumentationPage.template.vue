@@ -186,7 +186,7 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 watch(activePage, () => {
-  if (!route.hash) window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  if (!route.hash) window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
 }, { immediate: true, flush: 'sync' })
 
 watch(() => route.fullPath, async () => {

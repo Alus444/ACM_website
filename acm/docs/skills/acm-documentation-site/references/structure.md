@@ -36,7 +36,7 @@ NIGHTOVERとACM VHS Simulatorで揃えるのは、色や商品固有の見せ方
 - 経路は `/<product-slug>/:page?` のhash route。
 - 概要だけ `/<product-slug>`、ほかは `/<product-slug>/<page-id>`。
 - 不明なpage idは概要へ置換する。
-- ページ切り替えはコンポーネント側の `watch(activePage, ..., { immediate: true, flush: 'sync' })` で、hashがなければ `window.scrollTo({ top: 0, left: 0, behavior: 'auto' })` を即時実行する。
+- ページ切り替えはコンポーネント側の `watch(activePage, ..., { immediate: true, flush: 'sync' })` で、hashがなければ `window.scrollTo({ top: 0, left: 0, behavior: 'instant' })` を即時実行する。全体CSSの`scroll-behavior: smooth`に委ねるとページ遷移までアニメーションするため、`auto`は使わない。
 - `router/index.ts` の `scrollBehavior` はhashを優先し、ドキュメント経路では `false` を返す。遅れて発生するRouter側スクロールと競合させない。
 - hashリンクは固定ヘッダーを避けるため上余白84–90pxを確保する。
 - 前後ページは左ナビゲーションと同じ一次元順序から算出する。

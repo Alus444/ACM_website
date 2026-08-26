@@ -655,7 +655,7 @@ function onKeydown(event: KeyboardEvent) {
 
 watch(activePage, (page) => {
   document.title = `${currentPage.value.label} | ACM VHS Simulator`
-  if (!route.hash) window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  if (!route.hash) window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   if (page === 'overview') {
     comparisonAutoplayRequested = false
     nextTick(maybeAutoplayComparison)
