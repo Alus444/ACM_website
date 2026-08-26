@@ -24,6 +24,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
         <RouterLink to="/" class="nav-link">Top</RouterLink>
         <RouterLink to="/booth" class="nav-link">BOOTH</RouterLink>
         <RouterLink to="/movie" class="nav-link">MOVIE</RouterLink>
+        <RouterLink to="/docs" class="nav-link">DOCS</RouterLink>
         <RouterLink v-if="isPro" to="/works" class="nav-link">Works</RouterLink>
         <RouterLink v-else to="/pricing" class="nav-link">Commission</RouterLink>
         <RouterLink to="/contact" class="nav-link">Contact</RouterLink>
@@ -147,6 +148,17 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   .nav-link {
     padding-inline: 0.25rem;
     font-size: 0.67rem;
+  }
+}
+
+@media (min-width: 361px) and (max-width: 480px) {
+  .nav {
+    gap: 0.2rem;
+  }
+
+  .nav-link {
+    padding-inline: 0.3rem;
+    font-size: 0.7rem;
   }
 }
 </style>

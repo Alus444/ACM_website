@@ -3,6 +3,7 @@ import HomePage from '../pages/HomePage.vue'
 import BoothPage from '../pages/BoothPage.vue'
 import ContactPage from '../pages/ContactPage.vue'
 import MoviePage from '../pages/MoviePage.vue'
+import DocumentsPage from '../pages/DocumentsPage.vue'
 import PricingPage from '../pages/PricingPage.vue'
 import WorksPage from '../pages/WorksPage.vue'
 import NightOverPage from '../pages/NightOverPage.vue'
@@ -14,6 +15,11 @@ const router = createRouter({
     { path: '/', component: HomePage },
     { path: '/booth', component: BoothPage },
     { path: '/movie', component: MoviePage },
+    {
+      path: '/docs',
+      component: DocumentsPage,
+      meta: { title: '制作物のドキュメント | ACM' },
+    },
     { path: '/pricing', component: PricingPage },
     { path: '/contact', component: ContactPage },
     { path: '/works', component: WorksPage },
