@@ -1046,7 +1046,7 @@ watch(
     document.title = `${currentPage.value.label} | NIGHTOVER`
     window.scrollTo({ top: 0 })
   },
-  { immediate: true },
+  { immediate: true, flush: 'sync' },
 )
 </script>
 
@@ -1124,14 +1124,12 @@ watch(
 
       <main class="docs-content" @click="handleScreenshotClick">
         <article>
-          <header v-if="activePage !== 'intro'" class="page-heading">
-            <div class="breadcrumbs"><span>ドキュメント</span><i>/</i><span>{{ currentPage.label }}</span></div>
-            <h1>{{ currentPage.label }}</h1>
+          <header class="page-heading">
+            <div class="breadcrumbs"><span>ドキュメント</span><i>/</i><span>{{ activePage === 'intro' ? 'はじめに' : currentPage.label }}</span></div>
+            <h1>{{ activePage === 'intro' ? 'NIGHTOVER' : currentPage.label }}</h1>
           </header>
 
           <section v-if="activePage === 'intro'" id="intro" class="doc-section intro-section">
-            <div class="breadcrumbs"><span>ドキュメント</span><i>/</i><span>はじめに</span></div>
-            <h1>NIGHTOVER</h1>
             <p class="lead">
               NIGHTOVERは、小説執筆向けのWindowsデスクトップアプリです。本文、章と話、
               メモ、資料、締切、記録、解析支援をひとつのプロジェクトで管理します。
@@ -3278,6 +3276,10 @@ watch(
   scrollbar-color: #8f6b3f #171717;
 }
 
+:global(html.nightover-docs-open) {
+  scrollbar-gutter: stable;
+}
+
 :global(html.nightover-docs-open::-webkit-scrollbar),
 :global(html.nightover-docs-open *::-webkit-scrollbar) {
   width: 8px;
@@ -3369,8 +3371,10 @@ button {
 
 .docs-layout {
   display: grid;
+  width: 100%;
+  max-width: 1350px;
+  margin: 0 auto;
   grid-template-columns: 270px minmax(0, 860px) 220px;
-  justify-content: center;
   min-height: calc(100vh - 64px);
 }
 
@@ -3518,6 +3522,10 @@ button {
   margin-bottom: 28px;
 }
 
+.page-heading h1 {
+  margin-bottom: 0;
+}
+
 .doc-section {
   scroll-margin-top: 88px;
   padding-bottom: 58px;
@@ -3529,7 +3537,7 @@ button {
 }
 
 .intro-section {
-  padding-top: 4px;
+  padding-top: 0;
 }
 
 .breadcrumbs {
@@ -4322,6 +4330,7 @@ button {
 
 @media (max-width: 1180px) {
   .docs-layout {
+    max-width: 1110px;
     grid-template-columns: 250px minmax(0, 860px);
   }
 
@@ -4369,6 +4378,7 @@ button {
 
   .docs-layout {
     display: block;
+    max-width: none;
   }
 
   .docs-sidebar {

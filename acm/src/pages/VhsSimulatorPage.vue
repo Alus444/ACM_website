@@ -622,13 +622,14 @@ function onKeydown(event: KeyboardEvent) {
 
 watch(activePage, (page) => {
   document.title = `${currentPage.value.label} | ACM VHS Simulator`
+  if (!route.hash) window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   if (page === 'overview') {
     comparisonAutoplayRequested = false
     nextTick(maybeAutoplayComparison)
   } else {
     pauseComparison()
   }
-})
+}, { immediate: true, flush: 'sync' })
 
 watch(() => route.fullPath, () => {
   closeTransientUi()
@@ -723,10 +724,14 @@ onUnmounted(() => {
       </aside>
 
       <main class="docs-content" @click="handleScreenshotClick">
+        <header class="page-heading">
+          <div class="breadcrumbs"><span>ドキュメント</span><i>/</i><span>{{ activePage === 'overview' ? 'はじめに' : currentPage.label }}</span></div>
+          <h1>{{ activePage === 'overview' ? 'ACM VHS Simulator' : currentPage.label }}</h1>
+        </header>
+
         <template v-if="activePage === 'overview'">
           <section class="hero-section">
             <div class="hero-copy">
-              <h1>ACM VHS Simulator</h1>
               <p class="hero-lead">家庭用ビデオカメラ、VHSテープ、ブラウン管テレビの質感を再現するAfter Effectsプラグイン。</p>
               <div class="hero-actions">
                 <RouterLink :to="pagePath('quick-start')">内蔵プリセット</RouterLink>
@@ -821,7 +826,7 @@ onUnmounted(() => {
         </template>
 
         <template v-else-if="activePage === 'install'">
-          <section class="page-intro"><p>INSTALLATION</p><h1>インストール、更新、削除</h1><span>After Effectsを終了し、配布フォルダーごと配置します。</span></section>
+          <section class="page-intro"><p>INSTALLATION</p><span>After Effectsを終了し、配布フォルダーごと配置します。</span></section>
           <section id="manual-install" class="doc-section">
             <h2>手動インストール</h2>
             <ol class="steps">
@@ -836,7 +841,7 @@ onUnmounted(() => {
         </template>
 
         <template v-else-if="activePage === 'quick-start'">
-          <section class="page-intro"><p>PRESETS</p><h1>内蔵プリセット</h1><span>用意されている6種類の仕上がり。</span></section>
+          <section class="page-intro"><p>PRESETS</p><span>用意されている6種類の仕上がり。</span></section>
           <section id="built-in-presets" class="doc-section">
             <h2>プリセット一覧</h2>
             <p>仕上がりに近いものを選び、必要な項目だけ調整します。</p>
@@ -863,7 +868,7 @@ onUnmounted(() => {
         </template>
 
         <template v-else-if="activePage === 'glossary'">
-          <section class="page-intro"><p>GLOSSARY</p><h1>用語集</h1><span>CRT、TVL、RFなどの用語。</span></section>
+          <section class="page-intro"><p>GLOSSARY</p><span>CRT、TVL、RFなどの用語。</span></section>
           <section v-for="(group, groupIndex) in vhsGlossaryGroups" :id="glossaryGroupId(groupIndex)" :key="group.label" class="doc-section glossary-section">
             <h2>{{ group.label }}</h2>
             <div class="glossary-list">
@@ -876,7 +881,7 @@ onUnmounted(() => {
         </template>
 
         <template v-else-if="activePage === 'parameters'">
-          <section class="page-intro"><p>PARAMETER INDEX</p><h1>全パラメータ早見表</h1><span>各項目の範囲と初期値。</span></section>
+          <section class="page-intro"><p>PARAMETER INDEX</p><span>各項目の範囲と初期値。</span></section>
           <section v-for="group in vhsParameterGroups" :id="`table-${group.id}`" :key="group.id" class="doc-section table-section">
             <div class="table-title"><h2>{{ group.label }}</h2><RouterLink :to="`${pagePath(group.page)}#${group.id}`">詳細を見る →</RouterLink></div>
             <div class="parameter-table">
@@ -890,7 +895,7 @@ onUnmounted(() => {
         </template>
 
         <template v-else-if="activeParameterGroups.length">
-          <section class="page-intro"><p>{{ activeParameterEyebrow }}</p><h1>{{ currentPage.label }}</h1><span>{{ currentPage.description }}</span></section>
+          <section class="page-intro"><p>{{ activeParameterEyebrow }}</p><span>{{ currentPage.description }}</span></section>
           <section v-if="activePage === 'preview'" id="quality-overview" class="doc-section">
             <div class="quality-comparison">
               <article><span>軽量</span><h2>軽量プレビュー</h2><p>再生負荷を抑えたい編集作業向け。一部の細かな表現を簡略化します。</p></article>
@@ -949,7 +954,7 @@ onUnmounted(() => {
         </template>
 
         <template v-else-if="activePage === 'troubleshooting'">
-          <section class="page-intro"><p>DIAGNOSIS</p><h1>診断・トラブルシューティング</h1><span>症状ごとの確認事項と対処方法。</span></section>
+          <section class="page-intro"><p>DIAGNOSIS</p><span>症状ごとの確認事項と対処方法。</span></section>
           <section id="known-issues" class="doc-section issue-list"><h2 class="issue-heading">想定される問題</h2><details v-for="issue in vhsIssues" :id="issue.id" :key="issue.id"><summary>{{ issue.question }}</summary><p>{{ issue.answer }}</p></details></section>
           <section id="crash-recovery" class="doc-section"><div class="callout warning"><strong>クラッシュした場合</strong><p>作業中のプロジェクトを別名で保存し、同じフレームをCPUで確認します。直らない場合は配布フォルダーを入れ直してください。問い合わせ時はAEのバージョン、解像度、GPU名、問題が起きるフレームを控えてください。</p></div></section>
         </template>
@@ -1008,10 +1013,12 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-:global(html.vhs-docs-open) { background: #05070a; scroll-padding-top: 90px; }
+:global(html.vhs-docs-open) { background: #05070a; scroll-padding-top: 90px; scrollbar-gutter: stable; }
 :global(html.vhs-docs-open body) { background: #05070a; color: #d8e1e8; }
-:global(html.vhs-docs-open *) { scrollbar-color: #2a6470 #0a0e12; }
+:global(html.vhs-docs-open *) { scrollbar-width: thin; scrollbar-color: #2a6470 #0a0e12; }
 :global(html.vhs-nav-open body) { overflow: hidden; }
+:global(html.vhs-docs-open::-webkit-scrollbar),
+:global(html.vhs-docs-open *::-webkit-scrollbar) { width: 8px; height: 8px; }
 
 .vhs-docs-shell {
   --vhs-bg: #080c0f;
@@ -1060,7 +1067,7 @@ button { color: inherit; }
 .header-tools { display: flex; align-items: center; gap: 12px; }
 .mobile-menu { display: none; }
 
-.docs-layout { display: grid; min-height: calc(100vh - 64px); margin: 0 auto; grid-template-columns: 270px minmax(0, 860px) 220px; justify-content: center; }
+.docs-layout { display: grid; width: 100%; max-width: 1350px; min-height: calc(100vh - 64px); margin: 0 auto; grid-template-columns: 270px minmax(0, 860px) 220px; }
 .docs-sidebar { position: sticky; top: 64px; height: calc(100vh - 64px); padding: 22px 18px 30px; border-right: 1px solid var(--vhs-line); background: #0a0e11; overflow-y: auto; }
 .sidebar-search { display: grid; height: 38px; align-items: center; gap: 8px; padding: 0 10px; border: 1px solid var(--vhs-line); border-radius: 5px; background: #090d11; color: var(--vhs-subtle); grid-template-columns: auto 1fr auto; }
 .sidebar-search:focus-within { border-color: var(--vhs-line-bright); box-shadow: 0 0 0 2px rgb(111 229 231 / 8%); }
@@ -1087,9 +1094,18 @@ button { color: inherit; }
 .sidebar-version span { color: var(--vhs-subtle); font-size: .58rem; }
 .sidebar-version strong { color: #d8e3e6; font-size: .7rem; }
 .docs-content { min-width: 0; padding: 48px clamp(34px, 4vw, 64px) 60px; }
-.hero-section { max-width: 720px; min-height: 360px; padding: 56px 0 72px; }
+.docs-content > .page-heading,
+.docs-content > .hero-section,
+.docs-content > .page-intro,
+.docs-content > .doc-section,
+.docs-content > .footer-nav,
+.docs-content > .docs-footer { width: 100%; max-width: 760px; margin-right: auto; margin-left: auto; }
+.page-heading { margin-bottom: 28px; }
+.breadcrumbs { display: flex; gap: 8px; margin-bottom: 18px; color: var(--vhs-subtle); font-size: .68rem; }
+.breadcrumbs i { font-style: normal; }
+.page-heading h1 { margin: 0; color: #eff5f5; font-size: clamp(2rem, 3vw, 2.55rem); font-weight: 700; letter-spacing: -.025em; line-height: 1.25; }
+.hero-section { min-height: 360px; padding: 0 0 72px; }
 .kicker, .page-intro > p { color: var(--vhs-cyan); font-size: .58rem; font-weight: 700; letter-spacing: .22em; }
-.hero-copy h1 { margin: 0 0 24px; color: #eff5f5; font-size: clamp(2.3rem, 3.6vw, 3.35rem); font-weight: 700; letter-spacing: -.045em; line-height: 1.05; }
 .hero-lead { max-width: 580px; color: #9dafb7; font-size: .9rem; line-height: 1.9; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
 .hero-actions a { padding: 11px 16px; border: 1px solid var(--vhs-cyan); border-radius: 4px; background: var(--vhs-cyan); color: #061014; font-size: .68rem; font-weight: 700; letter-spacing: .05em; text-decoration: none; }
@@ -1156,9 +1172,8 @@ button { color: inherit; }
 .status { padding: 5px 10px; border: 1px solid #30444d; border-radius: 999px; color: #8799a1; font-size: .6rem; }
 .status.ok { border-color: #397667; color: #80c6b0; }
 .status.caution { border-color: #786a39; color: #d1bb68; }
-.page-intro { max-width: 720px; margin-bottom: 52px; padding: 32px 0 34px; border-bottom: 1px solid var(--vhs-line); }
+.page-intro { margin-bottom: 52px; padding: 0 0 34px; border-bottom: 1px solid var(--vhs-line); }
 .page-intro > p { display: none; }
-.page-intro h1 { margin: 0 0 14px; color: #edf3f4; font-size: clamp(2.1rem, 4vw, 3rem); letter-spacing: -.035em; line-height: 1.12; }
 .page-intro > span { color: #7e9199; font-size: .75rem; }
 .steps { display: grid; margin: 20px 0; list-style: none; }
 .steps li { display: grid; align-items: start; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--vhs-line); background: transparent; grid-template-columns: 34px 1fr; }
@@ -1278,15 +1293,6 @@ button { color: inherit; }
 .nav-group a span { color: #d0dade; font-size: .88rem; font-weight: 600; }
 .nav-group a small { color: #91a3aa; font-size: .72rem; line-height: 1.45; }
 .kicker, .page-intro > p { font-size: .7rem; }
-.hero-copy h1 {
-  max-width: none;
-  font-family: 'Arial Black', 'Arial Narrow', system-ui, sans-serif;
-  font-size: clamp(2.3rem, 3.6vw, 3.35rem);
-  letter-spacing: -.045em;
-  line-height: 1;
-  white-space: nowrap;
-  text-shadow: none;
-}
 .hero-lead { color: #c4d0d4; font-size: 1rem; line-height: 1.85; }
 .hero-actions a { padding: 12px 18px; font-size: .86rem; }
 .doc-section > p, .group-description { color: #c5d0d4; font-size: 1rem; line-height: 1.9; }
@@ -1333,7 +1339,7 @@ button { color: inherit; }
 .footer-nav strong { color: #d1dbde; font-size: .86rem; }
 .docs-footer p { color: #87989f; font-size: .7rem; }
 @media (max-width: 1180px) {
-  .docs-layout { grid-template-columns: 250px minmax(0, 860px); }
+  .docs-layout { max-width: 1110px; grid-template-columns: 250px minmax(0, 860px); }
   .page-toc { display: none; }
 }
 
@@ -1341,7 +1347,7 @@ button { color: inherit; }
   .docs-header { padding: 0 14px; }
   .mobile-menu { display: grid; width: 38px; height: 34px; align-content: center; gap: 4px; padding: 8px; border: 1px solid var(--vhs-line); border-radius: 4px; background: #091015; cursor: pointer; }
   .mobile-menu span { height: 1px; background: #8aa0a8; }
-  .docs-layout { display: block; }
+  .docs-layout { display: block; max-width: none; }
   .nav-backdrop { position: fixed; z-index: 40; inset: 64px 0 0; border: 0; background: rgb(2 5 7 / 72%); cursor: pointer; }
   .docs-sidebar { position: fixed; z-index: 50; top: 64px; right: auto; bottom: 0; left: 0; width: min(320px, 88vw); height: auto; border-right: 1px solid var(--vhs-line-bright); box-shadow: 18px 0 56px rgb(0 0 0 / 42%); transform: translateX(-102%); transition: transform .2s ease; }
   .docs-sidebar.open { transform: translateX(0); }
@@ -1354,10 +1360,9 @@ button { color: inherit; }
   .docs-label { display: none; }
   .header-tools { gap: 7px; }
   .docs-content { padding: 32px 17px 46px; }
-  .hero-section { padding: 44px 0 58px; }
-  .hero-copy h1 { font-size: clamp(2rem, 12vw, 2.5rem); line-height: 1.08; white-space: normal; }
+  .hero-section { padding: 0 0 58px; }
   .quality-comparison { grid-template-columns: 1fr; }
-  .page-intro h1 { font-size: 2.15rem; }
+  .page-heading h1 { font-size: 2.15rem; }
   .preset-grid { grid-template-columns: 1fr; }
   .parameter-card { gap: 14px; grid-template-columns: 1fr; }
   .glossary-entry { gap: 8px; grid-template-columns: 1fr; }

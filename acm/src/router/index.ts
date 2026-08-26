@@ -54,6 +54,7 @@ const router = createRouter({
   ],
   scrollBehavior(to) {
     if (to.hash) return { el: to.hash, top: 84, behavior: 'smooth' }
+    if (to.path.startsWith('/nightover') || to.path.startsWith('/vhs-simulator')) return false
     return { top: 0 }
   },
 })
