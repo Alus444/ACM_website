@@ -1,0 +1,4 @@
+interface:
+  display_name: "ACM Documentation Site"
+  short_description: "ACM製品ドキュメントの設計・実装を再利用"
+  default_prompt: "Use $acm-documentation-site to create a new ACM product documentation page from this specification."
