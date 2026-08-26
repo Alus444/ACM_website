@@ -732,7 +732,7 @@ onUnmounted(() => {
         <template v-if="activePage === 'overview'">
           <section class="hero-section">
             <div class="hero-copy">
-              <p class="hero-lead">家庭用ビデオカメラ、VHSテープ、ブラウン管テレビの質感を再現するAfter Effectsプラグイン。</p>
+              <p class="hero-lead">家庭用ビデオカメラ、VHSテープ、ブラウン管テレビの質感を再現するAfter Effectsプラグインです。</p>
               <div class="hero-actions">
                 <RouterLink :to="pagePath('quick-start')">内蔵プリセット</RouterLink>
                 <RouterLink :to="pagePath('parameters')" class="secondary">全項目を見る</RouterLink>
