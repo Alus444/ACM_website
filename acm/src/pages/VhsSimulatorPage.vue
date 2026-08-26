@@ -1090,9 +1090,9 @@ button { color: inherit; }
 .nav-group a span { color: #aebdc4; font-size: .72rem; }
 .nav-group a.active span { color: #e8f6f6; }
 .nav-group a small { display: none; }
-.sidebar-version { display: grid; gap: 2px; margin-top: 26px; padding: 16px 10px 0; border-top: 1px solid var(--vhs-line); }
-.sidebar-version span { color: var(--vhs-subtle); font-size: .58rem; }
-.sidebar-version strong { color: #d8e3e6; font-size: .7rem; }
+.sidebar-version { display: flex; justify-content: space-between; align-items: baseline; margin-top: 28px; padding: 15px 8px 0; border-top: 1px solid var(--vhs-line); color: var(--vhs-subtle); font-size: .6rem; }
+.sidebar-version span { color: inherit; font-size: inherit; }
+.sidebar-version strong { color: #d8e3e6; font-size: inherit; font-weight: 500; }
 .docs-content { min-width: 0; padding: 48px clamp(34px, 4vw, 64px) 60px; }
 .docs-content > .page-heading,
 .docs-content > .hero-section,
