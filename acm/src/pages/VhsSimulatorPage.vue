@@ -1288,7 +1288,7 @@ button { color: inherit; }
 .page-heading h1 { margin: 0; color: #eff5f5; font-size: clamp(2rem, 3vw, 2.55rem); font-weight: 700; letter-spacing: -.025em; line-height: 1.25; }
 .hero-section { min-height: 360px; padding: 0 0 72px; }
 .kicker, .page-intro > p { color: var(--vhs-cyan); font-size: .58rem; font-weight: 700; letter-spacing: .22em; }
-.hero-lead { max-width: 580px; color: #9dafb7; font-size: .9rem; line-height: 1.9; }
+.hero-lead { max-width: 640px; color: #9dafb7; font-size: .9rem; line-height: 1.9; text-wrap: pretty; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
 .hero-actions a { padding: 11px 16px; border: 1px solid var(--vhs-cyan); border-radius: 4px; background: var(--vhs-cyan); color: #061014; font-size: .68rem; font-weight: 700; letter-spacing: .05em; text-decoration: none; }
 .hero-actions a:hover, .hero-actions a:focus-visible { box-shadow: 0 0 0 3px rgb(111 229 231 / 14%); outline: 0; }
