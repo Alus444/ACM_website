@@ -1,0 +1,42 @@
+{
+  "name": "ACM VPM Repository",
+  "id": "jp.acm.vpm",
+  "url": "https://ac-md.com/vpm/index.json",
+  "author": {
+    "name": "ACM",
+    "email": "alus@ac-md.com",
+    "url": "https://ac-md.com"
+  },
+  "description": "VPM packages published by ACM.",
+  "packages": {
+    "jp.acm.editor-tools": {
+      "versions": {
+        "0.1.0": {
+          "name": "jp.acm.editor-tools",
+          "displayName": "ACM Editor Tools",
+          "version": "0.1.0",
+          "unity": "2022.3",
+          "description": "A collection of Unity Editor utilities by ACM, including Vail.",
+          "author": {
+            "name": "ACM",
+            "email": "alus@ac-md.com",
+            "url": "https://ac-md.com"
+          },
+          "keywords": [
+            "acm",
+            "editor",
+            "tools",
+            "vrchat"
+          ],
+          "license": "See LICENSE.md",
+          "vpmDependencies": {},
+          "legacyFolders": {
+            "Assets\\ACM\\Editor": "62cdc6867b689ed41b94d8db41f8725c"
+          },
+          "url": "https://ac-md.com/vpm/packages/jp.acm.editor-tools-0.1.0.zip",
+          "zipSHA256": "4813aecd1dbc027000ae57c061aeb38839d4014cb394e6d323022428a97a022f"
+        }
+      }
+    }
+  }
+}
