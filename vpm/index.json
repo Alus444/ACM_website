@@ -2,11 +2,7 @@
   "name": "ACM VPM Repository",
   "id": "jp.acm.vpm",
   "url": "https://ac-md.com/vpm/index.json",
-  "author": {
-    "name": "ACM",
-    "email": "alus@ac-md.com",
-    "url": "https://ac-md.com"
-  },
+  "author": "alus@ac-md.com",
   "description": "VPM packages published by ACM.",
   "packages": {
     "jp.acm.editor-tools": {
