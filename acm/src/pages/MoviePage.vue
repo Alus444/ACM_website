@@ -175,7 +175,49 @@ const sorted = computed(() =>
   }
 
   .movie-grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .movie-card,
+  .movie-body {
+    min-width: 0;
+  }
+
+  .movie-body {
+    padding: 0.625rem;
+  }
+
+  .movie-title {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    text-wrap: wrap;
+  }
+
+  .movie-meta {
+    gap: 0.25rem 0.5rem;
+    margin-bottom: 0.375rem;
+  }
+
+  .movie-year {
+    font-size: 0.65rem;
+  }
+
+  .movie-tags {
+    min-width: 0;
+    max-width: 100%;
+    gap: 0.25rem;
+  }
+
+  .tag {
+    max-width: 100%;
+    padding: 0.125rem 0.375rem;
+    font-size: 0.625rem;
+    overflow-wrap: anywhere;
+  }
+
+  .play-icon {
+    font-size: 1.5rem;
   }
 }
 </style>
