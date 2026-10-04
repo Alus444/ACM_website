@@ -259,7 +259,78 @@ function formatPrice(price: number, isStartingPrice = false): string {
   }
 
   .booth-grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .booth-card,
+  .booth-body {
+    min-width: 0;
+  }
+
+  .placeholder-icon {
+    font-size: 2rem;
+  }
+
+  .booth-categories {
+    top: 6px;
+    left: 6px;
+    gap: 4px;
+    max-width: calc(100% - 12px);
+  }
+
+  .booth-category {
+    min-width: 0;
+    max-width: 100%;
+    padding: 3px 6px;
+    font-size: 0.6rem;
+    overflow-wrap: anywhere;
+  }
+
+  .booth-body {
+    padding: 10px;
+  }
+
+  .booth-title,
+  .booth-desc {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+  }
+
+  .booth-title {
+    font-size: 0.8rem;
+    margin-bottom: 0.35rem;
+    -webkit-line-clamp: 3;
+  }
+
+  .booth-desc {
+    flex: 0 0 auto;
+    font-size: 0.75rem;
+    margin-bottom: 0.6rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .booth-footer {
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+  }
+
+  .booth-price,
+  .booth-cta {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .booth-price {
+    font-size: 0.9rem;
+  }
+
+  .booth-cta {
+    font-size: 0.65rem;
   }
 }
 </style>

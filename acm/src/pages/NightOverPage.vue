@@ -24,6 +24,8 @@ type SearchEntry = {
 const query = ref('')
 const menuOpen = ref(false)
 const searchInput = ref<HTMLInputElement | null>(null)
+const menuButton = ref<HTMLButtonElement | null>(null)
+const isMobileLayout = ref(false)
 const lightboxSrc = ref('')
 const lightboxAlt = ref('')
 const lightboxCaption = ref('')
@@ -960,14 +962,14 @@ function navigateTo(id: string) {
   const path = id === 'intro' ? '/nightover' : `/nightover/${id}`
   if (router.currentRoute.value.path !== path) router.push(path)
   query.value = ''
-  menuOpen.value = false
+  closeMobileMenu()
 }
 
 async function openSearchResult(result: SearchEntry) {
   const path = result.page === 'intro' ? '/nightover' : `/nightover/${result.page}`
   if (router.currentRoute.value.path !== path) await router.push(path)
   query.value = ''
-  menuOpen.value = false
+  closeMobileMenu()
   await nextTick()
   jumpToHeading(result.headingId)
 }
@@ -1007,10 +1009,40 @@ function closeLightbox() {
   nextTick(() => lightboxTrigger?.focus())
 }
 
+function closeMobileMenu() {
+  if (!menuOpen.value) return
+  menuOpen.value = false
+  if (isMobileLayout.value) nextTick(() => menuButton.value?.focus())
+}
+
+function toggleMobileMenu() {
+  if (menuOpen.value) closeMobileMenu()
+  else {
+    menuOpen.value = true
+    nextTick(() => searchInput.value?.focus())
+  }
+}
+
+function syncViewport() {
+  isMobileLayout.value = window.matchMedia('(max-width: 820px)').matches
+  if (!isMobileLayout.value) menuOpen.value = false
+  document.documentElement.classList.toggle('nightover-nav-open', isMobileLayout.value && menuOpen.value)
+}
+
+watch(menuOpen, () => {
+  document.documentElement.classList.toggle('nightover-nav-open', isMobileLayout.value && menuOpen.value)
+})
+
 function handleKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape' && lightboxSrc.value) {
     event.preventDefault()
     closeLightbox()
+    return
+  }
+
+  if (event.key === 'Escape' && menuOpen.value) {
+    event.preventDefault()
+    closeMobileMenu()
     return
   }
 
@@ -1022,19 +1054,25 @@ function handleKeydown(event: KeyboardEvent) {
 }
 
 onMounted(() => {
+  syncViewport()
   window.addEventListener('keydown', handleKeydown)
+  window.addEventListener('resize', syncViewport)
   document.documentElement.classList.add('nightover-docs-open')
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', handleKeydown)
+  window.removeEventListener('resize', syncViewport)
   document.body.style.overflow = previousBodyOverflow
   document.documentElement.classList.remove('nightover-docs-open')
+  document.documentElement.classList.remove('nightover-nav-open')
 })
 
 watch(
-  () => route.params.page,
-  (page) => {
+  () => route.fullPath,
+  () => {
+    if (route.path !== '/nightover' && !route.path.startsWith('/nightover/')) return
+    const page = route.params.page
     if (typeof page === 'string' && legacyPageAliases[page]) {
       router.replace(`/nightover/${legacyPageAliases[page]}`)
       return
@@ -1044,7 +1082,8 @@ watch(
       return
     }
     document.title = `${currentPage.value.label} | NIGHTOVER`
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    closeMobileMenu()
+    if (!route.hash) window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   },
   { immediate: true, flush: 'sync' },
 )
@@ -1061,20 +1100,21 @@ watch(
 
       <div class="header-right">
         <button
+          ref="menuButton"
           class="mobile-menu"
           type="button"
           :aria-expanded="menuOpen"
           aria-controls="docs-sidebar"
-          @click="menuOpen = !menuOpen"
+          @click="toggleMobileMenu"
         >
           <span></span><span></span><span></span>
-          <i>目次</i>
+          <i data-wrap="off">目次</i>
         </button>
       </div>
     </header>
 
     <div class="docs-layout">
-      <aside id="docs-sidebar" :class="['docs-sidebar', { open: menuOpen }]">
+      <aside id="docs-sidebar" :class="['docs-sidebar', { open: menuOpen }]" :aria-hidden="isMobileLayout && !menuOpen ? true : undefined" :inert="isMobileLayout && !menuOpen">
         <div class="sidebar-search">
           <span aria-hidden="true">⌕</span>
           <input
@@ -1346,6 +1386,8 @@ watch(
             <p>
               一覧の下には作品全体の合計文字数と、400字詰め原稿用紙に換算したおおよその枚数を表示します。
               原稿用紙の枚数は合計文字数を400で割り、端数を1枚として数えます。
+            </p>
+            <p>
               その下のお知らせ欄では、「保存しました」「自動保存しました」など直前の処理結果を確認できます。
             </p>
           </section>
@@ -2475,7 +2517,10 @@ watch(
             <p>
               この準備を行うと、作品フォルダ内にその作品専用の変更履歴データが作成されます。
               本文やメモを削除したり、作品を最初の状態へ戻したりする操作ではありません。
-              他の作品やPC内のファイルにも影響しません。Git連携がONでも、記録を始めるための準備は作品ごとに必要です。
+              他の作品やPC内のファイルにも影響しません。
+            </p>
+            <p>
+              Git連携がONでも、記録を始めるための準備は作品ごとに必要です。
             </p>
 
             <h3 id="git-dirty">未記録の変更</h3>
@@ -2758,7 +2803,7 @@ watch(
             <h3 id="setting-default-save-path">デフォルト保存場所</h3>
             <div class="spec-table setting-options-table save-path-settings-table">
               <div class="table-head">項目</div><div class="table-head">初期値</div><div class="table-head">設定の作用</div>
-              <div><strong>デフォルト保存場所</strong></div><div><code class="save-path-code">%USERPROFILE%<wbr>\Documents<wbr>\NIGHTOVER</code></div><div>変更後に新しく作る作品の保存先を指定します。</div>
+              <div data-label="項目"><strong>デフォルト保存場所</strong></div><div data-label="初期値"><code class="save-path-code">%USERPROFILE%<wbr>\Documents<wbr>\NIGHTOVER</code></div><div data-label="設定の作用">変更後に新しく作る作品の保存先を指定します。</div>
             </div>
             <p>
               空欄では確定できません。既存作品は移動せず、体験版では変更できません。
@@ -3988,7 +4033,9 @@ button {
   margin: 18px 0 28px;
   border: 1px solid var(--doc-line);
   border-radius: 5px;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
 }
 
 .spec-table.two-cols,
@@ -4487,8 +4534,25 @@ button {
   }
 
   .save-path-settings-table {
-    grid-template-columns: minmax(100px, 0.85fr) minmax(105px, 1fr) minmax(130px, 1.15fr);
+    grid-template-columns: minmax(0, 1fr);
     overflow: hidden;
+  }
+
+  .save-path-settings-table > .table-head {
+    display: none;
+  }
+
+  .save-path-settings-table > div[data-label] {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 8px;
+    border-right: 0;
+  }
+
+  .save-path-settings-table > div[data-label]::before {
+    content: attr(data-label);
+    color: var(--doc-text);
+    font-weight: 600;
   }
 
   .save-path-settings-table > div {

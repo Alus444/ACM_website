@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useHeaderHeight } from '../../composables/useHeaderHeight'
 
 const props = defineProps<{
   label: string
@@ -7,12 +8,16 @@ const props = defineProps<{
 }>()
 
 const scrolled = ref(false)
+const headerHeight = useHeaderHeight()
 
 function onScroll() {
   scrolled.value = window.scrollY > 80
 }
 
-onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
+onMounted(() => {
+  onScroll()
+  window.addEventListener('scroll', onScroll, { passive: true })
+})
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
@@ -30,10 +35,10 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
   <!-- スクロール時の固定ミニバー -->
   <Teleport to="body">
-    <div class="page-mini-bar" :class="{ visible: scrolled }">
+    <div class="page-mini-bar" :class="{ visible: scrolled }" :style="{ top: `${headerHeight}px` }">
       <div class="page-mini-inner">
         <span class="page-mini-label">{{ label }}</span>
-        <span class="page-mini-title">{{ title }}</span>
+        <span class="page-mini-title" data-wrap="off">{{ title }}</span>
       </div>
     </div>
   </Teleport>
@@ -78,7 +83,6 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 /* --- ミニバー (fixed, 全幅) --- */
 .page-mini-bar {
   position: fixed;
-  top: 5.2rem;
   left: 0;
   right: 0;
   z-index: 90;

@@ -6,7 +6,7 @@
           <p class="form-label">COMMISSION</p>
           <div class="form-title-row">
             <h1 class="form-title">依頼フォーム</h1>
-            <a href="#pricing" class="to-pricing-btn">料金表を見る ↓</a>
+            <a href="#/pricing#pricing" class="to-pricing-btn" @click="scrollToPricing">料金表を見る ↓</a>
           </div>
         </div>
         <div class="form-wrap">
@@ -21,16 +21,14 @@
         </div>
       </div>
     </div>
-    <div id="pricing">
-      <Pricing />
-    </div>
+    <Pricing :mini-bar-height="miniBarHeight" />
   </main>
 
   <Teleport to="body">
-    <div class="page-mini-bar" :class="{ visible: scrolled }">
+    <div ref="miniBarElement" class="page-mini-bar" :class="{ visible: scrolled }" :style="{ top: `${headerHeight}px` }">
       <div class="page-mini-inner">
         <span class="page-mini-label">COMMISSION</span>
-        <span class="page-mini-title">依頼フォーム</span>
+        <span class="page-mini-title" data-wrap="off">依頼フォーム</span>
       </div>
     </div>
   </Teleport>
@@ -39,11 +37,40 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import Pricing from '../components/sections/Pricing.vue'
+import { useHeaderHeight } from '../composables/useHeaderHeight'
 
 const scrolled = ref(false)
+const headerHeight = useHeaderHeight()
+const miniBarElement = ref<HTMLElement | null>(null)
+const miniBarHeight = ref(0)
+let miniBarObserver: ResizeObserver | undefined
+
+function scrollToPricing(event: MouseEvent) {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+  event.preventDefault()
+  document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
 function onScroll() { scrolled.value = window.scrollY > 80 }
-onMounted(() => window.addEventListener('scroll', onScroll, { passive: true }))
-onUnmounted(() => window.removeEventListener('scroll', onScroll))
+onMounted(() => {
+  onScroll()
+  window.addEventListener('scroll', onScroll, { passive: true })
+
+  const miniBar = miniBarElement.value
+  if (!miniBar) return
+
+  const updateHeight = () => {
+    miniBarHeight.value = miniBar.getBoundingClientRect().height
+  }
+
+  updateHeight()
+  miniBarObserver = new ResizeObserver(updateHeight)
+  miniBarObserver.observe(miniBar)
+})
+onUnmounted(() => {
+  window.removeEventListener('scroll', onScroll)
+  miniBarObserver?.disconnect()
+})
 </script>
 
 <style scoped>
@@ -120,7 +147,6 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
 .page-mini-bar {
   position: fixed;
-  top: 5.2rem;
   left: 0;
   right: 0;
   z-index: 90;

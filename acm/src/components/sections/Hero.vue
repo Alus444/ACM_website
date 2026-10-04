@@ -3,9 +3,12 @@ import { RouterLink } from 'vue-router'
 import { profile } from '../../data/profile'
 import { profilePro } from '../../data/profile-pro'
 import { useMode } from '../../composables/useMode'
+import { normalizeNewlines } from '../../utils/normalize-newlines.mjs'
 
 const { isPro } = useMode()
 const activeProfile = isPro ? profilePro : profile
+const avatarUrl = isPro ? '/images/rapro.png' : activeProfile.avatarUrl
+const bioLines = normalizeNewlines(activeProfile.bio).split('\n')
 </script>
 
 <template>
@@ -20,13 +23,13 @@ const activeProfile = isPro ? profilePro : profile
       <div class="hero-avatar-wrap">
         <div class="hero-avatar-frame">
           <img
-            v-if="profile.avatarUrl"
-            :src="profile.avatarUrl"
-            :alt="profile.name"
+            v-if="avatarUrl"
+            :src="avatarUrl"
+            :alt="activeProfile.name"
             class="hero-avatar-img"
           />
           <div v-else class="hero-avatar-placeholder">
-            <span>{{ profile.name.charAt(0) }}</span>
+            <span>{{ activeProfile.name.charAt(0) }}</span>
           </div>
         </div>
         <div class="hero-avatar-glow"></div>
@@ -38,9 +41,7 @@ const activeProfile = isPro ? profilePro : profile
         <h1 class="hero-name" :class="{ 'hero-name--pro': isPro }">{{ activeProfile.name }}</h1>
 
         <p class="hero-bio">
-          <span v-for="(line, i) in activeProfile.bio.split('\n')" :key="i">
-            {{ line }}<br v-if="i < activeProfile.bio.split('\n').length - 1" />
-          </span>
+          <span v-for="(line, i) in bioLines" :key="i" class="hero-bio-line">{{ line }}</span>
         </p>
 
         <div class="hero-skills">
@@ -187,6 +188,12 @@ const activeProfile = isPro ? profilePro : profile
   line-height: 1.85;
   color: var(--text-secondary);
   margin: 0 0 1.75rem;
+}
+
+.hero-bio-line {
+  display: block;
+  min-height: 1.85em;
+  text-wrap: balance;
 }
 
 .hero-skills {

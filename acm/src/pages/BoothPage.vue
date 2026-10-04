@@ -426,7 +426,64 @@ function formatPrice(price: number, isStartingPrice = false): string {
   }
 
   .booth-grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .booth-card,
+  .booth-body {
+    min-width: 0;
+  }
+
+  .booth-body {
+    padding: 0.625rem;
+  }
+
+  .booth-title,
+  .booth-desc {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+    text-wrap: wrap;
+  }
+
+  .booth-title {
+    font-size: 0.8rem;
+    -webkit-line-clamp: 3;
+    margin-bottom: 0.375rem;
+  }
+
+  .booth-desc {
+    font-size: 0.75rem;
+    -webkit-line-clamp: 2;
+    flex: none;
+    margin-bottom: 0.625rem;
+  }
+
+  .booth-categories {
+    top: 0.5rem;
+    left: 0.5rem;
+    gap: 0.25rem;
+    max-width: calc(100% - 1rem);
+  }
+
+  .booth-category {
+    padding: 0.125rem 0.375rem;
+    font-size: 0.625rem;
+  }
+
+  .booth-footer {
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+  }
+
+  .booth-price {
+    font-size: 0.9rem;
+  }
+
+  .booth-cta {
+    font-size: 0.65rem;
   }
 }
 </style>

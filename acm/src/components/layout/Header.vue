@@ -1,20 +1,26 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useHeaderHeight } from '../../composables/useHeaderHeight'
 import { useMode } from '../../composables/useMode'
 
 const { isPro } = useMode()
 const scrolled = ref(false)
+const headerElement = ref<HTMLElement | null>(null)
+useHeaderHeight(headerElement)
 
 function onScroll() {
   scrolled.value = window.scrollY > 40
 }
 
-onMounted(() => window.addEventListener('scroll', onScroll))
+onMounted(() => {
+  onScroll()
+  window.addEventListener('scroll', onScroll, { passive: true })
+})
 onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>
-  <header :class="['site-header', { scrolled }]">
+  <header ref="headerElement" :class="['site-header', { scrolled }]">
     <div class="header-inner">
       <RouterLink to="/" class="logo">
         <img src="/images/ACMLogo.svg" alt="ACM" class="logo-img" />
@@ -63,11 +69,13 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
 .logo {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   text-decoration: none;
 }
 
 .logo-img {
+  flex-shrink: 0;
   height: 2rem;
   width: auto;
   display: block;
@@ -80,6 +88,8 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 }
 
 .nav-link {
+  flex: 0 0 auto;
+  white-space: nowrap;
   font-size: 0.9rem;
   font-weight: 500;
   letter-spacing: 0.05em;
@@ -100,7 +110,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   border-color: var(--accent);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .site-header {
     padding: 0.75rem 1rem 0.65rem;
   }
@@ -113,10 +123,6 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 
   .logo {
     align-self: flex-start;
-  }
-
-  .logo-img {
-    height: 1.5rem;
   }
 
   .nav {
@@ -134,9 +140,14 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   }
 
   .nav-link {
-    flex: 0 0 auto;
     padding: 0.3rem 0.5rem;
     font-size: 0.74rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo-img {
+    height: 1.5rem;
   }
 }
 

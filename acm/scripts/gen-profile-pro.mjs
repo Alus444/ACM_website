@@ -5,6 +5,7 @@
 import { writeFileSync, existsSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
+import { normalizeNewlines } from '../src/utils/normalize-newlines.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const outPath = join(__dirname, '../src/data/profile-pro.ts')
@@ -23,6 +24,7 @@ if (!json) {
 }
 
 const p = JSON.parse(json)
+const bio = normalizeNewlines(p.bio)
 const email = typeof p.email === 'string'
   ? p.email
   : (typeof p.social?.email === 'string' ? p.social.email : '')
@@ -33,7 +35,7 @@ export const profilePro: Profile = {
   name: ${JSON.stringify(p.name)},
   handle: ${JSON.stringify(p.handle)},
   avatarUrl: ${JSON.stringify(p.avatarUrl)},
-  bio: ${JSON.stringify(p.bio)},
+  bio: ${JSON.stringify(bio)},
   skills: ${JSON.stringify(p.skills)},
   social: {
     email: ${JSON.stringify(email)},

@@ -52,6 +52,22 @@
         font-size: clamp(2rem, 8vw, 3.5rem);
         line-height: 1.05;
         letter-spacing: -0.035em;
+        text-wrap: balance;
+      }
+
+      p {
+        text-wrap: balance;
+      }
+
+      .phrase-unit {
+        display: inline-block;
+        inline-size: max-content;
+        max-inline-size: 100%;
+        vertical-align: baseline;
+        white-space: normal;
+        word-break: normal;
+        overflow-wrap: anywhere;
+        text-wrap: wrap;
       }
 
       .lead {
@@ -151,10 +167,10 @@
   </head>
   <body>
     <main>
-      <p class="eyebrow">ACM VPM Repository</p>
-      <h1>ACM Editor Tools</h1>
+      <p class="eyebrow"><span class="phrase-unit">ACM</span> <span class="phrase-unit">VPM</span> <span class="phrase-unit">Repository</span></p>
+      <h1><span class="phrase-unit">ACM</span> <span class="phrase-unit">Editor</span> <span class="phrase-unit">Tools</span></h1>
       <p class="lead">
-        Unity向けACM Editor拡張を、VCCまたはALCOMからインストールできます。
+        <span class="phrase-unit">Unity</span><span class="phrase-unit">向け</span><span class="phrase-unit">ACM</span> <span class="phrase-unit">Editor</span><span class="phrase-unit">拡張を、</span><span class="phrase-unit">VCC</span><span class="phrase-unit">または</span><span class="phrase-unit">ALCOMから</span><span class="phrase-unit">インストール</span><span class="phrase-unit">できます。</span>
       </p>
 
       <a
@@ -164,11 +180,11 @@
         VCC / ALCOM に追加
       </a>
       <p class="note">
-        クリックすると、この端末で <code>vcc:</code> に関連付けられているVCCまたはALCOMが開きます。登録前にはアプリ側の確認画面が表示されます。
+        <span class="phrase-unit">クリック</span><span class="phrase-unit">すると、</span><span class="phrase-unit">この</span><span class="phrase-unit">端末で</span> <code>vcc:</code> <span class="phrase-unit">に</span><span class="phrase-unit">関連</span><span class="phrase-unit">付け</span><span class="phrase-unit">ら</span><span class="phrase-unit">れ</span><span class="phrase-unit">て</span><span class="phrase-unit">いる</span><span class="phrase-unit">VCC</span><span class="phrase-unit">または</span><span class="phrase-unit">ALCOMが</span><span class="phrase-unit">開きます。</span><span class="phrase-unit">登録</span><span class="phrase-unit">前には</span><span class="phrase-unit">アプリ</span><span class="phrase-unit">側の</span><span class="phrase-unit">確認</span><span class="phrase-unit">画面が</span><span class="phrase-unit">表示</span><span class="phrase-unit">さ</span><span class="phrase-unit">れます。</span>
       </p>
 
       <section class="manual" aria-labelledby="manual-heading">
-        <h2 id="manual-heading">手動で追加する場合</h2>
+        <h2 id="manual-heading"><span class="phrase-unit">手動で</span><span class="phrase-unit">追加</span><span class="phrase-unit">する</span><span class="phrase-unit">場合</span></h2>
         <div class="repo-row">
           <code id="repo-url">https://ac-md.com/vpm/index.json</code>
           <button class="copy-button" id="copy-button" type="button">コピー</button>

@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { phraseTextTransform } from './build/phraseTextTransform.ts'
 
 export default defineConfig(({ mode }) => ({
   plugins: [
-    vue(),
+    vue({ template: { compilerOptions: { nodeTransforms: [phraseTextTransform] } } }),
     // raproビルド時のみ noindex を挿入
     mode === 'rapro' && {
       name: 'inject-noindex',

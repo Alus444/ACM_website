@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { priceCategories, commissionNotes } from '../../data/commission'
+import { useHeaderHeight } from '../../composables/useHeaderHeight'
+
+withDefaults(defineProps<{ miniBarHeight?: number }>(), { miniBarHeight: 0 })
+const headerHeight = useHeaderHeight()
 </script>
 
 <template>
-  <section id="pricing" class="pricing-section">
+  <section class="pricing-section">
     <div class="section-inner">
-      <div class="section-header">
+      <div id="pricing" class="section-header" :style="{ scrollMarginTop: `calc(${headerHeight + miniBarHeight}px + 1rem)` }">
         <p class="section-label">Commission</p>
         <h2 class="section-title">料金表</h2>
       </div>

@@ -170,7 +170,51 @@ import { documentationItems } from '../data/documents'
   }
 
   .documents-grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .document-card,
+  .document-body {
+    min-width: 0;
+  }
+
+  .document-body {
+    align-items: stretch;
+    padding: 0.625rem;
+  }
+
+  .document-title,
+  .document-description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+    text-wrap: wrap;
+  }
+
+  .document-title {
+    font-size: 0.8rem;
+    -webkit-line-clamp: 3;
+  }
+
+  .document-description {
+    flex: none;
+    margin: 0.375rem 0 0.625rem;
+    font-size: 0.75rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .document-category {
+    top: 0.5rem;
+    left: 0.5rem;
+    max-width: calc(100% - 1rem);
+    padding: 0.125rem 0.375rem;
+    font-size: 0.625rem;
+  }
+
+  .document-link {
+    font-size: 0.65rem;
   }
 }
 </style>
