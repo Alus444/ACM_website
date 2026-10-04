@@ -3,7 +3,7 @@ import PageHeader from '../components/layout/PageHeader.vue'
 
 const career = [
   {
-    period: '2023.04 — 現在',
+    period: '2022.04 — 現在',
     role: '専門講師',
     org: '高等学校（業務委託）',
     items: [
