@@ -41,7 +41,7 @@ const navGroups: NavGroup[] = [
     items: [
       { id: 'intro', label: 'NIGHTOVER', keywords: '概要 はじめに windows 小説 執筆' },
       { id: 'releases', label: 'リリース情報', keywords: '更新 アップデート バージョン 変更 修正 追加' },
-      { id: 'editions', label: '体験版と製品版', keywords: 'trial full 制限 比較' },
+      { id: 'editions', label: 'Lite版と通常版', keywords: 'lite trial full 体験版 制限 比較' },
       { id: 'terms', label: '利用規約', keywords: '規約 ライセンス 法人 サークル 返金 外部送信 権利' },
     ],
   },
@@ -82,7 +82,7 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    label: 'KAKURIYO',
+    label: 'KAKURIYO（通常版）',
     items: [
       { id: 'kakuriyo', label: 'KAKURIYO 概要', keywords: '解析 支援 概要 セクション window' },
       { id: 'kakuriyo-radar', label: '文体レーダーと傾向', keywords: '文体 レーダー 会話 名詞 動詞 描写 接続 作品語 文末 反復 傾向' },
@@ -141,6 +141,7 @@ const currentPageIndex = computed(() => allItems.findIndex((item) => item.id ===
 const previousPage = computed(() => allItems[currentPageIndex.value - 1])
 const nextPage = computed(() => allItems[currentPageIndex.value + 1])
 const nightOverExecutableName = `NIGHTOVER_v${nightOverCurrentVersion.replace(/\./g, '_')}.exe`
+const nightOverLiteExecutableName = `NIGHTOVER_Lite_v${nightOverCurrentVersion.replace(/\./g, '_')}.exe`
 
 const searchIndex: SearchEntry[] = [
   {
@@ -153,7 +154,7 @@ const searchIndex: SearchEntry[] = [
     page: 'intro',
     headingId: 'runtime',
     title: '動作形式',
-    text: `対応環境 Windows デスクトップアプリ ${nightOverExecutableName} Ver.${nightOverCurrentVersion} 作品フォルダ ダーク ライト テーマ BOOTH 商品ページ`,
+    text: `対応環境 Windows デスクトップアプリ ${nightOverExecutableName} ${nightOverLiteExecutableName} Ver.${nightOverCurrentVersion} 作品フォルダ ダーク ライト テーマ BOOTH Lite版 通常版`,
   },
   {
     page: 'intro',
@@ -451,13 +452,13 @@ const searchIndex: SearchEntry[] = [
     page: 'kakuriyo',
     headingId: 'support-entry',
     title: 'KAKURIYO解析画面を開く',
-    text: '右ペイン KAKURIYO解析 別ウィンドウ modeless 読み取り専用 メモ 資料 併用 話を選択',
+    text: '右ペイン KAKURIYO解析 別ウィンドウ modeless 読み取り専用 メモ 資料 併用 話を選択 通常版専用 Lite版 利用不可 解析ボタン 非表示',
   },
   {
     page: 'kakuriyo',
     headingId: 'analysis-source',
     title: '解析対象になる本文',
-    text: '未保存 下書き dirty saved manuscript 保存本文 優先 現在話 章 作品 体験版 基本解析',
+    text: '未保存 下書き dirty saved manuscript 保存本文 優先 現在話 章 作品 基本解析 通常版専用',
   },
   {
     page: 'kakuriyo-radar',
@@ -505,7 +506,7 @@ const searchIndex: SearchEntry[] = [
     page: 'kakuriyo-update',
     headingId: 'refresh-actions',
     title: '更新操作の使い分け',
-    text: '更新 current episode 現在話 背景集計 クリーン キャッシュ削除 全体再解析 体験版 製品版',
+    text: '更新 current episode 現在話 作品全体 集計 クリーン キャッシュ削除 全体再解析 通常版専用',
   },
   {
     page: 'kakuriyo-update',
@@ -529,7 +530,7 @@ const searchIndex: SearchEntry[] = [
     page: 'statistics',
     headingId: 'statistics-feature',
     title: '統計',
-    text: '話 章 作品全体 文字数 会話率 文長 段落 記号 登場人物 用語 出現回数 初出話 直近話 差分要約 未保存下書き 製品版',
+    text: '話 章 作品全体 文字数 会話率 文長 段落 記号 登場人物 用語 出現回数 初出話 直近話 差分要約 未保存下書き Lite版 通常版',
   },
   {
     page: 'statistics',
@@ -583,7 +584,7 @@ const searchIndex: SearchEntry[] = [
     page: 'import-export',
     headingId: 'text-copy-export',
     title: '本文コピーとtxt書き出し',
-    text: '現在の話 現在の章 複数選択 作品全体 先頭 末尾 改行数 txt export 体験版 製品版',
+    text: '現在の話 現在の章 複数選択 作品全体 先頭 末尾 改行数 txt export Lite版 通常版',
   },
   {
     page: 'import-export',
@@ -601,7 +602,7 @@ const searchIndex: SearchEntry[] = [
     page: 'import-export',
     headingId: 'plain-text-import',
     title: '作品の取り込み',
-    text: '通常のTXT ホーム 書き出しを取り込む カクヨム ZIP カクヨム本文 txt 予備 見出し付き 単一話 章 話 本文 import 製品版',
+    text: '通常のTXT ホーム 書き出しを取り込む カクヨム ZIP カクヨム本文 txt 予備 見出し付き 単一話 章 話 本文 import Lite版 通常版',
   },
   {
     page: 'settings',
@@ -613,7 +614,7 @@ const searchIndex: SearchEntry[] = [
     page: 'settings-saving',
     headingId: 'setting-default-save-path',
     title: '保存の設定',
-    text: 'デフォルト保存場所 自動保存 有効 無効 間隔 全体保存 初期値 体験版',
+    text: 'デフォルト保存場所 自動保存 有効 無効 間隔 全体保存 初期値 Lite版 通常版 同条件',
   },
   {
     page: 'settings-writing',
@@ -637,7 +638,7 @@ const searchIndex: SearchEntry[] = [
     page: 'home',
     headingId: 'default-save-path',
     title: 'デフォルト保存場所',
-    text: '新規プロジェクト 作成先 フォルダ Documents NIGHTOVER 参照 既存作品 移動しない 空欄不可 体験版 変更不可',
+    text: '新規プロジェクト 作成先 フォルダ Documents NIGHTOVER 参照 既存作品 移動しない 空欄不可 Lite版 通常版 変更可能',
   },
   {
     page: 'saving',
@@ -667,7 +668,7 @@ const searchIndex: SearchEntry[] = [
     page: 'input-assist',
     headingId: 'punctuation',
     title: 'ダッシュと三点リーダの自動変換',
-    text: 'ダッシュ ― — 罫線文字 ─ 三点リーダ ... … 二連化 入力 置換文字列 既存本文 変更しない 初期値 オフ 製品版 有償版 体験版',
+    text: 'ダッシュ ― — 罫線文字 ─ 三点リーダ ... … 二連化 入力 置換文字列 既存本文 変更しない 初期値 オフ Lite版 通常版',
   },
   {
     page: 'import-export',
@@ -702,32 +703,32 @@ const searchIndex: SearchEntry[] = [
   {
     page: 'editions',
     headingId: 'edition-comparison',
-    title: '体験版と製品版の機能比較',
-    text: '本文編集 保存 自動保存 横書き 縦書き ルビ 傍点 検索 置換 本文整形 メモ 資料 リンクジャンプ 初出 締切 目標文字数 ステータス Git 集中モード テーマ フォント 統計 保存場所 作品数 記号変換 三点リーダ 二連化 Trial Full',
+    title: 'Lite版と通常版の機能比較',
+    text: '本文編集 保存 自動保存 横書き 縦書き ルビ 傍点 検索 置換 本文整形 メモ 資料 リンクジャンプ 初出 締切 目標文字数 ステータス Git 集中モード テーマ フォント 統計 保存場所 作品数 記号変換 三点リーダ 二連化 Lite Full 体験版 同条件',
   },
   {
     page: 'editions',
     headingId: 'edition-export-import',
-    title: '体験版の書き出しと取り込み',
-    text: '本文コピー txt 書き出し 話 章 作品全体 小説家になろう ZIP TXT カクヨム 通常TXT 取り込み import export 製品版',
+    title: '書き出しと取り込みの機能比較',
+    text: '本文コピー txt 書き出し 話 章 作品全体 小説家になろう ZIP TXT カクヨム 通常TXT 取り込み import export Lite版 通常版 同条件',
   },
   {
     page: 'editions',
     headingId: 'edition-kakuriyo',
-    title: '体験版のKAKURIYO',
-    text: 'KAKURIYO 現在話 基本解析 概要 要確認 傾向 反復 採用 見送り ミュート 一般語 作品語 更新 章平均 作品平均 文体レーダー 作品全体 クリーン再解析 文体記憶',
+    title: 'KAKURIYOは通常版専用',
+    text: 'KAKURIYO Lite版 利用不可 解析ボタン 非表示 通常版専用 現在話 基本解析 概要 要確認 傾向 反復 採用 見送り ミュート 一般語 作品語 更新 章平均 作品平均 文体レーダー 作品全体 クリーン再解析 文体記憶 feedback corpus 学習データ 書き出し',
   },
   {
     page: 'editions',
     headingId: 'trial-limits',
-    title: '体験版の作品数',
-    text: '同じ親フォルダ 最大3件 4件以上 読み込み 制限 デフォルト保存場所 変更不可',
+    title: 'Lite版で使える機能',
+    text: '作品数 制限なし 作成 読み込み デフォルト保存場所 変更可能 統計 取り込み 作品全体 txt 縦書き 自動句読点 Git 復旧 ゲーム',
   },
   {
     page: 'editions',
     headingId: 'trial-policy',
-    title: '体験版の期限とデータ互換性',
-    text: '期限なし 文字数制限なし 保存可能 話 章 txt 書き出し Trial Full 同じデータ形式 製品版 開く データを壊さない',
+    title: 'Lite版の期限とデータ互換性',
+    text: '期限なし 文字数制限なし 保存可能 作品全体 txt 書き出し Lite版 通常版 同じデータ形式 相互に開く データを壊さない',
   },
 ]
 
@@ -941,7 +942,7 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
   ],
   editions: [
     { id: 'edition-comparison', label: '機能比較' },
-    { id: 'trial-limits', label: '体験版の作品数' },
+    { id: 'trial-limits', label: 'Lite版で使える機能' },
     { id: 'trial-policy', label: 'データと期限' },
   ],
 }
@@ -1169,6 +1170,14 @@ watch(
             <h1>{{ activePage === 'intro' ? 'NIGHTOVER' : currentPage.label }}</h1>
           </header>
 
+          <div v-if="activePage.startsWith('kakuriyo')" class="admonition info">
+            <strong>対応する版</strong>
+            <p>
+              KAKURIYOは通常版で利用できます。Lite版では現在話の基本解析を含むすべてのKAKURIYO機能を利用できず、
+              右ペインの「KAKURIYO解析 ↗」ボタンも表示されません。
+            </p>
+          </div>
+
           <section v-if="activePage === 'intro'" id="intro" class="doc-section intro-section">
             <p class="lead">
               NIGHTOVERは、小説執筆向けのWindowsデスクトップアプリです。本文、章と話、
@@ -1177,7 +1186,7 @@ watch(
             <p class="intro-release">
               現在のバージョン <strong>Ver.{{ nightOverCurrentVersion }}</strong>
               <span class="intro-release__links">
-                <a :href="nightOverProductUrl" target="_blank" rel="noopener">BOOTH商品ページ</a>
+                <a :href="nightOverProductUrl" target="_blank" rel="noopener">Lite版・通常版をBOOTHで見る</a>
                 <RouterLink to="/nightover/releases">更新内容を見る</RouterLink>
               </span>
             </p>
@@ -1189,7 +1198,7 @@ watch(
               <li>話・章・作品全体・全作品共通のメモ</li>
               <li>登場人物・展開・用語の資料管理と本文からのリンクジャンプ</li>
               <li>検索、置換、本文整形、統計、Gitを利用した記録と復元</li>
-              <li>KAKURIYOによる文体・表記・反復などの解析支援</li>
+              <li>KAKURIYOによる文体・表記・反復などの解析支援（通常版）</li>
             </ul>
 
             <h2 id="runtime">動作形式</h2>
@@ -1197,7 +1206,8 @@ watch(
               <div class="table-head">項目</div><div class="table-head">内容</div>
               <div>対応環境</div><div>Windows</div>
               <div>アプリ形式</div><div>デスクトップアプリ</div>
-              <div>実行ファイル</div><div><code>{{ nightOverExecutableName }}</code></div>
+              <div>通常版の実行ファイル</div><div><code class="executable-name">{{ nightOverExecutableName }}</code></div>
+              <div>Lite版の実行ファイル</div><div><code class="executable-name">{{ nightOverLiteExecutableName }}</code></div>
               <div>作品データ</div><div>作品ごとのフォルダに保存</div>
               <div>表示テーマ</div><div>ダーク / ライト</div>
             </div>
@@ -1247,7 +1257,7 @@ watch(
               <div class="table-head">ペイン</div><div class="table-head">内容</div><div class="table-head">基準幅</div>
               <div><strong>左</strong></div><div>プロジェクト、締切、アウトライン、総文字数、ステータス表示</div><div>320px</div>
               <div><strong>中央</strong></div><div>話ヘッダー、本文エディタ、Git記録、操作案内</div><div>可変</div>
-              <div><strong>右</strong></div><div>メモ、資料、KAKURIYO支援</div><div>320px</div>
+              <div><strong>右</strong></div><div>メモ、資料、KAKURIYO支援（通常版）</div><div>320px</div>
             </div>
             <figure class="app-screenshot app-screenshot--wide">
               <a href="/images/nightover/screenshots/editor-overview.png" target="_blank" rel="noopener" aria-label="編集画面を原寸で開く">
@@ -1338,12 +1348,6 @@ watch(
               保存場所を変更しても、作成済みの作品は移動しません。
               変更後に新しく作る作品だけが新しい保存先へ作成され、既存作品は「他の場所から開く」から引き続き開けます。
             </p>
-            <div class="admonition info">
-              <strong>体験版での保存場所</strong>
-              <p>
-                体験版ではデフォルト保存場所を変更できません。初期の保存場所に作成した作品を使用します。
-              </p>
-            </div>
           </section>
 
           <section v-if="activePage === 'workspace-left'" id="workspace-left" class="doc-section">
@@ -1450,7 +1454,7 @@ watch(
             <h3 id="right-overview">右ペインの構成</h3>
             <div class="spec-table two-cols">
               <div class="table-head">場所</div><div class="table-head">内容</div>
-              <div><strong>上部</strong></div><div>メモと資料の切り替え、KAKURIYO解析を開くボタン</div>
+              <div><strong>上部</strong></div><div>メモと資料の切り替え、KAKURIYO解析を開くボタン（通常版）</div>
               <div><strong>一覧</strong></div><div>メモの種類、または資料のページを選択</div>
               <div><strong>本文</strong></div><div>選択したメモや資料の内容を表示・編集</div>
             </div>
@@ -1474,8 +1478,9 @@ watch(
 
             <h3 id="right-kakuriyo">KAKURIYO</h3>
             <p>
-              「KAKURIYO解析 ↗」を押すと、現在の本文を見直すための情報を別画面で開きます。
+              通常版では「KAKURIYO解析 ↗」を押すと、現在の本文を見直すための情報を別画面で開きます。
               右ペイン内の表示切り替えではないため、メモや資料を開いたまま利用できます。
+              Lite版にはこのボタンは表示されません。
             </p>
           </section>
 
@@ -1670,7 +1675,7 @@ watch(
               <div><strong>文字サイズ</strong></div><div>8〜16</div><div>10と11の間だけ10.5を挟み、それ以外は1刻みで変更します。</div>
               <div><strong>字 / 行</strong></div><div>10〜120字</div><div>横書きの折り返し字数と、縦書きの1列あたり文字数へ即時反映します。</div>
               <div><strong>縦書き</strong></div><div>ON / OFF</div><div>編集とプレビューの組方向をまとめて切り替えます。</div>
-              <div><strong>統計</strong></div><div>製品版</div><div>本文の編集状態を変えずに統計画面を開きます。</div>
+              <div><strong>統計</strong></div><div>利用可能</div><div>本文の編集状態を変えずに統計画面を開きます。</div>
             </div>
             <p>
               文字サイズ、字 / 行、縦書き状態はアプリの表示設定として保存されます。
@@ -1912,9 +1917,9 @@ watch(
             <h3 id="punctuation">ダッシュと三点リーダの自動変換</h3>
             <div class="spec-table punctuation-settings-table">
               <div class="table-head">機能</div><div class="table-head">入力</div><div class="table-head">結果</div><div class="table-head">利用範囲</div>
-              <div><strong>ダッシュ線を罫線文字へ置換</strong></div><div><code>―</code> / <code>—</code></div><div><code>─</code></div><div>体験版・製品版</div>
-              <div><strong>三点リーダへ置換</strong></div><div><code>...</code></div><div><code>…</code></div><div>製品版</div>
-              <div><strong>単独記号を二連化</strong></div><div><code>…</code></div><div><code>……</code></div><div>製品版</div>
+              <div><strong>ダッシュ線を罫線文字へ置換</strong></div><div><code>―</code> / <code>—</code></div><div><code>─</code></div><div>Lite版・通常版</div>
+              <div><strong>三点リーダへ置換</strong></div><div><code>...</code></div><div><code>…</code></div><div>Lite版・通常版</div>
+              <div><strong>単独記号を二連化</strong></div><div><code>…</code></div><div><code>……</code></div><div>Lite版・通常版</div>
             </div>
             <p>
               二連化は、<code>─</code>、<code>—</code>、<code>―</code>、<code>…</code>のいずれかを1文字だけ入力した場合に適用します。
@@ -1931,16 +1936,9 @@ watch(
               先に<code>─</code>へ変換し、その後に二連化して<code>──</code>にします。
             </p>
             <p>
-              製品版で三点リーダ化と二連化を両方有効にした場合、<code>...</code>は<code>……</code>になります。
+              三点リーダ化と二連化を両方有効にした場合、<code>...</code>は<code>……</code>になります。
               各機能のON / OFFは「本文・入力の設定」で切り替えます。
             </p>
-            <div class="admonition info">
-              <strong>体験版で使える変換</strong>
-              <p>
-                ダッシュ線を罫線文字へ置き換える機能は体験版でも利用できます。
-                三点リーダへの変換と単独記号の二連化は製品版の機能です。
-              </p>
-            </div>
           </section>
 
           <section v-if="activePage === 'search'" id="search" class="doc-section">
@@ -2095,7 +2093,7 @@ watch(
               <li>登場人物・用語と一致する本文をハイライト</li>
               <li>本文の右クリックメニューから「リンク先へ移動」</li>
               <li>登場人物・用語の資料に初出話を表示</li>
-              <li>登場人物・用語をKAKURIYOの作品語へ自動同期</li>
+              <li>登場人物・用語をKAKURIYOの作品語へ自動同期（通常版）</li>
             </ul>
             <p>
               本文と資料を結び付ける機能は、「用語リンクハイライト / ジャンプ」と「初出チェック」に分かれています。
@@ -2367,9 +2365,9 @@ watch(
             <h3 id="refresh-actions">更新操作の使い分け</h3>
             <div class="spec-table two-cols">
               <div class="table-head">操作</div><div class="table-head">処理</div>
-              <div><strong>更新</strong></div><div>現在話を優先して解析し、その後に章・作品の背景集計を進めます。</div>
-              <div><strong>現在話</strong></div><div>選択中の話だけを現在の本文で再解析します。体験版ではこの範囲に限定されます。</div>
-              <div><strong>クリーン再解析</strong></div><div>保存済み解析キャッシュを削除し、作品全体を最初から再解析します。製品版向けの操作です。</div>
+              <div><strong>更新</strong></div><div>変更のある本文を作品順に反映し、章・作品の集計まで更新します。通常版で利用できます。</div>
+              <div><strong>現在話</strong></div><div>選択中の話だけを現在の本文で再解析します。通常版で利用できます。</div>
+              <div><strong>クリーン再解析</strong></div><div>保存済み解析キャッシュを削除し、作品全体を最初から再解析します。通常版で利用できます。</div>
             </div>
             <p>
               作品を開いた直後に重い全話解析を始めるのではなく、KAKURIYO画面を開いた時点で現在話から必要に応じて作成します。
@@ -2424,7 +2422,7 @@ watch(
             <h3 id="statistics-feature">開き方と集計範囲</h3>
             <p>
               中央ヘッダーの<code>... > 統計</code>から、本文編集を続けられるmodeless画面として開きます。
-              統計は製品版の機能です。
+              Lite版・通常版のどちらでも利用できます。
             </p>
             <div class="spec-table two-cols">
               <div class="table-head">範囲</div><div class="table-head">対象</div>
@@ -2658,16 +2656,16 @@ watch(
           <section v-if="activePage === 'import-export'" id="import-export" class="doc-section">
             <p>
               作品の一部または全体をプレーンテキストとして取り出せます。
-              製品版では、外部サービスの書き出しデータや通常のTXTから新しいNIGHTOVER作品を作成できます。
+              外部サービスの書き出しデータや通常のTXTから、新しいNIGHTOVER作品を作成できます。
             </p>
 
             <h3 id="text-copy-export">本文コピーとtxt書き出し</h3>
             <div class="spec-table two-cols">
               <div class="table-head">範囲</div><div class="table-head">利用可否</div>
-              <div>現在の話</div><div>体験版・製品版</div>
-              <div>現在の章</div><div>体験版・製品版</div>
-              <div>複数選択中の話</div><div>体験版・製品版</div>
-              <div>作品全体</div><div>製品版</div>
+              <div>現在の話</div><div>Lite版・通常版</div>
+              <div>現在の章</div><div>Lite版・通常版</div>
+              <div>複数選択中の話</div><div>Lite版・通常版</div>
+              <div>作品全体</div><div>Lite版・通常版</div>
             </div>
             <p>
               アウトラインを右クリックし、「この話 / 章の本文をコピー」「txt書き出し」などを選びます。
@@ -2747,13 +2745,6 @@ watch(
                 話名は「第」で始まり「話」を含む行として認識します。
               </p>
             </div>
-            <div class="admonition info">
-              <strong>体験版での取り込み</strong>
-              <p>
-                体験版でも既存作品を開くことや、話・章・選択中の話のtxt書き出しは利用できます。
-                外部書き出しからの作品作成と作品全体txt書き出しが製品版限定です。
-              </p>
-            </div>
           </section>
 
           <section v-if="activePage === 'settings'" id="settings" class="doc-section">
@@ -2773,7 +2764,8 @@ watch(
             </p>
             <p>
               「OK」で確定した設定は、アプリを再起動しなくても反映されます。
-              自動保存の待ち時間を設定し直し、本文の表示、リンク候補、Git操作欄、統計画面、KAKURIYO支援画面を現在の設定で更新します。
+              自動保存の待ち時間を設定し直し、本文の表示、リンク候補、Git操作欄、統計画面を現在の設定で更新します。
+              通常版ではKAKURIYO支援画面にも反映します。
             </p>
             <div class="admonition note">
               <strong>設定値が範囲外の場合</strong>
@@ -2806,7 +2798,7 @@ watch(
               <div data-label="項目"><strong>デフォルト保存場所</strong></div><div data-label="初期値"><code class="save-path-code">%USERPROFILE%<wbr>\Documents<wbr>\NIGHTOVER</code></div><div data-label="設定の作用">変更後に新しく作る作品の保存先を指定します。</div>
             </div>
             <p>
-              空欄では確定できません。既存作品は移動せず、体験版では変更できません。
+              空欄では確定できません。変更しても既存作品は移動しません。
             </p>
 
             <h3 id="setting-auto-save">自動保存</h3>
@@ -2968,93 +2960,97 @@ watch(
 
           <section v-if="activePage === 'editions'" id="editions" class="doc-section">
             <p>
-              体験版と製品版は同じ作品データ形式を使用します。
-              体験版ではウィンドウタイトルの末尾に「体験版」と表示されます。
-              製品版限定の操作は「有償版」と表示されるか、操作できない状態になります。
-              作品データの取り込みなど、一部の入口は体験版では表示されません。
+              Lite版の実行ファイル名は<code class="executable-name">{{ nightOverLiteExecutableName }}</code>です。
+              起動後もウィンドウタイトルの末尾に「Lite」と表示されます。
+              執筆・作品管理・入出力は通常版と同じ条件で利用できます。
+              KAKURIYOは通常版専用で、Lite版には右ペインの解析ボタンが表示されません。
             </p>
 
             <h3 id="edition-comparison">機能比較</h3>
             <h4 class="comparison-group-title">執筆と作品管理</h4>
             <div class="spec-table edition-table">
-              <div class="table-head">機能</div><div class="table-head">体験版</div><div class="table-head">製品版</div>
-              <div>新規作品の作成</div><div class="limited">同じ親フォルダ内で3作品まで</div><div class="yes">制限なし</div>
-              <div>既存作品を開く</div><div class="limited">親フォルダ内が3作品以下の場合に利用可能</div><div class="yes">利用可能</div>
-              <div>既定保存場所の変更</div><div class="no">変更不可</div><div class="yes">変更可能</div>
+              <div class="table-head">機能</div><div class="table-head">Lite版</div><div class="table-head">通常版</div>
+              <div>新規作品の作成</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
+              <div>既存作品を開く</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
+              <div>既定保存場所の変更</div><div class="yes">変更可能</div><div class="yes">変更可能</div>
               <div>本文編集・手動保存・自動保存</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>横書き編集・横書きプレビュー</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
-              <div>縦書き編集・プレビュー</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>縦書き編集・プレビュー</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>ルビ・傍点</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>検索・置換・本文整形</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>話・章・作品・共通メモ</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>資料・リンクジャンプ・初出チェック</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>締切・目標文字数・ステータス</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
-              <div>Git記録・履歴・復元</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
+              <div>Git記録・履歴・復元、復旧</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>集中モード・テーマ・本文フォント</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
-              <div>統計</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>統計</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>ダッシュ線を罫線文字へ置換</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
-              <div><code>...</code>を<code>…</code>へ自動変換</div><div class="no">利用不可</div><div class="yes">利用可能</div>
-              <div>ダッシュ・三点リーダの二連化</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div><code>...</code>を<code>…</code>へ自動変換</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
+              <div>ダッシュ・三点リーダの二連化</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
+              <div>内蔵ゲーム</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
             </div>
 
             <h4 id="edition-export-import" class="comparison-group-title">書き出しと取り込み</h4>
             <div class="spec-table edition-table">
-              <div class="table-head">機能</div><div class="table-head">体験版</div><div class="table-head">製品版</div>
+              <div class="table-head">機能</div><div class="table-head">Lite版</div><div class="table-head">通常版</div>
               <div>本文をコピー</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>話・章単位のtxt書き出し</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
-              <div>作品全体txt書き出し</div><div class="no">利用不可</div><div class="yes">利用可能</div>
-              <div>小説家になろうのZIP / TXTを取り込む</div><div class="no">利用不可</div><div class="yes">利用可能</div>
-              <div>カクヨムのZIPを取り込む</div><div class="no">利用不可</div><div class="yes">利用可能</div>
-              <div>通常のTXTから新しい作品を作る</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>作品全体txt書き出し</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
+              <div>小説家になろうのZIP / TXTを取り込む</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
+              <div>カクヨムのZIPを取り込む</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
+              <div>通常のTXTから新しい作品を作る</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
             </div>
 
             <h4 id="edition-kakuriyo" class="comparison-group-title">KAKURIYO</h4>
             <div class="spec-table edition-table">
-              <div class="table-head">機能</div><div class="table-head">体験版</div><div class="table-head">製品版</div>
-              <div>現在話の基本解析</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
-              <div>概要・要確認・傾向・反復</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
-              <div>採用・見送り・ミュート</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
-              <div>一般語・作品語の登録と解除</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
-              <div>更新ボタンの対象</div><div class="limited">現在話のみ</div><div class="yes">作品全体</div>
+              <div class="table-head">機能</div><div class="table-head">Lite版</div><div class="table-head">通常版</div>
+              <div>支援画面を開く</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>現在話の基本解析</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>概要・要確認・傾向・反復</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>採用・見送り・ミュート</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>一般語・作品語の登録と解除</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>資料から作品語への自動同期</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>現在話だけを更新</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>作品全体を更新</div><div class="no">利用不可</div><div class="yes">利用可能</div>
               <div>文体レーダーの章平均・作品平均比較</div><div class="no">利用不可</div><div class="yes">利用可能</div>
               <div>作品全体の解析・章をまたぐ比較</div><div class="no">利用不可</div><div class="yes">利用可能</div>
-              <div>クリーン再解析</div><div class="no">利用不可</div><div class="yes">利用可能</div>
               <div>文体記憶の高度な蓄積・比較</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>解析結果の学習データを書き出す</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>作品全体をクリーン再解析</div><div class="no">利用不可</div><div class="yes">利用可能</div>
             </div>
 
-            <h3 id="trial-limits">体験版の作品数と保存場所</h3>
-            <div class="admonition warning">
-              <strong>同じ親フォルダ内で最大3作品</strong>
+            <h3 id="trial-limits">Lite版で使える機能</h3>
+            <div class="admonition info">
+              <strong>執筆・管理・入出力は通常版と同じ</strong>
               <p>
-                同じ親フォルダ内に作成できるNIGHTOVER作品は最大3件です。
-                同じ親フォルダ内に4件以上ある場合、そのフォルダ内の作品の読み込みも制限されます。
+                作品数を問わず作成・読み込みができ、保存先の変更、統計、縦書き、取り込み、
+                作品全体のtxt書き出し、自動句読点設定も通常版と同じように利用できます。
               </p>
             </div>
             <p>
-              作品数は同じ親フォルダ単位で判定します。
-              体験版ではデフォルト保存場所を変更できないため、作品を作成する場所も初期の保存先を使用します。
+              本文編集と保存、メモ、資料、検索、Git、復旧、内蔵ゲームにもLite版専用の制限はありません。
+              KAKURIYOによる解析、辞書・作品語の登録、採用・見送りの記録、学習データの書き出しは通常版で利用できます。
             </p>
 
             <h3 id="trial-policy">期限・文字数・データ互換性</h3>
             <ul>
-              <li>体験版に利用期限はありません。</li>
-              <li>本文の保存を禁止する制限はありません。</li>
-              <li>本文文字数による保存制限はありません。</li>
-              <li>話・章・選択中の話のtxt書き出しは利用できます。</li>
-              <li>体験版で作成した作品を製品版で開けます。</li>
-              <li>製品版で作成した作品も、作品数制限に抵触しなければ体験版で開けます。</li>
-              <li>Trial / Fullで本文や作品フォルダの形式を分けません。</li>
+              <li>Lite版に利用期限はありません。</li>
+              <li>本文の保存や文字数にLite版専用の制限はありません。</li>
+              <li>Lite版と通常版で、作品フォルダや設定の形式は変わりません。</li>
+              <li>Lite版で作成した作品を通常版で開けます。</li>
+              <li>通常版で作成した作品もLite版で開けます。</li>
+              <li>旧体験版で保存した作品や設定も、そのまま利用できます。</li>
             </ul>
             <p>
-              製品版で使った縦書き設定や解析データを含む作品を体験版で開いても、
-              制限対象の設定やデータを削除・変換しません。製品版で開き直すと再び利用できます。
+              Lite版は、作品内に保存されたKAKURIYOの状態・解析キャッシュ・作品語ファイルを読み込んだり、削除や上書きをしたりしません。
+              通常版で開き直すと、保存済みのKAKURIYOデータを引き続き利用できます。
             </p>
           </section>
 
           <section v-if="activePage === 'terms'" id="terms" class="doc-section">
             <p>
               この利用規約は、ACMが提供するNIGHTOVERの利用条件を定めるものです。
-              BOOTH、イベント会場、そのほか提供者が認めた方法で取得した体験版・製品版に適用されます。
+              BOOTH、イベント会場、そのほか提供者が認めた方法で取得したLite版・通常版に適用されます。
             </p>
             <p>
               <strong>制定日:</strong> 2026年7月26日<br />
@@ -3064,7 +3060,7 @@ watch(
             <h3 id="terms-scope">第1条　適用</h3>
             <p>
               本規約は、ACM（以下「提供者」）が提供するWindows向け執筆ソフト「NIGHTOVER」
-              （体験版、製品版および付属データを含み、以下「本ソフト」）の利用条件を定めるものです。
+              （Lite版、通常版および付属データを含み、以下「本ソフト」）の利用条件を定めるものです。
             </p>
             <p>
               本規約は、BOOTH、イベント会場、そのほか提供者が認めた方法で取得した本ソフトに適用されます。
@@ -3072,7 +3068,7 @@ watch(
             </p>
 
             <h3 id="terms-license">第2条　ライセンス</h3>
-            <p>本ソフトの製品版は、1人につき1ライセンスを必要とします。</p>
+            <p>本ソフトの通常版は、1人につき1ライセンスを必要とします。</p>
             <p>
               ライセンスを取得した本人は、本人が所有または管理する複数のWindows PCへ本ソフトをインストールできます。
               PCの台数による追加ライセンスは必要ありません。
@@ -3119,7 +3115,7 @@ watch(
               <li>本ソフトやインストーラーを第三者へ再配布、販売、貸与または譲渡する行為</li>
               <li>ライセンスを複数人で共用する行為</li>
               <li>第三者が自由にダウンロードまたは使用できる場所へ本ソフトを置く行為</li>
-              <li>体験版の制限やライセンス管理を回避する行為</li>
+              <li>Lite版の制限やライセンス管理を回避する行為</li>
               <li>不正利用や再配布を目的として本ソフトを解析、改変する行為</li>
               <li>本ソフトの著作権表示や識別情報を削除する行為</li>
               <li>法令または公序良俗に反する目的で本ソフトを使用する行為</li>
@@ -3171,7 +3167,7 @@ watch(
             <p>提供者は、本ソフトの機能、仕様、動作環境または提供方法を変更することがあります。</p>
             <p>
               不具合修正、機能追加、アップデートおよび利用者サポートが、将来にわたって継続されることを保証するものではありません。
-              大きな機能変更を伴う新しい製品版については、別の商品として提供する場合があります。
+              大きな機能変更を伴う新しい通常版については、別の商品として提供する場合があります。
             </p>
 
             <h3 id="terms-refunds">第12条　返金</h3>
@@ -3185,7 +3181,7 @@ watch(
               <li>本規約や機能説明を確認せずに購入した場合</li>
             </ul>
             <p>
-              ただし、重複決済、配布ファイルの破損、製品版を正常に提供できない場合、
+              ただし、重複決済、配布ファイルの破損、通常版を正常に提供できない場合、
               そのほか提供者または販売サービス側に原因がある場合は、状況を確認したうえで交換または返金に対応します。
             </p>
             <p>BOOTHを通じて購入した場合、決済や返金手続きにはBOOTHの規約および手続きも適用されます。</p>
@@ -3791,6 +3787,10 @@ button {
   background: #f2bc6c;
   color: #251b0d;
   font-weight: 700;
+}
+
+.docs-content code.executable-name {
+  white-space: nowrap;
 }
 
 .docs-content code.save-path-code {
