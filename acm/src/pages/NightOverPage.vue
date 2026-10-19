@@ -84,7 +84,7 @@ const navGroups: NavGroup[] = [
   {
     label: 'KAKURIYO（通常版）',
     items: [
-      { id: 'kakuriyo', label: 'KAKURIYO 概要', keywords: '解析 支援 概要 セクション window' },
+      { id: 'kakuriyo', label: 'KAKURIYO 概要', keywords: '解析 支援 概要 セクション 内蔵 MeCab 解析方式 導入 辞書 接続テスト' },
       { id: 'kakuriyo-radar', label: '文体レーダーと傾向', keywords: '文体 レーダー 会話 名詞 動詞 描写 接続 作品語 文末 反復 傾向' },
       { id: 'kakuriyo-review', label: '要確認・記憶・反復・学習', keywords: '要確認 記憶 作品語 一般語 採用 見送り 反復 学習' },
       { id: 'kakuriyo-update', label: '解析の更新', keywords: '更新 現在話 クリーン 再解析 保存データ 失敗 バージョン' },
@@ -461,10 +461,28 @@ const searchIndex: SearchEntry[] = [
     text: '未保存 下書き dirty saved manuscript 保存本文 優先 現在話 章 作品 基本解析 通常版専用',
   },
   {
+    page: 'kakuriyo',
+    headingId: 'analysis-mode',
+    title: '内蔵解析とMeCabの切り替え',
+    text: '解析方式 内蔵解析 MeCab モード 保存済み 結果 読み込み 切り替え 再解析なし 更新 現在話 レーダー 通常版専用 別途導入 非同梱',
+  },
+  {
+    page: 'kakuriyo',
+    headingId: 'mecab-setup',
+    title: 'MeCabの導入と接続テスト',
+    text: '公式 Windows 32bit mecab-0.996.exe Google Code アーカイブ インストール IPA IPADIC UniDic UTF-8 SHIFT-JIS EUC-JP PATH 自動検出 検出候補 mecab.exe 辞書フォルダー 空欄 sys.dic 接続テスト 適用 エラー',
+  },
+  {
     page: 'kakuriyo-radar',
     headingId: 'radar-eight-axes',
     title: '文体レーダーの8軸',
     text: '会話 名詞 動詞 描写 接続 作品語 文末 反復 現在話 章平均 作品平均 高い傾向',
+  },
+  {
+    page: 'kakuriyo-radar',
+    headingId: 'radar-scale',
+    title: 'レーダーの尺度の見方',
+    text: '尺度 0 100 25 50 目安 固定 換算 指数 比較 自動拡大 文末 小さい 頭打ち 点数 割合 反復 密度',
   },
   {
     page: 'kakuriyo-radar',
@@ -716,7 +734,7 @@ const searchIndex: SearchEntry[] = [
     page: 'editions',
     headingId: 'edition-kakuriyo',
     title: 'KAKURIYOは通常版専用',
-    text: 'KAKURIYO Lite版 利用不可 解析ボタン 非表示 通常版専用 現在話 基本解析 概要 要確認 傾向 反復 採用 見送り ミュート 一般語 作品語 更新 章平均 作品平均 文体レーダー 作品全体 クリーン再解析 文体記憶 feedback corpus 学習データ 書き出し',
+    text: 'KAKURIYO Lite版 利用不可 解析ボタン 非表示 通常版専用 現在話 基本解析 内蔵解析 MeCab 解析方式 概要 要確認 傾向 反復 採用 見送り 一般語 作品語 更新 章平均 作品平均 文体レーダー 作品全体 クリーン再解析 文体記憶',
   },
   {
     page: 'editions',
@@ -869,11 +887,14 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
   kakuriyo: [
     { id: 'support-entry', label: '開き方' },
     { id: 'support-sections', label: '表示セクション' },
+    { id: 'analysis-mode', label: '解析方式の切り替え' },
+    { id: 'mecab-setup', label: 'MeCabの導入' },
     { id: 'analysis-source', label: '解析対象' },
     { id: 'support-readonly', label: '読み取り専用' },
   ],
   'kakuriyo-radar': [
     { id: 'radar-eight-axes', label: '8つの軸' },
+    { id: 'radar-scale', label: '尺度の見方' },
     { id: 'radar-comparison', label: '比較の読み方' },
     { id: 'voice-trends', label: '傾向' },
   ],
@@ -2189,6 +2210,56 @@ watch(
               エンジン・データ・各スキーマのバージョン、互換性、要確認件数、現在の文書キーを表示します。
             </p>
 
+            <h3 id="analysis-mode">内蔵解析とMeCabの切り替え</h3>
+            <p>
+              KAKURIYO画面上部の「解析方式」から、「内蔵解析」と「MeCab」を選べます。
+              内蔵解析は追加のインストールなしで使用できます。MeCabを使う場合は、MeCab本体と辞書を別途導入してください。
+              NIGHTOVERにはMeCab本体・DLL・辞書を同梱せず、自動ダウンロードも行いません。
+            </p>
+            <p>
+              方式を変えて「適用」しても、新しい本文解析は始まりません。切替先に有効な保存済み結果があれば、
+              その結果を読み込んでレーダーなどへ表示します。結果がない、または古い場合は未解析・再解析待ちになります。
+              新しく解析するときは「更新」、現在の話だけなら「現在話」を押します。
+            </p>
+            <p>
+              解析結果と判断履歴・文体記憶は方式ごとに保持し、登録した一般語・作品語・作品記憶は共有します。
+              語の区切りや品詞の判定が異なるため、同じ本文でもレーダーや候補は一致するとは限りません。
+            </p>
+
+            <h3 id="mecab-setup">MeCabの導入と接続テスト</h3>
+            <ol>
+              <li>
+                <a href="https://taku910.github.io/mecab/#install" target="_blank" rel="noopener">MeCab公式サイト</a>から、
+                公式Windows版の<code>mecab-0.996.exe</code>（32bit・IPA辞書付き）を取得し、インストールします。
+                公式サイトの配布先から取得できない場合は、
+                <a href="https://code.google.com/archive/p/mecab/downloads" target="_blank" rel="noopener">旧公式配布のGoogle Code保存アーカイブ</a>を利用できます。
+                辞書の文字コードはUTF-8を選んでください。
+              </li>
+              <li>
+                KAKURIYOの「解析方式」を開き、「MeCab」を選びます。実行ファイル欄が空なら、PATHと一般的な導入先を検索します。
+                候補が1件なら自動入力され、複数なら「検出候補」から選べます。見つからない場合は「参照…」から<code>mecab.exe</code>を選びます。
+                入力済みのパスは上書きしません。
+              </li>
+              <li>
+                辞書形式を「IPADIC」にし、辞書フォルダーは空欄のまま「接続テスト」を押します。
+                成功すると、使用する辞書フォルダーのパスが欄に入ります。別途用意したUniDicを使う場合は「UniDic」を選びます。
+              </li>
+              <li>
+                接続成功を確認して「適用」を押します。実行ファイルや辞書の指定を変えた場合は、もう一度接続テストを行ってください。
+                設定はこのPCに保存され、作品フォルダーへMeCabや辞書をコピーすることはありません。
+              </li>
+            </ol>
+            <div class="admonition note">
+              <strong>辞書欄が空・接続に失敗する場合</strong>
+              <p>
+                接続テスト前の辞書欄が空でも、未インストールとは限りません。
+                既定辞書を確認できない場合は、MeCabの導入先にある<code>dic/ipadic</code>など、
+                <code>sys.dic</code>を含むフォルダーを指定して再度テストしてください。
+                UTF-8・SHIFT-JIS・EUC-JPに対応し、UTF-16には対応しません。
+                エラー時に内蔵解析へ自動で切り替わることはありません。
+              </p>
+            </div>
+
             <h3 id="analysis-source">解析対象になる本文</h3>
             <p>現在話の解析では、次の順序で本文を選びます。</p>
             <ol>
@@ -2226,7 +2297,7 @@ watch(
                   loading="lazy"
                 />
               </a>
-              <figcaption>実機画面 — 現在話・章平均・全話平均を重ねた文体レーダー</figcaption>
+              <figcaption>旧版の実機画面 — 現在話・章平均・全話平均の比較。現在の尺度は下記「尺度の見方」を参照してください。</figcaption>
             </figure>
 
             <h3 id="radar-eight-axes">8つの軸</h3>
@@ -2235,12 +2306,24 @@ watch(
               <div><strong>会話</strong></div><div>本文全体に対する会話部分の現れ方。地の文との配分を確認します。</div>
               <div><strong>名詞</strong></div><div>名詞を中心とした語の使われ方。説明・情報提示の密度を見る手掛かりです。</div>
               <div><strong>動詞</strong></div><div>動作や状態変化を表す語の現れ方。文章の動き方を比較します。</div>
-              <div><strong>描写</strong></div><div>情景、状態、感覚などを描く表現の傾向をまとめます。</div>
-              <div><strong>接続</strong></div><div>文や節をつなぐ表現の使われ方を確認します。</div>
+              <div><strong>描写</strong></div><div>形容詞・副詞などの割合に重みを付け、情景や状態を描く語の使われ方を比較します。</div>
+              <div><strong>接続</strong></div><div>助詞・助動詞の割合をもとに、語や文をつなぐ表現の使われ方を比較します。接続詞だけを数える軸ではありません。</div>
               <div><strong>作品語</strong></div><div>作品専用辞書や記憶に登録された固有の語が文章へ現れる傾向を確認できます。</div>
               <div><strong>文末</strong></div><div>語尾や文末表現の偏り、常体・敬体を含む終わり方の特徴を確認します。</div>
               <div><strong>反復</strong></div><div>語尾、近い語、語句、比喩、段落リズムなどの繰り返し傾向です。</div>
             </div>
+
+            <h3 id="radar-scale">尺度の見方</h3>
+            <p>
+              グラフは中心が0、外周が100で、目盛りは25刻みです。話や平均の値に合わせて自動拡大はしません。
+              軸ごとに決めた目安の値を50へ換算し、小さな値の差も、目安を超えた値の差も読み取れるようにしています。
+              50は作品全体の平均や、目標点を表す数値ではありません。
+            </p>
+            <p>
+              数値は割合や件数をそのまま表したものではなく、文体を比べるために換算した値です。
+              たとえば反復は、1,000語あたりの指摘数と段落の単調さから密度を求め、密度12で50、24で約67へ換算します。
+              各軸の尺度は内蔵解析・MeCab・話・章・作品で共通です。
+            </p>
             <div class="admonition note">
               <strong>レーダーの見方</strong>
               <p>
@@ -2252,8 +2335,8 @@ watch(
             <div class="spec-table two-cols">
               <div class="table-head">系列</div><div class="table-head">意味</div>
               <div><strong>現在話</strong></div><div>現在選択している話の解析結果。未保存の下書きがあれば下書きを優先します。</div>
-              <div><strong>章平均</strong></div><div>現在話が属する章の各話をまとめた基準です。</div>
-              <div><strong>作品平均</strong></div><div>作品内の全話をまとめた基準です。</div>
+              <div><strong>章平均</strong></div><div>同じ章の、解析済みの各話を等しい重みで平均します。換算前の数値で平均を求め、共通尺度へ換算します。</div>
+              <div><strong>作品平均</strong></div><div>作品内の解析済みの各話を同じ方法で平均します。「更新」で未解析・変更済みの話を反映できます。</div>
             </div>
             <p>
               現在話だけ大きく異なる軸がある場合、場面転換や演出による意図的な差なのか、
@@ -2367,11 +2450,15 @@ watch(
               <div class="table-head">操作</div><div class="table-head">処理</div>
               <div><strong>更新</strong></div><div>変更のある本文を作品順に反映し、章・作品の集計まで更新します。通常版で利用できます。</div>
               <div><strong>現在話</strong></div><div>選択中の話だけを現在の本文で再解析します。通常版で利用できます。</div>
-              <div><strong>クリーン再解析</strong></div><div>保存済み解析キャッシュを削除し、作品全体を最初から再解析します。通常版で利用できます。</div>
+              <div><strong>クリーン再解析</strong></div><div>現在の解析方式の保存済み解析キャッシュを削除し、作品全体を最初から再解析します。</div>
             </div>
             <p>
               作品を開いた直後に重い全話解析を始めるのではなく、KAKURIYO画面を開いた時点で現在話から必要に応じて作成します。
               話を切り替えた場合も、その話のキャッシュが必要になった時点で遅延更新します。
+            </p>
+            <p>
+              解析方式を切り替えた直後は、切替先の保存済み結果を読み込むだけで、新しい本文解析は始めません。
+              初めて使う方式や辞書で解析するときは、通常の「更新」で進められます。切り替えのたびにクリーン再解析を行う必要はありません。
             </p>
 
             <h3 id="cache-invalidation">解析結果を更新する条件</h3>
@@ -2395,10 +2482,12 @@ watch(
               <div><code>manifest/kakuriyo/project-memory.tsv</code></div><div>正規表記、別名、読みなどの記憶</div>
               <div><code>manifest/kakuriyo/cache/analysis/</code></div><div>話ごとの解析キャッシュ</div>
               <div><code>manifest/kakuriyo/refresh-progress.json</code></div><div>背景更新の進行状態</div>
+              <div><code>manifest/kakuriyo/backends/&lt;key&gt;/</code></div><div>MeCabの設定・辞書ごとに分けた解析結果、判断履歴、文体記憶、更新の進行状態</div>
             </div>
             <p>
               「クリーン再解析」で削除するのは再生成可能な解析キャッシュです。
               作品語、記憶、採用・見送りなどの永続状態とは分けて扱います。
+              別の解析方式の結果も削除しません。MeCabの実行ファイルや辞書のパスは作品とは別に、このPCの設定へ保存します。
             </p>
 
             <h3 id="fail-soft">解析に失敗した場合</h3>
@@ -3006,8 +3095,9 @@ watch(
               <div class="table-head">機能</div><div class="table-head">Lite版</div><div class="table-head">通常版</div>
               <div>支援画面を開く</div><div class="no">利用不可</div><div class="yes">利用可能</div>
               <div>現在話の基本解析</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>内蔵解析とMeCabの切り替え</div><div class="no">利用不可</div><div class="yes">利用可能（MeCabは別途導入）</div>
               <div>概要・要確認・傾向・反復</div><div class="no">利用不可</div><div class="yes">利用可能</div>
-              <div>採用・見送り・ミュート</div><div class="no">利用不可</div><div class="yes">利用可能</div>
+              <div>採用・見送り</div><div class="no">利用不可</div><div class="yes">利用可能</div>
               <div>一般語・作品語の登録と解除</div><div class="no">利用不可</div><div class="yes">利用可能</div>
               <div>資料から作品語への自動同期</div><div class="no">利用不可</div><div class="yes">利用可能</div>
               <div>現在話だけを更新</div><div class="no">利用不可</div><div class="yes">利用可能</div>
@@ -3015,7 +3105,6 @@ watch(
               <div>文体レーダーの章平均・作品平均比較</div><div class="no">利用不可</div><div class="yes">利用可能</div>
               <div>作品全体の解析・章をまたぐ比較</div><div class="no">利用不可</div><div class="yes">利用可能</div>
               <div>文体記憶の高度な蓄積・比較</div><div class="no">利用不可</div><div class="yes">利用可能</div>
-              <div>解析結果の学習データを書き出す</div><div class="no">利用不可</div><div class="yes">利用可能</div>
               <div>作品全体をクリーン再解析</div><div class="no">利用不可</div><div class="yes">利用可能</div>
             </div>
 
@@ -3029,7 +3118,7 @@ watch(
             </div>
             <p>
               本文編集と保存、メモ、資料、検索、Git、復旧、内蔵ゲームにもLite版専用の制限はありません。
-              KAKURIYOによる解析、辞書・作品語の登録、採用・見送りの記録、学習データの書き出しは通常版で利用できます。
+              KAKURIYOによる解析、辞書・作品語の登録、採用・見送りの記録、文体の比較は通常版で利用できます。
             </p>
 
             <h3 id="trial-policy">期限・文字数・データ互換性</h3>
