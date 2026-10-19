@@ -17,8 +17,7 @@ export const nightOverProductUrl = 'https://alushop.booth.pm/items/8656265'
 export const nightOverReleases: NightOverRelease[] = [
   {
     version: '1.4.7',
-    title: 'MeCabの導入ボタンを整理',
-    summary: '解析方式画面の導入ボタンを「MeCab 公式サイト」に統一しました。',
+    title: '形態素解析エンジンの精度を上げました。',
   },
   {
     version: '1.4.6',
