@@ -16,6 +16,31 @@ export const nightOverProductUrl = 'https://alushop.booth.pm/items/8656265'
 // 新しいバージョンを先頭へ追加すると、リリース情報へ新しい順で表示されます。
 export const nightOverReleases: NightOverRelease[] = [
   {
+    version: '1.4.7',
+    title: 'MeCabの導入ボタンを整理',
+    summary: '解析方式画面の導入ボタンを「MeCab 公式サイト」に統一しました。',
+  },
+  {
+    version: '1.4.6',
+    title: '動詞と反復語の判定を改善',
+    summary: '「されている」「話してる」などの語の区切りを見直し、動詞や反復候補の判定を改善しました。',
+  },
+  {
+    version: '1.4.5',
+    title: '丁寧表現と文末の分類を改善',
+    summary: '丁寧表現・説明表現・サ変語幹の区切りを補い、文末の数え漏れを修正しました。',
+  },
+  {
+    version: '1.4.4',
+    title: '否定・進行・受身の分類を改善',
+    summary: '内蔵解析で否定・進行・受身などの語の区切りと品詞分類を見直しました。',
+  },
+  {
+    version: '1.4.3',
+    title: '動詞・形容詞の活用語尾を改善',
+    summary: '内蔵解析で動詞・形容詞と「た・て・ない・ます」などの語尾を分けて数えるようにしました。',
+  },
+  {
     version: '1.4.2',
     title: '内蔵解析の辞書と説明を改善',
     summary: '接続詞・副詞・連体詞などの辞書を補い、一部の語の品詞分類を修正しました。',

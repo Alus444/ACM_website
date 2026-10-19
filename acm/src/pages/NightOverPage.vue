@@ -470,7 +470,7 @@ const searchIndex: SearchEntry[] = [
     page: 'kakuriyo',
     headingId: 'mecab-setup',
     title: 'MeCabの導入と接続テスト',
-    text: '公式 Windows 32bit mecab-0.996.exe Google Code アーカイブ インストール IPA IPADIC UniDic UTF-8 SHIFT-JIS EUC-JP PATH 自動検出 検出候補 mecab.exe 辞書フォルダー 空欄 sys.dic 接続テスト 適用 エラー',
+    text: 'MeCab 公式サイト Windows 32bit mecab-0.996.exe Google Code アーカイブ インストール IPA IPADIC UniDic UTF-8 SHIFT-JIS EUC-JP PATH 自動検出 検出候補 mecab.exe 辞書フォルダー 空欄 sys.dic 接続テスト 適用 エラー',
   },
   {
     page: 'kakuriyo-radar',
@@ -2227,9 +2227,13 @@ watch(
             </p>
 
             <h3 id="mecab-setup">MeCabの導入と接続テスト</h3>
+            <p>
+              「解析方式」画面の導入リンクは「MeCab 公式サイト」の1つです。NIGHTOVER内でダウンロードやインストールは行いません。
+            </p>
             <ol>
               <li>
-                <a href="https://taku910.github.io/mecab/#install" target="_blank" rel="noopener">MeCab公式サイト</a>から、
+                「解析方式」画面の
+                <a href="https://taku910.github.io/mecab/#install" target="_blank" rel="noopener">MeCab 公式サイト</a>から、
                 公式Windows版の<code>mecab-0.996.exe</code>（32bit・IPA辞書付き）を取得し、インストールします。
                 公式サイトの配布先から取得できない場合は、
                 <a href="https://code.google.com/archive/p/mecab/downloads" target="_blank" rel="noopener">旧公式配布のGoogle Code保存アーカイブ</a>を利用できます。
@@ -2308,7 +2312,7 @@ watch(
               <div><strong>動詞</strong></div><div>動作や状態変化を表す語の現れ方。文章の動き方を比較します。</div>
               <div><strong>描写</strong></div><div>形容詞・副詞などの割合に重みを付け、情景や状態を描く語の使われ方を比較します。</div>
               <div><strong>接続</strong></div><div>助詞・助動詞の割合をもとに、語や文をつなぐ表現の使われ方を比較します。接続詞だけを数える軸ではありません。</div>
-              <div><strong>作品語</strong></div><div>作品専用辞書や記憶に登録された固有の語が文章へ現れる傾向を確認できます。</div>
+              <div><strong>作品語</strong></div><div>登録した作品語・記憶に加え、「こと」「もの」などを除く2文字以上の既知の名詞が現れる割合です。</div>
               <div><strong>文末</strong></div><div>語尾や文末表現の偏り、常体・敬体を含む終わり方の特徴を確認します。</div>
               <div><strong>反復</strong></div><div>語尾、近い語、語句、比喩、段落リズムなどの繰り返し傾向です。</div>
             </div>
@@ -2453,8 +2457,8 @@ watch(
               <div><strong>クリーン再解析</strong></div><div>現在の解析方式の保存済み解析キャッシュを削除し、作品全体を最初から再解析します。</div>
             </div>
             <p>
-              作品を開いた直後に重い全話解析を始めるのではなく、KAKURIYO画面を開いた時点で現在話から必要に応じて作成します。
-              話を切り替えた場合も、その話のキャッシュが必要になった時点で遅延更新します。
+              作品やKAKURIYO画面を開く、話を切り替える操作では、保存済みの解析結果を読み込みます。
+              新しい本文解析は「更新」または「現在話」から開始します。
             </p>
             <p>
               解析方式を切り替えた直後は、切替先の保存済み結果を読み込むだけで、新しい本文解析は始めません。
