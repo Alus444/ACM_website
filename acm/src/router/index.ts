@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomePage from '../pages/HomePage.vue'
 import BoothPage from '../pages/BoothPage.vue'
@@ -52,14 +53,26 @@ const router = createRouter({
       },
     },
   ],
-  scrollBehavior(to) {
-    if (to.hash) return { el: to.hash, top: 84, behavior: 'smooth' }
+  async scrollBehavior(to) {
+    if (to.hash) {
+      await nextTick()
+      if (router.currentRoute.value.fullPath !== to.fullPath) return false
+      const target = document.getElementById(to.hash.slice(1))
+      if (!target) return false
+      let ancestor: HTMLElement | null = target
+      while (ancestor) {
+        if (ancestor instanceof HTMLDetailsElement) ancestor.open = true
+        ancestor = ancestor.parentElement
+      }
+      return { el: target, top: 84, behavior: 'smooth' }
+    }
     if (to.path.startsWith('/nightover') || to.path.startsWith('/vhs-simulator')) return false
     return { top: 0 }
   },
 })
 
 router.afterEach((to) => {
+  if (to.meta.standalone) return
   document.title = typeof to.meta.title === 'string' ? to.meta.title : 'ACM'
 })
 

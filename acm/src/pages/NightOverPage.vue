@@ -34,6 +34,8 @@ const route = useRoute()
 const router = useRouter()
 let previousBodyOverflow = ''
 let lightboxTrigger: HTMLElement | null = null
+let lightboxFocusVersion = 0
+let isUnmounted = false
 
 const navGroups: NavGroup[] = [
   {
@@ -143,6 +145,26 @@ const nextPage = computed(() => allItems[currentPageIndex.value + 1])
 const nightOverExecutableName = `NIGHTOVER_v${nightOverCurrentVersion.replace(/\./g, '_')}.exe`
 const nightOverLiteExecutableName = `NIGHTOVER_Lite_v${nightOverCurrentVersion.replace(/\./g, '_')}.exe`
 
+const termsSections: NavItem[] = [
+  { id: 'terms-scope', label: '適用', keywords: '利用規約 Windows 執筆ソフト Lite版 通常版 付属データ BOOTH イベント会場 インストール 使用 同意' },
+  { id: 'terms-license', label: 'ライセンス', keywords: '1人1ライセンス 本人 所有 管理 複数 Windows PC 台数 追加不要' },
+  { id: 'terms-organization', label: '法人・サークルでの利用', keywords: '法人 団体 サークル 組織 利用者数 共用不可 退職 担当者交代 利用者変更不可 引き継ぎ不可 再割り当て' },
+  { id: 'terms-works', label: '作品の利用', keywords: '小説 文章 設定資料 権利 利用者 商用 同人誌 電子書籍 商業出版 投稿サイト コンテスト 業務 営利 非営利 クレジット不要 利用報告不要' },
+  { id: 'terms-software-rights', label: '本ソフトの権利', keywords: '付属データ アイコン 画面デザイン ドキュメント 著作権 提供者 権利者 購入 取得 譲渡' },
+  { id: 'terms-prohibited', label: '禁止事項', keywords: '再配布 販売 貸与 譲渡 ライセンス 共用 ダウンロード Lite版 制限回避 不正利用 解析 改変 著作権表示 識別情報 削除 法令 公序良俗 権利侵害' },
+  { id: 'terms-data', label: 'データと外部送信', keywords: '本文 作品情報 設定 利用状況 外部送信なし ローカル PC Git 外部サーバー 送信しない 外部リンク プライバシーポリシー' },
+  { id: 'terms-support-information', label: '執筆支援情報', keywords: 'KAKURIYO 統計 初出チェック 反復表現 検出 参考情報 正解 品質 評価 権利関係 投稿先サービス 規則 適合 保証 採用 判断' },
+  { id: 'terms-saving', label: '保存とバックアップ', keywords: '自動保存 データ 復元 保証 作品フォルダ ストレージ コピー 定期的 バックアップ' },
+  { id: 'terms-environment', label: '動作環境', keywords: '対応環境 Windows Git インストール フォント 外部環境 変更 一部機能' },
+  { id: 'terms-updates', label: '更新と提供内容', keywords: '機能 仕様 動作環境 提供方法 変更 不具合修正 機能追加 アップデート 利用者サポート 継続 保証 通常版 別商品' },
+  { id: 'terms-refunds', label: '返金', keywords: 'ダウンロード商品 購入者都合 返品 交換 返金 原則不可 重複決済 ファイル破損 製品提供 BOOTH 決済 手続き' },
+  { id: 'terms-liability', label: '保証と責任', keywords: '動作保証 不具合 対応環境 損害賠償 通常過失 故意 重大な過失 購入金額 上限' },
+  { id: 'terms-termination', label: '利用停止', keywords: '規約違反 ライセンス終了 使用停止 PC 複製 削除 作品データ 保持' },
+  { id: 'terms-changes', label: '規約の変更', keywords: '必要性 相当性 合理的 変更内容 適用開始日 リファレンスサイト BOOTH 商品ページ 案内' },
+  { id: 'terms-law', label: '準拠法', keywords: '日本法 本ソフト 本規約 問題 利用者 提供者 話し合い 解決' },
+  { id: 'terms-contact', label: '提供者・お問い合わせ', keywords: 'ACM 販売場所 BOOTH イベント会場 メッセージ機能 連絡先' },
+]
+
 const searchIndex: SearchEntry[] = [
   {
     page: 'intro',
@@ -172,36 +194,12 @@ const searchIndex: SearchEntry[] = [
       ...(release.sections ?? []).flatMap((section) => [section.title, ...section.items]),
     ].join(' '),
   })),
-  {
+  ...termsSections.map((section) => ({
     page: 'terms',
-    headingId: 'terms-license',
-    title: 'ライセンス',
-    text: '1人1ライセンス 本人 所有 管理 複数 Windows PC 法人 団体 サークル 利用者数 共用不可 利用者変更不可 引き継ぎ不可',
-  },
-  {
-    page: 'terms',
-    headingId: 'terms-works',
-    title: '作品の利用と権利',
-    text: '小説 文章 設定資料 権利 利用者 商用 同人誌 電子書籍 商業出版 投稿サイト コンテスト クレジット不要',
-  },
-  {
-    page: 'terms',
-    headingId: 'terms-data',
-    title: 'データと外部送信',
-    text: '本文 作品情報 設定 利用状況 外部送信なし ローカル PC Git 外部サーバー 送信しない',
-  },
-  {
-    page: 'terms',
-    headingId: 'terms-refunds',
-    title: '返金',
-    text: 'ダウンロード商品 購入者都合 返品 交換 返金 原則不可 重複決済 ファイル破損 製品提供',
-  },
-  {
-    page: 'terms',
-    headingId: 'terms-liability',
-    title: '保証と責任',
-    text: '動作保証 不具合 対応環境 損害賠償 通常過失 故意 重大な過失 購入金額',
-  },
+    headingId: section.id,
+    title: section.label,
+    text: section.keywords,
+  })),
   {
     page: 'home',
     headingId: 'home-screen',
@@ -785,18 +783,7 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
   releases: [
     { id: 'release-history', label: '更新履歴' },
   ],
-  terms: [
-    { id: 'terms-scope', label: '適用' },
-    { id: 'terms-license', label: 'ライセンス' },
-    { id: 'terms-works', label: '作品と権利' },
-    { id: 'terms-prohibited', label: '禁止事項' },
-    { id: 'terms-data', label: 'データと外部送信' },
-    { id: 'terms-saving', label: '保存・動作環境・更新' },
-    { id: 'terms-refunds', label: '返金' },
-    { id: 'terms-liability', label: '保証と責任' },
-    { id: 'terms-changes', label: '利用停止と規約変更' },
-    { id: 'terms-contact', label: '準拠法と提供者' },
-  ],
+  terms: termsSections,
   workspace: [
     { id: 'editor-screen', label: 'エディタ画面' },
     { id: 'focus-mode', label: '集中モード' },
@@ -982,22 +969,25 @@ const kakuriyoSections = [
 
 function navigateTo(id: string) {
   const path = id === 'intro' ? '/nightover' : `/nightover/${id}`
-  if (router.currentRoute.value.path !== path) router.push(path)
+  if (route.fullPath !== path) router.push(path)
   query.value = ''
   closeMobileMenu()
 }
 
-async function openSearchResult(result: SearchEntry) {
-  const path = result.page === 'intro' ? '/nightover' : `/nightover/${result.page}`
-  if (router.currentRoute.value.path !== path) await router.push(path)
+function openSearchResult(result: SearchEntry) {
+  navigateToHeading(result.page, result.headingId)
+}
+
+function navigateToHeading(page: string, id: string) {
+  const path = page === 'intro' ? '/nightover' : `/nightover/${page}`
+  const destination = { path, hash: `#${id}` }
   query.value = ''
   closeMobileMenu()
-  await nextTick()
-  jumpToHeading(result.headingId)
+  void router.push(destination)
 }
 
 function jumpToHeading(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  navigateToHeading(activePage.value, id)
 }
 
 function scrollToTop() {
@@ -1013,22 +1003,38 @@ function handleScreenshotClick(event: MouseEvent) {
   if (!link || !image) return
 
   event.preventDefault()
+  if (lightboxSrc.value) return
   lightboxTrigger = link
+  link.blur()
+  const focusVersion = ++lightboxFocusVersion
   lightboxSrc.value = link.href
   lightboxAlt.value = image.alt
   lightboxCaption.value = link.closest('figure')?.querySelector('figcaption')?.textContent?.trim() ?? ''
   previousBodyOverflow = document.body.style.overflow
   document.body.style.overflow = 'hidden'
-  nextTick(() => lightboxCloseButton.value?.focus())
+  nextTick(() => {
+    if (!isUnmounted && lightboxSrc.value && focusVersion === lightboxFocusVersion) {
+      lightboxCloseButton.value?.focus()
+    }
+  })
 }
 
-function closeLightbox() {
+function closeLightbox(restoreFocus = true) {
+  const focusVersion = ++lightboxFocusVersion
   if (!lightboxSrc.value) return
+  const trigger = lightboxTrigger
+  lightboxTrigger = null
   lightboxSrc.value = ''
   lightboxAlt.value = ''
   lightboxCaption.value = ''
   document.body.style.overflow = previousBodyOverflow
-  nextTick(() => lightboxTrigger?.focus())
+  if (restoreFocus) {
+    nextTick(() => {
+      if (!isUnmounted && focusVersion === lightboxFocusVersion && trigger?.isConnected) {
+        trigger.focus()
+      }
+    })
+  }
 }
 
 function closeMobileMenu() {
@@ -1056,9 +1062,16 @@ watch(menuOpen, () => {
 })
 
 function handleKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && lightboxSrc.value) {
-    event.preventDefault()
-    closeLightbox()
+  if (lightboxSrc.value) {
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      closeLightbox()
+    } else if (event.key === 'Tab') {
+      event.preventDefault()
+      lightboxCloseButton.value?.focus()
+    } else if ((event.ctrlKey || event.metaKey) && event.key.toLocaleLowerCase() === 'k') {
+      event.preventDefault()
+    }
     return
   }
 
@@ -1083,9 +1096,10 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  isUnmounted = true
+  closeLightbox(false)
   window.removeEventListener('keydown', handleKeydown)
   window.removeEventListener('resize', syncViewport)
-  document.body.style.overflow = previousBodyOverflow
   document.documentElement.classList.remove('nightover-docs-open')
   document.documentElement.classList.remove('nightover-nav-open')
 })
@@ -1093,6 +1107,7 @@ onBeforeUnmount(() => {
 watch(
   () => route.fullPath,
   () => {
+    closeLightbox(false)
     if (route.path !== '/nightover' && !route.path.startsWith('/nightover/')) return
     const page = route.params.page
     if (typeof page === 'string' && legacyPageAliases[page]) {
@@ -1112,7 +1127,7 @@ watch(
 </script>
 
 <template>
-  <div class="docs-site">
+  <div class="docs-site" :inert="!!lightboxSrc" :aria-hidden="lightboxSrc ? true : undefined">
     <header class="docs-header">
       <button class="header-brand" type="button" aria-label="NIGHTOVER ドキュメントトップへ" @click="navigateTo('intro')">
         <img src="/images/nightover/nightover.png" alt="" class="app-icon" />
@@ -3364,14 +3379,14 @@ watch(
           role="dialog"
           aria-modal="true"
           aria-label="スクリーンショットの拡大表示"
-          @click.self="closeLightbox"
+          @click.self="closeLightbox()"
         >
           <button
             ref="lightboxCloseButton"
             class="screenshot-lightbox__close"
             type="button"
             aria-label="拡大表示を閉じる"
-            @click="closeLightbox"
+            @click="closeLightbox()"
           >
             ×
           </button>

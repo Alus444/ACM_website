@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import InlineText from '../components/InlineText.vue'
 import {
   allVhsGlossaryTerms,
@@ -101,6 +101,7 @@ function meterInitialAlignment(position: number) {
 }
 
 const route = useRoute()
+const router = useRouter()
 const searchQuery = ref('')
 const mobileNavOpen = ref(false)
 const isMobileLayout = ref(false)
@@ -124,6 +125,7 @@ let comparisonLastHardSync = 0
 let reducedMotionQuery: MediaQueryList | undefined
 let previousBodyOverflow = ''
 let lightboxTrigger: HTMLElement | null = null
+let lightboxFocusVersion = 0
 
 const comparisonVideoVersion = '20260825-custom-r1'
 
@@ -412,22 +414,32 @@ function handleScreenshotClick(event: MouseEvent) {
     ?? figure?.querySelector<HTMLElement>('figcaption')
 
   event.preventDefault()
+  if (lightboxSrc.value) return
+  link.blur()
   lightboxTrigger = link
   lightboxSrc.value = link.href
   lightboxAlt.value = image?.alt ?? link.dataset.lightboxAlt ?? ''
   lightboxCaption.value = link.dataset.lightboxCaption ?? caption?.textContent?.trim() ?? ''
   previousBodyOverflow = document.body.style.overflow
   document.body.style.overflow = 'hidden'
-  nextTick(() => lightboxCloseButton.value?.focus())
+  const focusVersion = ++lightboxFocusVersion
+  nextTick(() => {
+    if (lightboxSrc.value && focusVersion === lightboxFocusVersion) lightboxCloseButton.value?.focus()
+  })
 }
 
-function closeLightbox() {
+function closeLightbox(restoreFocus = true) {
+  const focusVersion = ++lightboxFocusVersion
   if (!lightboxSrc.value) return
   lightboxSrc.value = ''
   lightboxAlt.value = ''
   lightboxCaption.value = ''
   document.body.style.overflow = previousBodyOverflow
-  nextTick(() => lightboxTrigger?.focus())
+  const trigger = lightboxTrigger
+  lightboxTrigger = null
+  if (restoreFocus) nextTick(() => {
+    if (trigger?.isConnected && focusVersion === lightboxFocusVersion) trigger.focus()
+  })
 }
 
 const activePage = computed(() => {
@@ -590,7 +602,7 @@ function resultPath(result: SearchResult) {
 }
 
 function jumpToHeading(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  void router.push({ path: route.path, query: route.query, hash: `#${id}` })
 }
 
 function scrollToTop() {
@@ -623,17 +635,17 @@ function syncViewport() {
   if (!isMobileLayout.value) mobileNavOpen.value = false
 }
 
-async function revealRouteTarget() {
-  if (!route.hash) return
-  await nextTick()
-  const target = document.querySelector(route.hash)
-  if (target instanceof HTMLDetailsElement) target.open = true
-}
-
 function onKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && lightboxSrc.value) {
-    event.preventDefault()
-    closeLightbox()
+  if (lightboxSrc.value) {
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      closeLightbox()
+    } else if (event.key === 'Tab') {
+      event.preventDefault()
+      lightboxCloseButton.value?.focus()
+    } else if (event.key === '/' || ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k')) {
+      event.preventDefault()
+    }
     return
   }
 
@@ -666,9 +678,10 @@ watch(activePage, (page) => {
 }, { immediate: true, flush: 'sync' })
 
 watch(() => route.fullPath, () => {
+  closeLightbox(false)
   closeTransientUi()
-  revealRouteTarget()
-})
+  if (!route.hash) window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+}, { flush: 'sync' })
 
 watch(mobileNavOpen, (open) => {
   document.documentElement.classList.toggle('vhs-nav-open', open && isMobileLayout.value)
@@ -678,7 +691,6 @@ onMounted(() => {
   document.documentElement.classList.add('vhs-docs-open')
   document.title = `${currentPage.value.label} | ACM VHS Simulator`
   syncViewport()
-  revealRouteTarget()
   reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
   prefersReducedMotion.value = reducedMotionQuery.matches
   reducedMotionQuery.addEventListener('change', onReducedMotionChange)
@@ -691,7 +703,7 @@ onUnmounted(() => {
   document.documentElement.classList.remove('vhs-docs-open')
   document.documentElement.classList.remove('vhs-nav-open')
   pauseComparison()
-  document.body.style.overflow = previousBodyOverflow
+  closeLightbox(false)
   reducedMotionQuery?.removeEventListener('change', onReducedMotionChange)
   window.removeEventListener('keydown', onKeydown)
   window.removeEventListener('resize', syncViewport)
@@ -699,7 +711,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="vhs-docs-shell">
+  <div class="vhs-docs-shell" :inert="!!lightboxSrc" :aria-hidden="lightboxSrc ? true : undefined">
     <header class="docs-header">
       <RouterLink class="brand" :to="pagePath('overview')" aria-label="ACM VHS Simulator リファレンストップへ" @click="closeTransientUi">
         <span class="brand-copy">
@@ -1176,14 +1188,14 @@ onUnmounted(() => {
           role="dialog"
           aria-modal="true"
           aria-label="スクリーンショットの拡大表示"
-          @click.self="closeLightbox"
+          @click.self="closeLightbox()"
         >
           <button
             ref="lightboxCloseButton"
             class="screenshot-lightbox__close"
             type="button"
             aria-label="拡大表示を閉じる"
-            @click="closeLightbox"
+            @click="closeLightbox()"
           >
             ×
           </button>
