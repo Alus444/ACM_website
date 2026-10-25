@@ -16,6 +16,11 @@ export const nightOverProductUrl = 'https://alushop.booth.pm/items/8656265'
 // 新しいバージョンを先頭へ追加すると、リリース情報へ新しい順で表示されます。
 export const nightOverReleases: NightOverRelease[] = [
   {
+    version: '1.6.4',
+    title: '画像を含む範囲の編集と話の選択を修正',
+    summary: '画像へのルビ・傍点の適用を防ぎ、本文と画像をまとめて選んだ場合は本文だけに傍点を付けるよう修正しました。画像の選択画面を閉じた後、意図せず別の話へ切り替わる操作を防ぎました。',
+  },
+  {
     version: '1.6.3',
     title: '画像の選択表示と章の色指定を改善',
     summary: '画像の選択を解除したとき、選択色が二段階で消える表示を修正しました。色の詳細画面でRGB／HSVの数値入力を切り替えられるようにしました。章の右クリック項目を「色ラベルを設定」に変更しました。',
