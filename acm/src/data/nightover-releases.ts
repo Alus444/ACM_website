@@ -16,6 +16,11 @@ export const nightOverProductUrl = 'https://alushop.booth.pm/items/8656265'
 // 新しいバージョンを先頭へ追加すると、リリース情報へ新しい順で表示されます。
 export const nightOverReleases: NightOverRelease[] = [
   {
+    version: '1.6.3',
+    title: '画像の選択表示と章の色指定を改善',
+    summary: '画像の選択を解除したとき、選択色が二段階で消える表示を修正しました。色の詳細画面でRGB／HSVの数値入力を切り替えられるようにしました。章の右クリック項目を「色ラベルを設定」に変更しました。',
+  },
+  {
     version: '1.6.2',
     title: '章の色ラベルを自由に指定',
     summary: '章の色ラベルを、カラーパレットやRGB値・HEXコードから選べるようにしました。',

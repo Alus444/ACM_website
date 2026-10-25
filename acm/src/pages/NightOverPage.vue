@@ -265,7 +265,7 @@ const searchIndex: SearchEntry[] = [
     page: 'project',
     headingId: 'chapter-colors',
     title: '章の色ラベル',
-    text: '章 右クリック 色ラベル 色帯 黒基調 カラーパレット 赤 橙 黄 緑 青 紫 桃 灰 プリセット 色なし 任意色 その他の色 色相 彩度 明るさ RGB HEX #RRGGBB',
+    text: '章 右クリック 色ラベルを設定 色帯 黒基調 カラーパレット 赤 橙 黄 緑 青 紫 桃 灰 プリセット 色なし 任意色 その他の色 入力 RGB HSV H S V 色相 彩度 明るさ HEX #RRGGBB',
   },
   {
     page: 'project-deadline',
@@ -1602,14 +1602,14 @@ watch(
               <div>作品全体の行頭に空白を挿入</div><div>すべての話</div>
               <div>本文をコピー</div><div>右クリックした章または話。複数話選択中は選択範囲</div>
               <div>txt書き出し</div><div>章、話、選択中の話、または作品全体</div>
-              <div>色ラベル…</div><div>対象の章</div>
+              <div>色ラベルを設定</div><div>対象の章</div>
               <div>名前変更</div><div>対象の章または話の表示名</div>
               <div>削除</div><div>対象の章または話（実行前に削除対象を確認）</div>
             </div>
 
             <h3 id="chapter-colors">章の色ラベル</h3>
             <p>
-              章を右クリックし、「色ラベル…」から色を選ぶと、章行の左端に細い色帯を表示します。
+              章を右クリックし、「色ラベルを設定」から色を選ぶと、章行の左端に細い色帯を表示します。
               黒基調のパレットで色を選ぶほか、下段の赤・橙・黄・緑・青・紫・桃・灰の8色からも選べます。
               「OK」で反映し、「色なし」で解除します。「キャンセル」では元の色が保持されます。
             </p>
@@ -1622,14 +1622,18 @@ watch(
             <h4>その他の色</h4>
             <p>
               「その他の色…」では、色相バーと彩度・明るさの領域をクリック・ドラッグして色を選べます。
-              RGB値（各0〜255）やHEXコード（<code>#RRGGBB</code>）の直接入力にも対応します。
+              HEXコード（<code>#RRGGBB</code>）の直接入力にも対応します。
               詳細画面の「OK」でパレットへ戻り、パレットの「OK」で章へ反映します。どちらの画面でもキャンセルできます。
             </p>
+            <p>
+              「入力」でRGB（初期状態）とHSVを切り替えられます。RGBではR・G・B（各0〜255）、
+              HSVではH（色相）・S（彩度）・V（明るさ）を数値入力できます。切り替えても、選択色とHEX値は保持されます。
+            </p>
             <figure class="app-screenshot app-screenshot--dialog">
-              <a href="/images/nightover/screenshots/chapter-color-details.png" target="_blank" rel="noopener" aria-label="詳細な色指定画面を原寸で開く">
-                <img src="/images/nightover/screenshots/chapter-color-details.png" alt="黒基調の色指定画面。彩度と明るさの領域、色相バー、RGBの入力欄、選択色、HEXコードを表示" loading="lazy" />
+              <a href="/images/nightover/screenshots/chapter-color-details-rgb-hsv.png" target="_blank" rel="noopener" aria-label="詳細な色指定画面を原寸で開く">
+                <img src="/images/nightover/screenshots/chapter-color-details-rgb-hsv.png" alt="HSV入力を選んだ黒基調の色指定画面。H・S・Vの入力欄、HEXコード、色を選ぶ領域、RGBとHSVの切り替えを表示" loading="lazy" />
               </a>
-              <figcaption>実機画面 — 色相・彩度・明るさ、RGB、HEXによる色の指定</figcaption>
+              <figcaption>実機画面 — HSVの数値入力と、RGB・HSVの切り替え</figcaption>
             </figure>
           </section>
 
