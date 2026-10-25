@@ -70,7 +70,7 @@ const navGroups: NavGroup[] = [
     items: [
       { id: 'editor-display', label: '横書き・縦書き・プレビュー', keywords: '横書き 縦書き プレビュー 禁則 表示状態' },
       { id: 'editor-input', label: '入力と操作', keywords: '入力 ime 選択 コピー スクロール' },
-      { id: 'editor-images', label: '本文の画像', keywords: '画像 PNG JPEG 挿入 外部参照 タイトル 左揃え 中央揃え 右揃え コピー 軽量' },
+      { id: 'editor-images', label: '本文の画像', keywords: '画像 PNG JPEG 挿入 外部参照 タイトル 左揃え 中央揃え 右揃え コピー 作品フォルダ 軽量' },
       { id: 'ruby', label: 'ルビと傍点', keywords: 'ルビ 傍点 ruby emphasis' },
       { id: 'input-assist', label: '記号の入力補助', keywords: 'ダッシュ 三点リーダ 自動変換 二連化 記号' },
       { id: 'search', label: '検索・置換・整形', keywords: '検索 置換 整形 空白 改行' },
@@ -113,7 +113,7 @@ const navGroups: NavGroup[] = [
     items: [
       { id: 'settings', label: '設定の使い方', keywords: '設定 保存 初期化 OK キャンセル' },
       { id: 'settings-saving', label: '保存の設定', keywords: '保存場所 自動保存 間隔 全体保存' },
-      { id: 'settings-writing', label: '本文・入力の設定', keywords: 'ルビ 文字数 記号 改行 コピー 画像表示 軽量' },
+      { id: 'settings-writing', label: '本文・入力の設定', keywords: 'ルビ 文字数 記号 改行 コピー 画像表示 軽量 画像挿入時にコピーを作成 作品フォルダ' },
       { id: 'settings-appearance', label: 'テーマ・フォント・色', keywords: 'フォント アクセント テーマ ダーク ライト' },
       { id: 'settings-support', label: '連携・支援の設定', keywords: 'Git リンク 初出 有効 無効' },
       { id: 'shortcuts', label: 'ショートカット', keywords: 'ctrl alt f6 f11 keyboard' },
@@ -355,7 +355,7 @@ const searchIndex: SearchEntry[] = [
     page: 'editor-images',
     headingId: 'insert-images',
     title: '本文へ画像を挿入する',
-    text: '本文 右クリック 画像を挿入 外部参照 PNG JPEG JPG 段落 横書き 縦書き プレビュー サイズ 25 50 75 100 参照先 削除 取り消し',
+    text: '本文 右クリック 画像を挿入 外部参照 画像挿入時にコピーを作成 設定 作品フォルダ PNG JPEG JPG 段落 横書き 縦書き プレビュー サイズ 25 50 75 100 参照先 削除 取り消し',
   },
   {
     page: 'editor-images',
@@ -380,6 +380,12 @@ const searchIndex: SearchEntry[] = [
     headingId: 'setting-image-display',
     title: '軽量画像表示',
     text: '画像表示 設定 軽量 1024 1024px 初期値 オン 縮小 解像度 元画像',
+  },
+  {
+    page: 'settings-writing',
+    headingId: 'setting-image-copy',
+    title: '画像挿入時にコピーを作成',
+    text: '画像 設定 画像挿入時にコピーを作成 初期値 オフ 外部参照 作品フォルダ assets images 元画像 保持 同じ内容 再利用 挿入済み 既存画像',
   },
   {
     page: 'editor-display',
@@ -978,7 +984,8 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
     { id: 'setting-ruby-count', label: 'ルビと文字数' },
     { id: 'setting-punctuation', label: '記号の自動変換' },
     { id: 'setting-manuscript-copy', label: '本文コピー' },
-    { id: 'setting-image-display', label: '画像表示' },
+    { id: 'setting-image-display', label: '軽量画像表示' },
+    { id: 'setting-image-copy', label: '画像挿入時にコピーを作成' },
   ],
   'settings-appearance': [
     { id: 'setting-font-accent', label: 'フォントと色' },
@@ -1937,9 +1944,14 @@ watch(
             <h3 id="insert-images">本文へ画像を挿入する</h3>
             <ol>
               <li>編集する話を開き、本文の挿入したい位置を右クリックします。</li>
-              <li>「画像を挿入（外部参照）…」を選び、PNG・JPEGファイルを指定します。</li>
+              <li>「画像を挿入…」を選び、PNG・JPEGファイルを指定します。</li>
               <li>画像の前後へ文字を入力して、執筆を続けます。</li>
             </ol>
+            <p>
+              初期状態では元の画像ファイルを参照します。設定の
+              <RouterLink :to="{ path: '/nightover/settings-writing', hash: '#setting-image-copy' }">「画像挿入時にコピーを作成」</RouterLink>をオンにすると、
+              挿入する画像を作品フォルダ内へコピーします。
+            </p>
             <p>
               画像上の右クリックから、参照先の変更、25・50・75・100%の表示サイズ変更、原稿からの削除ができます。
               これらの操作は取り消し・やり直しで戻せます。原稿から画像を削除しても、元の画像ファイルは削除されません。
@@ -3065,7 +3077,7 @@ watch(
 
           <section v-if="activePage === 'settings-writing'" id="settings-writing" class="doc-section">
             <p>
-              ルビと文字数の条件、記号の自動変換、本文コピー時の改行を変更します。
+              ルビと文字数の条件、記号の自動変換、本文コピー時の改行、画像の表示と挿入方法を変更します。
             </p>
 
             <h3 id="setting-ruby-count">ルビと文字数</h3>
@@ -3106,10 +3118,32 @@ watch(
 
             <h3 id="setting-image-display">軽量画像表示</h3>
             <p>
-              設定の「画像表示」にある「軽量画像表示（1024 × 1024px以内）」で切り替えます。初期状態はオンです。
+              設定の「画像」にある「軽量画像表示（1024 × 1024px以内）」で切り替えます。初期状態はオンです。
               オンでは縦横比を保って幅・高さを1024px以内へ縮小し、小さい画像は拡大しません。オフでは元の解像度で読み込みます。
               元画像のファイルは変更しません。
             </p>
+
+            <h3 id="setting-image-copy">画像挿入時にコピーを作成</h3>
+            <p>
+              設定の「画像」にある「画像挿入時にコピーを作成」で切り替えます。初期状態はオフです。
+              オンでは、新しく挿入する画像を作品フォルダ内の<code>assets/images/</code>へコピーします。
+              元画像は残り、同じ内容のコピーがある場合は再利用します。オフでは元の画像ファイルを参照します。
+            </p>
+            <p>
+              設定を切り替えても、挿入済みの画像や参照先は変わりません。既存の画像を作品内へまとめる場合は、
+              <RouterLink :to="{ path: '/nightover/editor-images', hash: '#image-portability' }">「画像を作品フォルダ内へまとめる」</RouterLink>を使ってください。
+              コピーや参照情報の保存に失敗した場合は、本文へ挿入しません。
+            </p>
+            <figure class="app-screenshot app-screenshot--dialog">
+              <a href="/images/nightover/screenshots/settings-images.png" target="_blank" rel="noopener" aria-label="画像の設定画面を原寸で開く">
+                <img
+                  src="/images/nightover/screenshots/settings-images.png"
+                  alt="設定の画像グループ。軽量画像表示はオン、画像挿入時にコピーを作成はオフになっている"
+                  loading="lazy"
+                />
+              </a>
+              <figcaption>実機画面 — 画像の表示と挿入方法の設定</figcaption>
+            </figure>
             <p>画像の操作は、<RouterLink to="/nightover/editor-images">本文の画像</RouterLink>で確認できます。</p>
           </section>
 

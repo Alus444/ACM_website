@@ -16,6 +16,11 @@ export const nightOverProductUrl = 'https://alushop.booth.pm/items/8656265'
 // 新しいバージョンを先頭へ追加すると、リリース情報へ新しい順で表示されます。
 export const nightOverReleases: NightOverRelease[] = [
   {
+    version: '1.6.6',
+    title: '画像挿入時に作品内へコピーする設定を追加',
+    summary: '設定に「画像挿入時にコピーを作成」を追加しました。オンにすると、挿入する画像を作品フォルダ内へコピーします。初期状態はオフです。',
+  },
+  {
     version: '1.6.5',
     title: '別作品への画像貼り付けと画像の再利用を改善',
     summary: '作品内の画像を別作品へ貼り付けたとき、貼り付け先にも画像をコピーするようにしました。画像の貼り付けや作品内へのまとめ直しで、同じ内容の画像ファイルを再利用するようにしました。',
