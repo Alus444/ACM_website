@@ -47,7 +47,7 @@ export const nightOverReleases: NightOverRelease[] = [
   {
     version: '1.5.1',
     title: '軽量画像表示を追加',
-    summary: '画像を1024 × 1024px以内に縮小して表示できます。初期状態はオンで、元画像は変更しません。',
+    summary: '画像を1024 × 1024px以内に縮小して表示できます。初期状態はオンです。',
   },
   {
     version: '1.5.0',
