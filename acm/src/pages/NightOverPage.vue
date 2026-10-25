@@ -60,7 +60,7 @@ const navGroups: NavGroup[] = [
   {
     label: '作品管理',
     items: [
-      { id: 'project', label: '章と話', keywords: '作品名 アウトライン 章 話 並び替え 右クリック' },
+      { id: 'project', label: '章と話', keywords: '作品名 アウトライン 章 話 並び替え 右クリック 色ラベル パレット' },
       { id: 'project-deadline', label: '締切と目標文字数', keywords: '締切 目標 文字数 進捗' },
       { id: 'project-status', label: 'ステータス', keywords: '下書き 改稿中 改稿完了 色 共通 プロジェクト' },
     ],
@@ -70,6 +70,7 @@ const navGroups: NavGroup[] = [
     items: [
       { id: 'editor-display', label: '横書き・縦書き・プレビュー', keywords: '横書き 縦書き プレビュー 禁則 表示状態' },
       { id: 'editor-input', label: '入力と操作', keywords: '入力 ime 選択 コピー スクロール' },
+      { id: 'editor-images', label: '本文の画像', keywords: '画像 PNG JPEG 挿入 外部参照 タイトル 左揃え 中央揃え 右揃え コピー 軽量' },
       { id: 'ruby', label: 'ルビと傍点', keywords: 'ルビ 傍点 ruby emphasis' },
       { id: 'input-assist', label: '記号の入力補助', keywords: 'ダッシュ 三点リーダ 自動変換 二連化 記号' },
       { id: 'search', label: '検索・置換・整形', keywords: '検索 置換 整形 空白 改行' },
@@ -112,7 +113,7 @@ const navGroups: NavGroup[] = [
     items: [
       { id: 'settings', label: '設定の使い方', keywords: '設定 保存 初期化 OK キャンセル' },
       { id: 'settings-saving', label: '保存の設定', keywords: '保存場所 自動保存 間隔 全体保存' },
-      { id: 'settings-writing', label: '本文・入力の設定', keywords: 'ルビ 文字数 記号 改行 コピー' },
+      { id: 'settings-writing', label: '本文・入力の設定', keywords: 'ルビ 文字数 記号 改行 コピー 画像表示 軽量' },
       { id: 'settings-appearance', label: 'テーマ・フォント・色', keywords: 'フォント アクセント テーマ ダーク ライト' },
       { id: 'settings-support', label: '連携・支援の設定', keywords: 'Git リンク 初出 有効 無効' },
       { id: 'shortcuts', label: 'ショートカット', keywords: 'ctrl alt f6 f11 keyboard' },
@@ -261,6 +262,12 @@ const searchIndex: SearchEntry[] = [
     text: '行頭空白 挿入 章 話 作品全体 本文コピー txt 書き出し 名前変更 削除 複数選択',
   },
   {
+    page: 'project',
+    headingId: 'chapter-colors',
+    title: '章の色ラベル',
+    text: '章 右クリック 色ラベル 色帯 黒基調 カラーパレット 赤 橙 黄 緑 青 紫 桃 灰 プリセット 色なし 任意色 その他の色 色相 彩度 明るさ RGB HEX #RRGGBB',
+  },
+  {
     page: 'project-deadline',
     headingId: 'deadline',
     title: '締切と目標文字数',
@@ -343,6 +350,36 @@ const searchIndex: SearchEntry[] = [
     headingId: 'editor-scroll',
     title: '本文のスクロール',
     text: 'ホイール Shift 3行 3列 中クリック オートスクロール 横書き 縦書き スクロールバー',
+  },
+  {
+    page: 'editor-images',
+    headingId: 'insert-images',
+    title: '本文へ画像を挿入する',
+    text: '本文 右クリック 画像を挿入 外部参照 PNG JPEG JPG 段落 横書き 縦書き プレビュー サイズ 25 50 75 100 参照先 削除 取り消し',
+  },
+  {
+    page: 'editor-images',
+    headingId: 'image-titles',
+    title: '画像タイトルと文字揃え',
+    text: '画像下部 タイトル ダブルクリック 表示名 名前変更 左揃え 中央揃え 右揃え 空欄 ファイル名 フルパス ツールチップ',
+  },
+  {
+    page: 'editor-images',
+    headingId: 'image-clipboard',
+    title: '画像付きのコピー・貼り付け',
+    text: '画像付き コピペ 本文 コピー 切り取り 貼り付け 別作品 外部アプリ 文章 Word HTML 画像参照',
+  },
+  {
+    page: 'editor-images',
+    headingId: 'image-portability',
+    title: '画像入りの作品を移動する',
+    text: '外部参照 元画像 移動 参照切れ バックアップ 画像を作品フォルダ内へまとめる assets images コピー 持ち運び 別PC 受け渡し',
+  },
+  {
+    page: 'settings-writing',
+    headingId: 'setting-image-display',
+    title: '軽量画像表示',
+    text: '画像表示 設定 軽量 1024 1024px 初期値 オン 縮小 解像度 元画像',
   },
   {
     page: 'editor-display',
@@ -813,6 +850,7 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
     { id: 'project-title', label: '作品の切り替えと名前' },
     { id: 'outline', label: 'アウトライン' },
     { id: 'outline-menu', label: '右クリック操作' },
+    { id: 'chapter-colors', label: '章の色ラベル' },
   ],
   'project-deadline': [
     { id: 'deadline', label: '締切と目標文字数' },
@@ -838,6 +876,12 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
     { id: 'text-input', label: '入力とIME' },
     { id: 'selection-copy', label: '選択とコピー' },
     { id: 'editor-scroll', label: 'スクロール' },
+  ],
+  'editor-images': [
+    { id: 'insert-images', label: '画像の挿入' },
+    { id: 'image-titles', label: 'タイトルと文字揃え' },
+    { id: 'image-clipboard', label: 'コピー・貼り付け' },
+    { id: 'image-portability', label: '作品の移動' },
   ],
   ruby: [
     { id: 'ruby-syntax', label: 'ルビ' },
@@ -934,6 +978,7 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
     { id: 'setting-ruby-count', label: 'ルビと文字数' },
     { id: 'setting-punctuation', label: '記号の自動変換' },
     { id: 'setting-manuscript-copy', label: '本文コピー' },
+    { id: 'setting-image-display', label: '画像表示' },
   ],
   'settings-appearance': [
     { id: 'setting-font-accent', label: 'フォントと色' },
@@ -1230,6 +1275,7 @@ watch(
             <h2 id="main-features">主な機能</h2>
             <ul>
               <li>横書き・縦書きでの本文編集とプレビュー</li>
+              <li>本文へのPNG・JPEG画像の挿入と、画像付きのコピー・貼り付け</li>
               <li>章と話のアウトライン、締切、目標文字数、ステータス管理</li>
               <li>話・章・作品全体・全作品共通のメモ</li>
               <li>登場人物・展開・用語の資料管理と本文からのリンクジャンプ</li>
@@ -1556,9 +1602,35 @@ watch(
               <div>作品全体の行頭に空白を挿入</div><div>すべての話</div>
               <div>本文をコピー</div><div>右クリックした章または話。複数話選択中は選択範囲</div>
               <div>txt書き出し</div><div>章、話、選択中の話、または作品全体</div>
+              <div>色ラベル…</div><div>対象の章</div>
               <div>名前変更</div><div>対象の章または話の表示名</div>
               <div>削除</div><div>対象の章または話（実行前に削除対象を確認）</div>
             </div>
+
+            <h3 id="chapter-colors">章の色ラベル</h3>
+            <p>
+              章を右クリックし、「色ラベル…」から色を選ぶと、章行の左端に細い色帯を表示します。
+              黒基調のパレットで色を選ぶほか、下段の赤・橙・黄・緑・青・紫・桃・灰の8色からも選べます。
+              「OK」で反映し、「色なし」で解除します。「キャンセル」では元の色が保持されます。
+            </p>
+            <figure class="app-screenshot app-screenshot--dialog">
+              <a href="/images/nightover/screenshots/chapter-color-palette.png" target="_blank" rel="noopener" aria-label="章の色選択パレットを原寸で開く">
+                <img src="/images/nightover/screenshots/chapter-color-palette.png" alt="黒基調のカラーパレット。色の一覧、8色のプリセット、選択中の色、色なしとその他の色のボタンを表示" loading="lazy" />
+              </a>
+              <figcaption>実機画面 — 章の色ラベルを選ぶパレット</figcaption>
+            </figure>
+            <h4>その他の色</h4>
+            <p>
+              「その他の色…」では、色相バーと彩度・明るさの領域をクリック・ドラッグして色を選べます。
+              RGB値（各0〜255）やHEXコード（<code>#RRGGBB</code>）の直接入力にも対応します。
+              詳細画面の「OK」でパレットへ戻り、パレットの「OK」で章へ反映します。どちらの画面でもキャンセルできます。
+            </p>
+            <figure class="app-screenshot app-screenshot--dialog">
+              <a href="/images/nightover/screenshots/chapter-color-details.png" target="_blank" rel="noopener" aria-label="詳細な色指定画面を原寸で開く">
+                <img src="/images/nightover/screenshots/chapter-color-details.png" alt="黒基調の色指定画面。彩度と明るさの領域、色相バー、RGBの入力欄、選択色、HEXコードを表示" loading="lazy" />
+              </a>
+              <figcaption>実機画面 — 色相・彩度・明るさ、RGB、HEXによる色の指定</figcaption>
+            </figure>
           </section>
 
           <section v-if="activePage === 'project-deadline'" id="project-deadline" class="doc-section">
@@ -1645,6 +1717,9 @@ watch(
               <div class="table-head">データ</div><div class="table-head">保存先</div>
               <div>作品情報</div><div><code>project.json</code></div>
               <div>章・話と割り当て状態</div><div><code>manifest/outline.json</code></div>
+              <div>章の色ラベル</div><div><code>manifest/chapter-labels.json</code></div>
+              <div>画像の参照先と表示設定</div><div><code>manifest/images.json</code></div>
+              <div>作品内へまとめた画像</div><div><code>assets/images/</code></div>
               <div>締切と目標</div><div><code>manifest/deadline.json</code></div>
               <div>作品専用ステータス</div><div><code>manifest/statuses.json</code></div>
               <div>初出情報</div><div><code>manifest/first-appearances.json</code></div>
@@ -1695,6 +1770,7 @@ watch(
             </p>
             <ul>
               <li>コピー前に手動保存し、可能なら作品を閉じます。</li>
+              <li>画像入りの作品は、本文の右クリックから「画像を作品フォルダ内へまとめる」を行ってから、作品フォルダ全体をコピーします。</li>
               <li>作品の変更履歴を保存している場合は、履歴も含めるため隠し項目を除外しないでください。</li>
               <li>別PCへ移す場合、共通メモやアプリ設定も必要なら<code>%APPDATA%\NIGHTOVER</code>を別途保管します。</li>
               <li>一部のキャッシュは再生成できますが、本文とメモを含む作品フォルダ全体を正本として扱うのが安全です。</li>
@@ -1839,6 +1915,7 @@ watch(
               通常のコピーは選択範囲だけを対象にし、右クリックの「本文をコピー」は現在話の本文全体を対象にします。
               プレビュー中は新しい選択、切り取り、貼り付けを受け付けません。
             </p>
+            <p>画像も一緒にコピーする方法は、<RouterLink :to="{ path: '/nightover/editor-images', hash: '#image-clipboard' }">本文の画像</RouterLink>を参照してください。</p>
 
             <h3 id="editor-scroll">マウスとスクロール</h3>
             <div class="spec-table two-cols">
@@ -1848,6 +1925,60 @@ watch(
               <div>中クリック</div><div>基準点を表示し、横書きでは上下、縦書きでは左右のオートスクロール</div>
               <div>本文専用スクロールバー</div><div>横書きは右側の縦バー、縦書きは下部の横バーを使用</div>
             </div>
+          </section>
+
+          <section v-if="activePage === 'editor-images'" id="editor-images" class="doc-section">
+            <p>PNG・JPEG画像を本文の段落間へ挿入できます。横書き・縦書きの編集とプレビューで表示でき、Lite版でも利用できます。</p>
+
+            <h3 id="insert-images">本文へ画像を挿入する</h3>
+            <ol>
+              <li>編集する話を開き、本文の挿入したい位置を右クリックします。</li>
+              <li>「画像を挿入（外部参照）…」を選び、PNG・JPEGファイルを指定します。</li>
+              <li>画像の前後へ文字を入力して、執筆を続けます。</li>
+            </ol>
+            <p>
+              画像上の右クリックから、参照先の変更、25・50・75・100%の表示サイズ変更、原稿からの削除ができます。
+              これらの操作は取り消し・やり直しで戻せます。原稿から画像を削除しても、元の画像ファイルは削除されません。
+              画像を読み込みながら本文を編集でき、画像部分は文字数やKAKURIYOの解析には含めません。
+            </p>
+            <p>
+              初期状態では画像を縮小して表示します。解像度を変えて確認したい場合は、
+              <RouterLink :to="{ path: '/nightover/settings-writing', hash: '#setting-image-display' }">軽量画像表示</RouterLink>を切り替えてください。
+            </p>
+
+            <h3 id="image-titles">画像タイトルと文字揃え</h3>
+            <p>
+              編集画面で画像下部のタイトルをダブルクリックすると、表示名と文字の左・中央・右揃えを変更できます。
+              表示名を空欄にすると、ファイル名の表示へ戻ります。文字揃えはタイトルだけに適用され、画像本体の位置は変わりません。
+              タイトルへマウスを重ねると、元画像のフルパスを確認できます。
+            </p>
+
+            <h3 id="image-clipboard">画像付きのコピー・貼り付け</h3>
+            <p>
+              NIGHTOVERの本文間では、選択した文章と画像をまとめてコピー・切り取り・貼り付けできます。
+              別の作品へ貼り付けた場合も、表示サイズやタイトルを引き継ぎます。
+              元の画像ファイルはコピーされず、貼り付け先からも同じファイルを参照します。
+            </p>
+            <p>
+              NIGHTOVER以外のアプリへコピーすると、画像部分を除いた文章だけを渡します。
+              WordやWebページから貼り付けた画像は自動で取り込まれないため、画像ファイルを指定して挿入してください。
+            </p>
+
+            <h3 id="image-portability">画像入りの作品を移動する</h3>
+            <p>
+              挿入した画像は、初期状態では元ファイルを参照します。画像ファイルの移動・削除で参照が切れると、本文に画像を表示できなくなります。
+              別のPCへ移す場合や作品を渡す場合は、次の順序で画像を作品内へまとめてください。
+            </p>
+            <ol>
+              <li>本文を右クリックし、「画像を作品フォルダ内へまとめる」を選びます。</li>
+              <li>コピーの完了を確認して、本文を保存します。元の画像ファイルはそのまま残ります。</li>
+              <li>画像が入った<code>assets/images/</code>を含め、作品フォルダ全体をコピーします。</li>
+            </ol>
+            <p>
+              参照が切れている場合は、画像上の右クリックから参照先を直してから実行してください。
+              txt書き出しでは画像自体は含まれず、「本文のみ」または「画像位置の注記付き」を選べます。
+              画像に対応していない旧版との往復編集は避けてください。
+            </p>
           </section>
 
           <section v-if="activePage === 'ruby'" id="ruby" class="doc-section">
@@ -2958,6 +3089,14 @@ watch(
               </a>
               <figcaption>実機画面 — ルビ・文字数、記号変換、本文コピーの設定</figcaption>
             </figure>
+
+            <h3 id="setting-image-display">軽量画像表示</h3>
+            <p>
+              設定の「画像表示」にある「軽量画像表示（1024 × 1024px以内）」で切り替えます。初期状態はオンです。
+              オンでは縦横比を保って幅・高さを1024px以内へ縮小し、小さい画像は拡大しません。オフでは元の解像度で読み込みます。
+              元画像のファイルは変更しません。
+            </p>
+            <p>画像の操作は、<RouterLink to="/nightover/editor-images">本文の画像</RouterLink>で確認できます。</p>
           </section>
 
           <section v-if="activePage === 'settings-appearance'" id="settings-appearance" class="doc-section">
@@ -3084,6 +3223,8 @@ watch(
               <div>本文編集・手動保存・自動保存</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>横書き編集・横書きプレビュー</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>縦書き編集・プレビュー</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
+              <div>本文画像・タイトル変更・画像付きコピー</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
+              <div>章の色ラベル</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>ルビ・傍点</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>検索・置換・本文整形</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>話・章・作品・共通メモ</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
