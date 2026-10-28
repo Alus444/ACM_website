@@ -69,8 +69,8 @@ const navGroups: NavGroup[] = [
     label: '執筆機能',
     items: [
       { id: 'editor-display', label: '横書き・縦書き・プレビュー', keywords: '横書き 縦書き プレビュー 禁則 表示状態' },
-      { id: 'editor-input', label: '入力と操作', keywords: '入力 ime 選択 コピー スクロール' },
-      { id: 'editor-images', label: '本文の画像', keywords: '画像 PNG JPEG 挿入 外部参照 タイトル 左揃え 中央揃え 右揃え コピー 作品フォルダ 軽量' },
+      { id: 'editor-input', label: '入力と操作', keywords: '入力 ime 選択 コピー スクロール noteモード 見たまま 記法編集 見出し 太字 リスト 引用 目次' },
+      { id: 'editor-images', label: '本文の画像', keywords: '画像 PNG JPEG 挿入 外部参照 タイトル 左揃え 中央揃え 右揃え コピー 作品フォルダ 軽量 note 画像一覧 ドラッグ アップロード' },
       { id: 'ruby', label: 'ルビと傍点', keywords: 'ルビ 傍点 ruby emphasis' },
       { id: 'input-assist', label: '記号の入力補助', keywords: 'ダッシュ 三点リーダ 自動変換 二連化 記号' },
       { id: 'search', label: '検索・置換・整形', keywords: '検索 置換 整形 空白 改行' },
@@ -105,7 +105,7 @@ const navGroups: NavGroup[] = [
     items: [
       { id: 'saving', label: '保存と自動保存', keywords: '自動保存 下書き 手動保存 dirty backup' },
       { id: 'data-files', label: '作品フォルダとバックアップ', keywords: 'project json manifest manuscripts notes appdata lock backup' },
-      { id: 'import-export', label: '取り込み・書き出し', keywords: 'txt zip import export なろう カクヨム コピー' },
+      { id: 'import-export', label: '取り込み・書き出し', keywords: 'txt zip import export なろう カクヨム コピー note用にコピー HTML 投稿用一式' },
     ],
   },
   {
@@ -113,7 +113,7 @@ const navGroups: NavGroup[] = [
     items: [
       { id: 'settings', label: '設定の使い方', keywords: '設定 保存 初期化 OK キャンセル' },
       { id: 'settings-saving', label: '保存の設定', keywords: '保存場所 自動保存 間隔 全体保存' },
-      { id: 'settings-writing', label: '本文・入力の設定', keywords: 'ルビ 文字数 記号 改行 コピー 画像表示 軽量 画像挿入時にコピーを作成 作品フォルダ' },
+      { id: 'settings-writing', label: '本文・入力の設定', keywords: 'ルビ 文字数 記号 改行 コピー 画像表示 軽量 画像挿入時にコピーを作成 作品フォルダ 小説 note この作品の執筆モード' },
       { id: 'settings-appearance', label: 'テーマ・フォント・色', keywords: 'フォント アクセント テーマ ダーク ライト' },
       { id: 'settings-support', label: '連携・支援の設定', keywords: 'Git リンク 初出 有効 無効' },
       { id: 'shortcuts', label: 'ショートカット', keywords: 'ctrl alt f6 f11 keyboard' },
@@ -145,6 +145,8 @@ const previousPage = computed(() => allItems[currentPageIndex.value - 1])
 const nextPage = computed(() => allItems[currentPageIndex.value + 1])
 const nightOverExecutableName = `NIGHTOVER_v${nightOverCurrentVersion.replace(/\./g, '_')}.exe`
 const nightOverLiteExecutableName = `NIGHTOVER_Lite_v${nightOverCurrentVersion.replace(/\./g, '_')}.exe`
+const nightOverArchiveName = nightOverExecutableName.replace(/\.exe$/, '.zip')
+const nightOverLiteArchiveName = nightOverLiteExecutableName.replace(/\.exe$/, '.zip')
 
 const termsSections: NavItem[] = [
   { id: 'terms-scope', label: '適用', keywords: '利用規約 Windows 執筆ソフト Lite版 通常版 付属データ BOOTH イベント会場 インストール 使用 同意' },
@@ -171,13 +173,13 @@ const searchIndex: SearchEntry[] = [
     page: 'intro',
     headingId: 'main-features',
     title: 'NIGHTOVERの主な機能',
-    text: 'Windows 小説執筆 本文 横書き 縦書き プレビュー 章 話 アウトライン 締切 目標文字数 ステータス メモ 資料 登場人物 展開 用語 リンクジャンプ 検索 置換 整形 統計 Git 記録 復元 KAKURIYO 解析支援',
+    text: 'Windows 小説執筆 noteモード 記事 見たまま編集 見出し 太字 目次 note用にコピー 本文 横書き 縦書き プレビュー 章 話 アウトライン 締切 目標文字数 ステータス メモ 資料 登場人物 展開 用語 リンクジャンプ 検索 置換 整形 統計 Git 記録 復元 KAKURIYO 解析支援',
   },
   {
     page: 'intro',
     headingId: 'runtime',
     title: '動作形式',
-    text: `対応環境 Windows デスクトップアプリ ${nightOverExecutableName} ${nightOverLiteExecutableName} Ver.${nightOverCurrentVersion} 作品フォルダ ダーク ライト テーマ BOOTH Lite版 通常版`,
+    text: `対応環境 Windows デスクトップアプリ ${nightOverExecutableName} ${nightOverLiteExecutableName} ${nightOverArchiveName} ${nightOverLiteArchiveName} 配布ZIP Ver.${nightOverCurrentVersion} 作品フォルダ ダーク ライト テーマ BOOTH Lite版 通常版`,
   },
   {
     page: 'intro',
@@ -335,6 +337,24 @@ const searchIndex: SearchEntry[] = [
   },
   {
     page: 'editor-input',
+    headingId: 'note-mode',
+    title: 'noteモードで記事を書く',
+    text: 'note 記事 小説 この作品の執筆モード 設定 見たまま編集 見た目編集 記法編集 横書き 選択メニュー 段落 ＋ 挿入',
+  },
+  {
+    page: 'editor-input',
+    headingId: 'note-formatting',
+    title: 'noteモードの書式と改行',
+    text: '大見出し 小見出し 太字 Ctrl B 取り消し線 Ctrl Shift X 箇条書き 番号付きリスト Enter 次の項目 空の項目 解除 Shift Enter 同一項目 改行 Tab 階層 引用 出典 コード 区切り線 リンク 左 中央 右 揃え',
+  },
+  {
+    page: 'editor-input',
+    headingId: 'note-toc',
+    title: '目次と見出し一覧',
+    text: 'note 目次挿入 記事 一つ 単一 位置 移動 見出し一覧 ジャンプ 更新 取り消し Undo',
+  },
+  {
+    page: 'editor-input',
     headingId: 'text-input',
     title: '入力とIME',
     text: 'IME 変換範囲 下線 候補窓 キャレット Windows標準 確定 重複入力 抑制',
@@ -368,6 +388,12 @@ const searchIndex: SearchEntry[] = [
     headingId: 'image-clipboard',
     title: '画像付きのコピー・貼り付け',
     text: '画像付き コピペ 本文 コピー 切り取り 貼り付け 別作品 作品内 assets images 画像ファイル 複製 外部参照 外部アプリ 文章 Word HTML',
+  },
+  {
+    page: 'editor-images',
+    headingId: 'note-image-list',
+    title: 'noteモードの画像一覧と画像転送',
+    text: 'note 画像一覧 使用箇所 保存先 エクスプローラー ドラッグ ファイル アップロード 参照切れ 別途転送 本体 自動送信しない',
   },
   {
     page: 'editor-images',
@@ -647,6 +673,18 @@ const searchIndex: SearchEntry[] = [
   },
   {
     page: 'import-export',
+    headingId: 'copy-for-note',
+    title: 'note用にコピー',
+    text: 'note 記事全文 選択範囲 本文 装飾 見出し リスト 引用 目次 貼り付け 記法編集 画像 表示名 別途アップロード 下書き',
+  },
+  {
+    page: 'import-export',
+    headingId: 'note-export',
+    title: 'noteモードのテキスト・HTML・投稿用一式',
+    text: 'note用テキスト 画像名付き 装飾付きHTML 投稿用一式 本文 HTML 画像 article.txt article.html assets images 目次 案内 配置 リンク 出典 階層 コピー',
+  },
+  {
+    page: 'import-export',
     headingId: 'narou-import',
     title: '小説家になろうから取り込む',
     text: '小説家になろう ZIP TXT Nコード タイトル エピソード区切り _draftepisode 通常本文 優先 感想 除外',
@@ -674,6 +712,12 @@ const searchIndex: SearchEntry[] = [
     headingId: 'setting-default-save-path',
     title: '保存の設定',
     text: 'デフォルト保存場所 自動保存 有効 無効 間隔 全体保存 初期値 Lite版 通常版 同条件',
+  },
+  {
+    page: 'settings-writing',
+    headingId: 'setting-writing-mode',
+    title: 'この作品の執筆モード',
+    text: '設定 最下部 小説 noteモード オン オフ チェックボックス 切り替え 作品ごと この作品だけ有効になります 内部のデータは変更されません 初期値 既存作品 タイトル 本文 画像 保持',
   },
   {
     page: 'settings-writing',
@@ -879,6 +923,9 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
     { id: 'display-indicator', label: '表示状態' },
   ],
   'editor-input': [
+    { id: 'note-mode', label: 'noteモード' },
+    { id: 'note-formatting', label: '書式と改行' },
+    { id: 'note-toc', label: '目次と見出し一覧' },
     { id: 'text-input', label: '入力とIME' },
     { id: 'selection-copy', label: '選択とコピー' },
     { id: 'editor-scroll', label: 'スクロール' },
@@ -887,6 +934,7 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
     { id: 'insert-images', label: '画像の挿入' },
     { id: 'image-titles', label: 'タイトルと文字揃え' },
     { id: 'image-clipboard', label: 'コピー・貼り付け' },
+    { id: 'note-image-list', label: 'noteの画像一覧・転送' },
     { id: 'image-portability', label: '作品の移動' },
   ],
   ruby: [
@@ -969,6 +1017,8 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
   'import-export': [
     { id: 'text-copy-export', label: 'コピーとtxt' },
     { id: 'manuscript-copy', label: 'コピー時の改行' },
+    { id: 'copy-for-note', label: 'note用にコピー' },
+    { id: 'note-export', label: 'noteの書き出し' },
     { id: 'narou-import', label: 'なろう' },
     { id: 'kakuyomu-import', label: 'カクヨム' },
     { id: 'plain-text-import', label: '通常のTXT' },
@@ -981,6 +1031,7 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
     { id: 'setting-auto-save', label: '自動保存' },
   ],
   'settings-writing': [
+    { id: 'setting-writing-mode', label: 'この作品の執筆モード' },
     { id: 'setting-ruby-count', label: 'ルビと文字数' },
     { id: 'setting-punctuation', label: '記号の自動変換' },
     { id: 'setting-manuscript-copy', label: '本文コピー' },
@@ -1282,6 +1333,7 @@ watch(
             <h2 id="main-features">主な機能</h2>
             <ul>
               <li>横書き・縦書きでの本文編集とプレビュー</li>
+              <li>noteモードでの記事編集、目次・画像一覧、「note用にコピー」</li>
               <li>本文へのPNG・JPEG画像の挿入と、画像付きのコピー・貼り付け</li>
               <li>章と話のアウトライン、締切、目標文字数、ステータス管理</li>
               <li>話・章・作品全体・全作品共通のメモ</li>
@@ -1297,6 +1349,8 @@ watch(
               <div>アプリ形式</div><div>デスクトップアプリ</div>
               <div>通常版の実行ファイル</div><div><code class="executable-name">{{ nightOverExecutableName }}</code></div>
               <div>Lite版の実行ファイル</div><div><code class="executable-name">{{ nightOverLiteExecutableName }}</code></div>
+              <div>通常版の配布ZIP</div><div><code class="executable-name">{{ nightOverArchiveName }}</code></div>
+              <div>Lite版の配布ZIP</div><div><code class="executable-name">{{ nightOverLiteArchiveName }}</code></div>
               <div>作品データ</div><div>作品ごとのフォルダに保存</div>
               <div>表示テーマ</div><div>ダーク / ライト</div>
             </div>
@@ -1904,6 +1958,58 @@ watch(
           <section v-if="activePage === 'editor-input'" id="editor-input" class="doc-section">
             <p>本文の入力、選択、コピー、移動に関する操作を説明します。</p>
 
+            <h3 id="note-mode">noteモードで記事を書く</h3>
+            <p>
+              note向けの記事は、設定の最下部にある
+              <RouterLink :to="{ path: '/nightover/settings-writing', hash: '#setting-writing-mode' }">「この作品の執筆モード」</RouterLink>の
+              「noteモード（オフで小説モード）」をオンにして書きます。
+              Lite版・通常版のどちらでも利用できます。
+            </p>
+            <ol>
+              <li>横書きで記事を開き、本文を入力します。通常は装飾を見たまま編集できます。</li>
+              <li>文字を選び、近くに表示されるメニューで書式を選びます。段落左の「＋」からも見出し・リスト・引用などを挿入できます。</li>
+              <li>本文の記法を直接編集するときは、上部の「記法編集」を押します。「見た目編集」で元の表示へ戻ります。</li>
+            </ol>
+            <p>
+              大見出しは<code>## </code>、小見出しは<code>### </code>、太字は<code>**文字**</code>、
+              取り消し線は<code>~~文字~~</code>、引用は行頭の<code>&gt; </code>で保存されます。
+              表示の切り替えだけで本文は書き換わりません。見たままの装飾編集は横書きで行い、縦書きや既存のプレビューでは記法を表示します。
+            </p>
+
+            <h3 id="note-formatting">noteモードの書式と改行</h3>
+            <div class="spec-table two-cols">
+              <div class="table-head">書式</div><div class="table-head">使い方</div>
+              <div>大見出し・小見出し</div><div>選択メニューの見出しから選びます。「指定なし」で本文へ戻します。</div>
+              <div>太字・取り消し線</div><div>選択文字や次の入力へ適用します。太字は<kbd>Ctrl</kbd> + <kbd>B</kbd>、取り消し線は<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>でも切り替えます。</div>
+              <div>箇条書き・番号付きリスト</div><div>選択メニューや「＋」から選びます。リスト内のカーソル位置で<kbd>Tab</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd>を押すと階層を下げ / 上げます。最大8階層まで使えます。</div>
+              <div>引用・出典</div><div>引用段落に出典名とURLを設定できます。どちらも省略でき、出典がある場合は引用の下へ表示します。</div>
+              <div>文字リンク</div><div>選択した文字にリンクを設定します。URLは<code>http://</code>または<code>https://</code>を使い、空欄で解除します。</div>
+              <div>左・中央・右揃え</div><div>本文・引用・リストの段落へ適用します。見出し・コード・画像・目次・区切り線は対象外です。</div>
+              <div>コード・区切り線</div><div>「＋」から挿入します。コード内の改行はコードの中に残り、装飾記法は文字として扱います。</div>
+            </div>
+            <ul>
+              <li>リストで<kbd>Enter</kbd>を押すと次の項目へ進みます。番号付きリストでは次の番号を表示します。</li>
+              <li>空のリスト項目で<kbd>Enter</kbd>を押すと、リストを終えて本文へ戻ります。</li>
+              <li><kbd>Shift</kbd> + <kbd>Enter</kbd>は段落内の改行です。リストでは同じ項目の中を改行します。</li>
+              <li>見出しで<kbd>Enter</kbd>を押すと次は本文になります。引用では引用を継続し、空の引用で<kbd>Enter</kbd>を押すと本文へ戻ります。</li>
+            </ul>
+            <p>
+              取り消し・やり直しでは、文字と書式を一緒に戻せます。
+              noteモードではルビ・傍点の入力は使いません。既存の本文にあるルビ記法は、モード切り替えだけでは削除されません。
+            </p>
+
+            <h3 id="note-toc">目次と見出し一覧</h3>
+            <p>
+              段落左の「＋」から目次を挿入すると、記事内の大見出し・小見出しを一覧にします。
+              見出しを追加・変更・削除すると目次も更新され、項目をクリックすると該当の見出しへ移動できます。
+              上部の「見出し一覧」からも移動できます。
+            </p>
+            <p>
+              目次は1記事につき一つです。もう一度挿入すると既存の目次が指定位置へ移動し、取り消しで元の位置へ戻せます。
+              目次の文言を変えるときは、元の見出しを編集してください。
+              記事をnoteへ移す手順は、<RouterLink :to="{ path: '/nightover/import-export', hash: '#copy-for-note' }">「note用にコピー」</RouterLink>を参照してください。
+            </p>
+
             <h3 id="text-input">入力とIME</h3>
             <p>
               編集モードでは通常文字、改行、タブ、貼り付けを本文へ挿入できます。
@@ -1915,6 +2021,7 @@ watch(
             </p>
 
             <h3 id="selection-copy">選択・コピー・貼り付け</h3>
+            <p>小説モードでは、次の選択・移動操作を使えます。noteモードの書式操作は、このページの「noteモードで記事を書く」を参照してください。</p>
             <ul>
               <li>ドラッグ選択と<kbd>Shift</kbd> + クリックによる範囲拡張</li>
               <li>ダブルクリックで単語、<kbd>Ctrl</kbd> + ダブルクリックで文を選択</li>
@@ -1929,6 +2036,7 @@ watch(
             <p>画像も一緒にコピーする方法は、<RouterLink :to="{ path: '/nightover/editor-images', hash: '#image-clipboard' }">本文の画像</RouterLink>を参照してください。</p>
 
             <h3 id="editor-scroll">マウスとスクロール</h3>
+            <p>次の表は小説モードの操作です。noteモードも本文右端の縦スクロールバーを使い、見たまま編集・記法編集のどちらでもスクロールできます。</p>
             <div class="spec-table two-cols">
               <div class="table-head">操作</div><div class="table-head">動作</div>
               <div>ホイール</div><div>横書きでは1行、縦書きでは1列ずつ移動</div>
@@ -1984,8 +2092,25 @@ watch(
             </p>
             <p>必要な画像をコピーできない場合は、貼り付けを中止して本文を保持します。</p>
             <p>
-              NIGHTOVER以外のアプリへコピーすると、画像部分を除いた文章だけを渡します。
+              小説モードからNIGHTOVER以外のアプリへコピーすると、画像部分を除いた文章だけを渡します。
               WordやWebページから貼り付けた画像は自動で取り込まれないため、画像ファイルを指定して挿入してください。
+            </p>
+
+            <h3 id="note-image-list">noteモードの画像一覧と画像転送</h3>
+            <p>
+              noteモードでは上部の「画像一覧」から、現在の記事で使っている画像と使用箇所数を確認できます。
+              本文中の位置へ移動したり、保存先を確認したり、エクスプローラーでファイルの場所を開いたりできます。
+              見たまま編集でも画像を表示でき、画像下部のタイトルをダブルクリックして表示名と文字揃えを変更できます。
+            </p>
+            <ol>
+              <li>「画像一覧」で画像の参照先を確認します。参照切れの場合は、先に参照先を直します。</li>
+              <li>一覧の行をnoteの画像挿入位置へドラッグします。note側がファイルのドロップを受け付けた場合にアップロードへ進みます。</li>
+              <li>ドロップで取り込めない場合は、保存先の画像ファイルをnote側の画像追加操作で選びます。</li>
+            </ol>
+            <p>
+              「note用にコピー」では画像の表示名だけを渡し、画像本体は別途アップロードします。
+              一覧からのドラッグはファイルのコピー操作で、元画像を移動・削除しません。
+              NIGHTOVERから記事を自動送信・公開する機能ではありません。
             </p>
 
             <h3 id="image-portability">画像入りの作品を移動する</h3>
@@ -2007,6 +2132,7 @@ watch(
           </section>
 
           <section v-if="activePage === 'ruby'" id="ruby" class="doc-section">
+            <p>ルビと傍点の入力は小説モードで利用できます。noteモードでは入力ウィンドウを表示しません。</p>
             <h3 id="ruby-syntax">ルビ</h3>
             <p>本文中では次の記法を使用します。</p>
             <pre><code>|親文字《ルビ》
@@ -2921,6 +3047,7 @@ watch(
           <section v-if="activePage === 'import-export'" id="import-export" class="doc-section">
             <p>
               作品の一部または全体をプレーンテキストとして取り出せます。
+              noteモードでは、記事の装飾を含むコピーやHTML・画像をまとめた書き出しも利用できます。
               外部サービスの書き出しデータや通常のTXTから、新しいNIGHTOVER作品を作成できます。
             </p>
 
@@ -2956,6 +3083,41 @@ watch(
             <p>
               通常の選択範囲コピー、切り取り、txt書き出しには適用しません。
               改行数と統一方法は「本文・入力の設定」で変更できます。
+            </p>
+
+            <h3 id="copy-for-note">note用にコピー</h3>
+            <ol>
+              <li>noteモードで転送する記事を開き、上部の「note用にコピー」を押します。</li>
+              <li>「コピーしました」と表示されたら、noteの編集画面へ貼り付けます。</li>
+              <li>画像を別途追加し、見出し・リスト・引用・目次などの表示を下書きで確認します。</li>
+            </ol>
+            <p>
+              選択範囲の有無に関係なく、現在の記事全文をコピーします。記法編集からも同じように使えます。
+              選択した部分だけをコピーする場合は、見たまま編集で通常のコピーを使ってください。
+              コピーに失敗した場合は、ほかのアプリでコピー操作が終わってから、もう一度試してください。
+            </p>
+            <p>
+              見出し、太字、取り消し線、リンク、段落の文字揃え、リスト、出典付き引用、コード、区切り線、目次をnote向けの形式で渡します。
+              受け入れられる書式は貼り付け先の動作にもよるため、投稿前に確認してください。
+            </p>
+            <p>
+              画像部分は<code>【表示名】</code>（未設定ならファイル名）になります。画像本体はコピーされません。
+              <RouterLink :to="{ path: '/nightover/editor-images', hash: '#note-image-list' }">画像一覧からの転送</RouterLink>で別途追加してください。
+              コピー操作だけでnoteへ投稿・公開されることはありません。
+            </p>
+
+            <h3 id="note-export">noteモードのテキスト・HTML・投稿用一式</h3>
+            <p>noteモードで書き出すときは、保存画面のファイルの種類から形式を選びます。</p>
+            <div class="spec-table two-cols">
+              <div class="table-head">形式</div><div class="table-head">内容</div>
+              <div>note用テキスト（画像名付き）</div><div>本文と画像の表示名を書き出します。</div>
+              <div>装飾付き HTML</div><div>本文の装飾と画像をHTMLで書き出します。</div>
+              <div>投稿用一式（本文・HTML・画像）</div><div>選んだ名前の<code>-note</code>フォルダに<code>article.txt</code>、<code>article.html</code>、画像フォルダ、案内を保存します。</div>
+            </div>
+            <p>
+              一式は既存フォルダを上書きしません。画像の参照切れがある場合は、参照先を直してから書き出してください。
+              目次の位置には<code>【ここに目次を挿入】</code>という案内を入れます。
+              段落の文字揃え・文字リンク・引用の出典・リストの階層をnoteへ渡す場合は、「note用にコピー」を使ってください。
             </p>
 
             <h3 id="narou-import">小説家になろうから取り込む</h3>
@@ -3025,6 +3187,7 @@ watch(
             </p>
             <p>
               左下の「初期値に戻す」は、ダイアログ内の設定をまとめて初期状態へ戻します。
+              作品ごとの執筆モードは、この操作では変更されません。
               フォントとダークモードのアクセントには、それぞれ個別の「初期値」ボタンもあります。
             </p>
             <p>
@@ -3077,7 +3240,22 @@ watch(
 
           <section v-if="activePage === 'settings-writing'" id="settings-writing" class="doc-section">
             <p>
-              ルビと文字数の条件、記号の自動変換、本文コピー時の改行、画像の表示と挿入方法を変更します。
+              作品の執筆モード、ルビと文字数の条件、記号の自動変換、本文コピー時の改行、画像の表示と挿入方法を変更します。
+            </p>
+
+            <h3 id="setting-writing-mode">この作品の執筆モード</h3>
+            <p>
+              作品を開き、設定の最下部にある「この作品の執筆モード」で「noteモード（オフで小説モード）」をオンにするとnoteモードになります。
+              オフにすると小説モードへ戻ります。
+              既存作品の初期状態は小説モードです。切り替えは開いている作品だけに適用され、タイトル・本文・画像の参照先は保持されます。
+            </p>
+            <div class="setting-example">
+              <strong>設定欄の説明</strong>
+              <p>この作品だけ有効になります。<br />内部のデータは変更されません。</p>
+            </div>
+            <p>
+              「初期値に戻す」でも作品の執筆モードは変わりません。
+              記事の書き方は、<RouterLink :to="{ path: '/nightover/editor-input', hash: '#note-mode' }">noteモードで記事を書く</RouterLink>を参照してください。
             </p>
 
             <h3 id="setting-ruby-count">ルビと文字数</h3>
@@ -3225,7 +3403,8 @@ watch(
               <div><kbd>Ctrl</kbd> + <kbd>Backspace / Delete</kbd></div><div>単語単位で削除</div>
               <div><kbd>Ctrl</kbd> + <kbd>Home / End</kbd></div><div>本文の先頭 / 末尾へ移動</div>
               <div><kbd>Shift</kbd> + 移動キー</div><div>選択範囲を拡張</div>
-              <div><kbd>Ctrl</kbd> + <kbd>B</kbd></div><div>選択範囲へ傍点を適用</div>
+              <div><kbd>Ctrl</kbd> + <kbd>B</kbd></div><div>小説モードは選択範囲へ傍点を適用。noteモードは太字を切り替え。</div>
+              <div><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd></div><div>noteモードで取り消し線を切り替え</div>
               <div><kbd>F11</kbd></div><div>集中モードを切り替え</div>
               <div><kbd>F6</kbd></div><div>キーボード操作対象のペインを切り替え</div>
               <div><kbd>Ctrl</kbd> + <kbd>Tab</kbd></div><div>右ペインのメモ / 資料を切り替え</div>
@@ -3270,6 +3449,7 @@ watch(
               <div>既定保存場所の変更</div><div class="yes">変更可能</div><div class="yes">変更可能</div>
               <div>本文編集・手動保存・自動保存</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>横書き編集・横書きプレビュー</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
+              <div>noteモード・目次・画像一覧</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>縦書き編集・プレビュー</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>本文画像・タイトル変更・画像付きコピー</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>章の色ラベル</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
@@ -3291,6 +3471,7 @@ watch(
             <div class="spec-table edition-table">
               <div class="table-head">機能</div><div class="table-head">Lite版</div><div class="table-head">通常版</div>
               <div>本文をコピー</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
+              <div>note用にコピー・HTML・投稿用一式</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>話・章単位のtxt書き出し</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>作品全体txt書き出し</div><div class="yes">利用可能</div><div class="yes">利用可能</div>
               <div>小説家になろうのZIP / TXTを取り込む</div><div class="yes">利用可能</div><div class="yes">利用可能</div>

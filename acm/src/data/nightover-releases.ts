@@ -16,6 +16,11 @@ export const nightOverProductUrl = 'https://alushop.booth.pm/items/8656265'
 // 新しいバージョンを先頭へ追加すると、リリース情報へ新しい順で表示されます。
 export const nightOverReleases: NightOverRelease[] = [
   {
+    version: '1.9.8',
+    title: 'noteモードを追加し、記事の編集とコピーを改善',
+    summary: '見出し・太字・リスト・引用などを見たまま編集できるnoteモードを追加しました。目次や画像一覧を使いながら記事を書き、「note用にコピー」で本文と装飾をコピーできます。リストの改行、目次の表示、編集メニューとスクロール操作も改善しました。',
+  },
+  {
     version: '1.6.6',
     title: '画像挿入時に作品内へコピーする設定を追加',
     summary: '設定に「画像挿入時にコピーを作成」を追加しました。オンにすると、挿入する画像を作品フォルダ内へコピーします。初期状態はオフです。',
