@@ -349,6 +349,12 @@ const searchIndex: SearchEntry[] = [
   },
   {
     page: 'editor-input',
+    headingId: 'note-links',
+    title: 'リンクの編集と解除',
+    text: 'note 文字リンク URL http https クリック カーソル リンク編集 リンク解除 全体を選択 リンクを編集 リンクを解除 リンク全体を選択 部分選択 複数リンク 空欄 太字 取り消し線 装飾 保持 取り消し Undo',
+  },
+  {
+    page: 'editor-input',
     headingId: 'note-toc',
     title: '目次と見出し一覧',
     text: 'note 目次挿入 記事 一つ 単一 位置 移動 見出し一覧 ジャンプ 更新 取り消し Undo',
@@ -357,13 +363,13 @@ const searchIndex: SearchEntry[] = [
     page: 'editor-input',
     headingId: 'text-input',
     title: '入力とIME',
-    text: 'IME 変換範囲 下線 候補窓 キャレット Windows標準 確定 重複入力 抑制',
+    text: 'IME 変換範囲 下線 候補窓 キャレット Windows標準 確定 重複入力 抑制 note 未確定 ＋ 表示 メニュー',
   },
   {
     page: 'editor-input',
     headingId: 'selection-copy',
     title: '選択・コピー・貼り付け',
-    text: 'ドラッグ Shiftクリック ダブルクリック 単語 Ctrl 文選択 本文をコピー 選択範囲 プレビュー 編集不可',
+    text: 'ドラッグ Shiftクリック ダブルクリック 単語 Ctrl 文選択 本文をコピー 選択範囲 プレビュー 編集不可 note 同じ記事 移動 複製 装飾 保持 取り消し Undo',
   },
   {
     page: 'editor-input',
@@ -393,7 +399,7 @@ const searchIndex: SearchEntry[] = [
     page: 'editor-images',
     headingId: 'note-image-list',
     title: 'noteモードの画像一覧と画像転送',
-    text: 'note 画像一覧 使用箇所 保存先 エクスプローラー ドラッグ ファイル アップロード 参照切れ 別途転送 本体 自動送信しない',
+    text: 'note 画像一覧 使用箇所 保存先 エクスプローラー ドラッグ ファイル アップロード 参照切れ 別途転送 本体 自動送信しない 本文 ドロップ 受け付けない 右クリック 画像を挿入',
   },
   {
     page: 'editor-images',
@@ -925,6 +931,7 @@ const pageTocMap: Record<string, { id: string; label: string }[]> = {
   'editor-input': [
     { id: 'note-mode', label: 'noteモード' },
     { id: 'note-formatting', label: '書式と改行' },
+    { id: 'note-links', label: 'リンクの編集と解除' },
     { id: 'note-toc', label: '目次と見出し一覧' },
     { id: 'text-input', label: '入力とIME' },
     { id: 'selection-copy', label: '選択とコピー' },
@@ -1983,7 +1990,7 @@ watch(
               <div>太字・取り消し線</div><div>選択文字や次の入力へ適用します。太字は<kbd>Ctrl</kbd> + <kbd>B</kbd>、取り消し線は<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>でも切り替えます。</div>
               <div>箇条書き・番号付きリスト</div><div>選択メニューや「＋」から選びます。リスト内のカーソル位置で<kbd>Tab</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd>を押すと階層を下げ / 上げます。最大8階層まで使えます。</div>
               <div>引用・出典</div><div>引用段落に出典名とURLを設定できます。どちらも省略でき、出典がある場合は引用の下へ表示します。</div>
-              <div>文字リンク</div><div>選択した文字にリンクを設定します。URLは<code>http://</code>または<code>https://</code>を使い、空欄で解除します。</div>
+              <div>文字リンク</div><div>選択した文字にリンクを設定します。URLは<code>http://</code>または<code>https://</code>を使います。</div>
               <div>左・中央・右揃え</div><div>本文・引用・リストの段落へ適用します。見出し・コード・画像・目次・区切り線は対象外です。</div>
               <div>コード・区切り線</div><div>「＋」から挿入します。コード内の改行はコードの中に残り、装飾記法は文字として扱います。</div>
             </div>
@@ -1996,6 +2003,21 @@ watch(
             <p>
               取り消し・やり直しでは、文字と書式を一緒に戻せます。
               noteモードではルビ・傍点の入力は使いません。既存の本文にあるルビ記法は、モード切り替えだけでは削除されません。
+            </p>
+
+            <h3 id="note-links">リンクの編集と解除</h3>
+            <p>
+              見たまま編集でリンク内をクリックすると、「リンク編集」「リンク解除」「全体を選択」の小さなメニューが開きます。
+              「全体を選択」で、そのリンクの文字全体を選べます。
+            </p>
+            <p>
+              文字を選択している場合は、選択メニューの「リンク」から編集・解除・リンク全体の選択を行います。
+              一つのリンク内からURLを変更すると、そのリンク全体へ適用します。
+            </p>
+            <p>
+              リンクを解除するか、URLを空欄にして確定すると、一部分だけを選んでいてもリンク全体を解除します。
+              複数のリンクにまたがる選択では、選択範囲に重なるリンクをすべて解除します。
+              本文と太字・取り消し線はそのまま残り、変更は一回の取り消しで戻せます。
             </p>
 
             <h3 id="note-toc">目次と見出し一覧</h3>
@@ -2019,8 +2041,16 @@ watch(
               IME変換中にIME側が扱う矢印、<kbd>Backspace</kbd>、<kbd>Delete</kbd>はWindows標準処理へ渡します。
               確定文字列は1回だけ本文へ反映し、確定直後の重複入力を抑制します。
             </p>
+            <p>
+              noteモードでは、変換中も段落横の「＋」が表示されます。
+              書式のメニューは、文字を確定または取り消してから開いてください。
+            </p>
 
             <h3 id="selection-copy">選択・コピー・貼り付け</h3>
+            <p>
+              noteモードでは、同じ記事内の文字をドラッグすると装飾ごと移動できます。
+              <kbd>Ctrl</kbd>を押しながらドラッグすると複製し、移動・複製は一回の取り消しで戻せます。
+            </p>
             <p>小説モードでは、次の選択・移動操作を使えます。noteモードの書式操作は、このページの「noteモードで記事を書く」を参照してください。</p>
             <ul>
               <li>ドラッグ選択と<kbd>Shift</kbd> + クリックによる範囲拡張</li>
@@ -2055,6 +2085,7 @@ watch(
               <li>「画像を挿入…」を選び、PNG・JPEGファイルを指定します。</li>
               <li>画像の前後へ文字を入力して、執筆を続けます。</li>
             </ol>
+            <p>noteモードの見たまま編集・記法編集でも、同じ手順で画像を追加できます。</p>
             <p>
               初期状態では元の画像ファイルを参照します。設定の
               <RouterLink :to="{ path: '/nightover/settings-writing', hash: '#setting-image-copy' }">「画像挿入時にコピーを作成」</RouterLink>をオンにすると、
@@ -2111,6 +2142,10 @@ watch(
               「note用にコピー」では画像の表示名だけを渡し、画像本体は別途アップロードします。
               一覧からのドラッグはファイルのコピー操作で、元画像を移動・削除しません。
               NIGHTOVERから記事を自動送信・公開する機能ではありません。
+            </p>
+            <p>
+              画像一覧やエクスプローラーから、NIGHTOVERのnote本文欄へ画像ファイルをドロップすることはできません。
+              本文へ追加するときは、右クリックの「画像を挿入…」を使ってください。
             </p>
 
             <h3 id="image-portability">画像入りの作品を移動する</h3>
