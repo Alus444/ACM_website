@@ -1332,8 +1332,8 @@ watch(
             <p class="intro-release">
               現在のバージョン <strong>Ver.{{ nightOverCurrentVersion }}</strong>
               <span class="intro-release__links">
-                <a :href="nightOverProductUrl" target="_blank" rel="noopener">Lite版・通常版をBOOTHで見る</a>
-                <RouterLink to="/nightover/releases">更新内容を見る</RouterLink>
+                <a :href="nightOverProductUrl" target="_blank" rel="noopener">BOOTHで確認</a>
+                <RouterLink to="/nightover/releases">更新内容を確認</RouterLink>
               </span>
             </p>
 
