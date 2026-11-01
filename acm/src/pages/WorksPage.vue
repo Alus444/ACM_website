@@ -43,8 +43,8 @@ const career = [
 ]
 
 const projects = [
-  { year: '2025', client: 'Canon', desc: 'Vket2025 Summer Canonカメラモデル制作' },
-  { year: '2024', client: 'Canon', desc: 'Vket2024 Winter Canonカメラモデル制作' },
+  { year: '2025', client: 'Canon', desc: 'Vket2025 Summer カメラモデル制作' },
+  { year: '2024', client: 'Canon', desc: 'Vket2024 Winter カメラモデル制作' },
   { year: '2024', client: '東京MX', desc: '「ビジネスタイガーサミット(前期)」CM・番組映像制作' },
   { year: '2024', client: '高知県北川村', desc: 'PR用動画 撮影・編集' },
   { year: '2023', client: 'YouTube', desc: 'チャンネル登録者数13万人向け動画 撮影・編集・ディレクション' },
