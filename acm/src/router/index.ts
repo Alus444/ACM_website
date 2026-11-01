@@ -67,7 +67,7 @@ const router = createRouter({
       return { el: target, top: 84, behavior: 'smooth' }
     }
     if (to.path.startsWith('/nightover') || to.path.startsWith('/vhs-simulator')) return false
-    return { top: 0 }
+    return { top: 0, left: 0, behavior: 'instant' }
   },
 })
 
