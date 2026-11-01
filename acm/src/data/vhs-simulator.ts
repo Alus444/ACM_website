@@ -249,7 +249,7 @@ export const vhsGlossaryGroups: VhsGlossaryGroup[] = [
         id: 'term-curvature',
         term: '画面曲率',
         termEn: 'Screen Curvature',
-        description: '古いブラウン管の表面が平面ではなく、外側へふくらんでいる形状です。値を上げると中央のふくらみと四隅の曲がりが強くなります。',
+        description: '古いブラウン管の表面が外側へふくらんでいる形状です。値を上げると中央のふくらみと四隅の曲がりが強くなります。',
         keywords: '曲率 curvature 丸み ブラウン管 四隅 歪み',
       },
     ],
@@ -402,7 +402,7 @@ export const vhsIssues: VhsIssue[] = [
   { id: 'pixel-vs-tvl', question: '処理ピクセル比率とTVLの違いが分からない', answer: '処理ピクセル比率は実際の作業画素数、TVLは水平方向のアナログ輝度帯域、垂直走査線数は上下方向の細部量です。1項目ずつ変えて比較してください。', keywords: 'pixel tvl lines 違い 解像度' },
   { id: 'crt-frame-zero', question: 'CRT管面黒枠を0にすると期待と違う', answer: '管面黒枠は黒い外縁だけを消します。CRT全体を無効にする場合は、CRT処理強度を0%にします。', keywords: 'crt 黒枠 0 無効' },
   { id: 'mask-hidden', question: 'CRTの細かな模様が見えない', answer: 'Half／Quarter表示を避け、フル解像度・100%表示で確認します。シャドウマスクは、表示解像度が低い場合に偽格子を防ぐため自動的に弱くなります。', keywords: 'crt shadow mask シャドウマスク 走査線 模様 見えない 解像度' },
-  { id: 'bottom-weak', question: '下端ノイズが弱い', answer: '下端ノイズ帯高さ、切替え歪み、帯強度で帯の見え方を決めます。粒径は強度ではなくサイズだけを変更します。色を崩す場合は色ずれも上げます。', keywords: '下端 ノイズ 弱い 粒径 色ずれ' },
+  { id: 'bottom-weak', question: '下端ノイズが弱い', answer: '下端ノイズ帯高さ、切替え歪み、帯強度で帯の見え方を決めます。粒径は粒のサイズだけを変更します。色を崩す場合は色ずれも上げます。', keywords: '下端 ノイズ 弱い 粒径 色ずれ' },
   { id: 'too-broken', question: '映像全体が壊れすぎる', answer: '同期外れとトラッキングを下げ、テープ摩耗とダビング世代の重複を確認します。最後にVHS処理強度または最終合成量で全体量を整えます。', keywords: '壊れすぎ 同期 トラッキング 強い' },
 ]
 
