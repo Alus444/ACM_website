@@ -43,6 +43,7 @@ const career = [
 ]
 
 const projects = [
+  { year: '2025', client: 'HONDA', desc: 'Vket2025 Winter 企業ブース制作' },
   { year: '2025', client: 'Canon', desc: 'Vket2025 Summer カメラモデル制作' },
   { year: '2024', client: 'Canon', desc: 'Vket2024 Winter カメラモデル制作' },
   { year: '2024', client: '東京MX', desc: '「ビジネスタイガーサミット(前期)」CM・番組映像制作' },
