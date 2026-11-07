@@ -363,7 +363,7 @@ const searchIndex: SearchEntry[] = [
     page: 'editor-input',
     headingId: 'text-input',
     title: '入力とIME',
-    text: 'IME 変換範囲 下線 候補窓 キャレット Windows標準 確定 重複入力 抑制 note 未確定 ＋ 表示 メニュー',
+    text: 'IME 変換範囲 下線 候補窓 キャレット カーソル 点滅 Windows標準 確定 重複入力 抑制 note 未確定 ＋ 表示 メニュー',
   },
   {
     page: 'editor-input',
@@ -2033,6 +2033,7 @@ watch(
             </p>
 
             <h3 id="text-input">入力とIME</h3>
+            <p>小説モードでは、入力やカーソル移動を止めると、カーソルが約0.5秒間隔で点滅します。入力・移動の直後やIME変換中は点灯します。</p>
             <p>
               編集モードでは通常文字、改行、タブ、貼り付けを本文へ挿入できます。
               IME変換中の文字列は本文上へ重ね、変換範囲を下線で表示します。候補窓は横書き・縦書きそれぞれのキャレットへ追従します。
